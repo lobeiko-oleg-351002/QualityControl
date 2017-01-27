@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E12B9EED-3F55-4490-B1C9-3519B2412D4E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BLL</RootNamespace>
+    <AssemblyName>BLL</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entities\BllCertificate.cs" />
+    <Compile Include="Entities\BllCertificateLib.cs" />
+    <Compile Include="Entities\BllComponent.cs" />
+    <Compile Include="Entities\BllComponentLib.cs" />
+    <Compile Include="Entities\BllControl.cs" />
+    <Compile Include="Entities\BllControlMethodDocumentation.cs" />
+    <Compile Include="Entities\BllControlMethodDocumentationLib.cs" />
+    <Compile Include="Entities\BllControlMethodsLib.cs" />
+    <Compile Include="Entities\BllControlName.cs" />
+    <Compile Include="Entities\BllControlNameLib.cs" />
+    <Compile Include="Entities\BllCustomer.cs" />
+    <Compile Include="Entities\BllEmployee.cs" />
+    <Compile Include="Entities\BllEmployeeLib.cs" />
+    <Compile Include="Entities\BllEquipment.cs" />
+    <Compile Include="Entities\BllEquipmentLib.cs" />
+    <Compile Include="Entities\BllImage.cs" />
+    <Compile Include="Entities\BllImageLib.cs" />
+    <Compile Include="Entities\BllIndustrialObject.cs" />
+    <Compile Include="Entities\BllJournal.cs" />
+    <Compile Include="Entities\BllMaterial.cs" />
+    <Compile Include="Entities\BllRequirementDocumentation.cs" />
+    <Compile Include="Entities\BllRequirementDocumentationLib.cs" />
+    <Compile Include="Entities\BllResult.cs" />
+    <Compile Include="Entities\BllResultLib.cs" />
+    <Compile Include="Entities\BllRole.cs" />
+    <Compile Include="Entities\BllSelectedCertificate.cs" />
+    <Compile Include="Entities\BllSelectedComponent.cs" />
+    <Compile Include="Entities\BllSelectedControlMethodDocumentation.cs" />
+    <Compile Include="Entities\BllSelectedControlName.cs" />
+    <Compile Include="Entities\BllSelectedEmployee.cs" />
+    <Compile Include="Entities\BllSelectedEquipment.cs" />
+    <Compile Include="Entities\BllSelectedRequirementDocumentation.cs" />
+    <Compile Include="Entities\BllTemplate.cs" />
+    <Compile Include="Entities\BllUser.cs" />
+    <Compile Include="Entities\BllWeldJoint.cs" />
+    <Compile Include="Entities\Interface\IBllEntity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CertificateLibService.cs" />
+    <Compile Include="Services\CertificateService.cs" />
+    <Compile Include="Services\ComponentLibService.cs" />
+    <Compile Include="Services\ComponentService.cs" />
+    <Compile Include="Services\ControlMethodDocumentationLibService.cs" />
+    <Compile Include="Services\ControlMethodDocumentationService.cs" />
+    <Compile Include="Services\ControlMethodsLibService.cs" />
+    <Compile Include="Services\ControlNameLibService.cs" />
+    <Compile Include="Services\ControlNameService.cs" />
+    <Compile Include="Services\ControlService.cs" />
+    <Compile Include="Services\CustomerService.cs" />
+    <Compile Include="Services\EmployeeLibService.cs" />
+    <Compile Include="Services\EmployeeService.cs" />
+    <Compile Include="Services\EquipmentLibService.cs" />
+    <Compile Include="Services\EquipmentService.cs" />
+    <Compile Include="Services\ImageLibService.cs" />
+    <Compile Include="Services\ImageService.cs" />
+    <Compile Include="Services\IndustrialObjectService.cs" />
+    <Compile Include="Services\Interface\ICertificateLibService.cs" />
+    <Compile Include="Services\Interface\ICertificateService.cs" />
+    <Compile Include="Services\Interface\IComponentLibService.cs" />
+    <Compile Include="Services\Interface\IComponentService.cs" />
+    <Compile Include="Services\Interface\IControlMethodDocumentationLibService.cs" />
+    <Compile Include="Services\Interface\IControlMethodDocumentationService.cs" />
+    <Compile Include="Services\Interface\IControlMethodsLibService.cs" />
+    <Compile Include="Services\Interface\IControlNameLibService.cs" />
+    <Compile Include="Services\Interface\IControlNameService.cs" />
+    <Compile Include="Services\Interface\IControlService.cs" />
+    <Compile Include="Services\Interface\ICustomerService.cs" />
+    <Compile Include="Services\Interface\IEmployeeLibService.cs" />
+    <Compile Include="Services\Interface\IEmployeeService.cs" />
+    <Compile Include="Services\Interface\IEquipmentLibService.cs" />
+    <Compile Include="Services\Interface\IEquipmentService.cs" />
+    <Compile Include="Services\Interface\IImageLibService.cs" />
+    <Compile Include="Services\Interface\IImageService.cs" />
+    <Compile Include="Services\Interface\IIndustrialObjectService.cs" />
+    <Compile Include="Services\Interface\IJournalService.cs" />
+    <Compile Include="Services\Interface\IMaterialService.cs" />
+    <Compile Include="Services\Interface\IRequirementDocumentationLibService.cs" />
+    <Compile Include="Services\Interface\IRequirementDocumentationService.cs" />
+    <Compile Include="Services\Interface\IResultLibService.cs" />
+    <Compile Include="Services\Interface\IResultService.cs" />
+    <Compile Include="Services\Interface\IRoleService.cs" />
+    <Compile Include="Services\Interface\ISelectedCertificateService.cs" />
+    <Compile Include="Services\Interface\ISelectedComponentService.cs" />
+    <Compile Include="Services\Interface\ISelectedControlMethodDocumentationService.cs" />
+    <Compile Include="Services\Interface\ISelectedControlNameService.cs" />
+    <Compile Include="Services\Interface\ISelectedEmployeeService.cs" />
+    <Compile Include="Services\Interface\ISelectedEquipmentService.cs" />
+    <Compile Include="Services\Interface\IService.cs" />
+    <Compile Include="Services\Interface\ITemplateService.cs" />
+    <Compile Include="Services\Interface\IUserService.cs" />
+    <Compile Include="Services\Interface\IWeldJointService.cs" />
+    <Compile Include="Services\Interface\ISelectedRequirementDocumentationService.cs" />
+    <Compile Include="Services\JournalService.cs" />
+    <Compile Include="Services\MaterialService.cs" />
+    <Compile Include="Services\RequirementDocumentationLibService.cs" />
+    <Compile Include="Services\RequirementDocumentationService.cs" />
+    <Compile Include="Services\ResultLibService.cs" />
+    <Compile Include="Services\ResultService.cs" />
+    <Compile Include="Services\RoleService.cs" />
+    <Compile Include="Services\SelectedCertificateService.cs" />
+    <Compile Include="Services\SelectedComponentService.cs" />
+    <Compile Include="Services\SelectedControlMethodDocumentationService.cs" />
+    <Compile Include="Services\SelectedControlNameService.cs" />
+    <Compile Include="Services\SelectedEmployeeService.cs" />
+    <Compile Include="Services\SelectedEquipmentService.cs" />
+    <Compile Include="Services\SelectedRequirementDocumentationService.cs" />
+    <Compile Include="Services\Service.cs" />
+    <Compile Include="Services\TemplateService.cs" />
+    <Compile Include="Services\UserService.cs" />
+    <Compile Include="Services\WeldJointService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DAL\DAL.csproj">
+      <Project>{c76bbd2d-6c3e-4e00-94ef-aa4b8dd57f02}</Project>
+      <Name>DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ORM\ORM.csproj">
+      <Project>{a2f70513-65fe-4c6d-9628-dae4dcefe49c}</Project>
+      <Name>ORM</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

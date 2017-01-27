@@ -1,0 +1,197 @@
+E:\VisualStudioProjects\QualityControl\BLL\bin\Debug\BLL.dll
+E:\VisualStudioProjects\QualityControl\BLL\bin\Debug\BLL.pdb
+E:\VisualStudioProjects\QualityControl\BLL\bin\Debug\AutoMapper.dll
+E:\VisualStudioProjects\QualityControl\BLL\bin\Debug\DAL.dll
+E:\VisualStudioProjects\QualityControl\BLL\bin\Debug\EntityFramework.dll
+E:\VisualStudioProjects\QualityControl\BLL\bin\Debug\ORM.dll
+E:\VisualStudioProjects\QualityControl\BLL\bin\Debug\DAL.pdb
+E:\VisualStudioProjects\QualityControl\BLL\bin\Debug\AutoMapper.xml
+E:\VisualStudioProjects\QualityControl\BLL\bin\Debug\EntityFramework.xml
+E:\VisualStudioProjects\QualityControl\BLL\bin\Debug\ORM.pdb
+E:\VisualStudioProjects\QualityControl\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\VisualStudioProjects\QualityControl\BLL\obj\Debug\BLL.dll
+E:\VisualStudioProjects\QualityControl\BLL\obj\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\QualityControl\BLL\bin\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\QualityControl\BLL\bin\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\QualityControl\BLL\bin\Debug\AutoMapper.dll
+E:\Projects\VisualStudioProjects\QualityControl\BLL\bin\Debug\AutoMapper.xml
+E:\Projects\VisualStudioProjects\QualityControl\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\QualityControl\BLL\obj\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\QualityControl\BLL\obj\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\QualityControl\BLL\bin\Debug\DAL.dll
+E:\Projects\VisualStudioProjects\QualityControl\BLL\bin\Debug\ORM.dll
+E:\Projects\VisualStudioProjects\QualityControl\BLL\bin\Debug\EntityFramework.dll
+E:\Projects\VisualStudioProjects\QualityControl\BLL\bin\Debug\DAL.pdb
+E:\Projects\VisualStudioProjects\QualityControl\BLL\bin\Debug\ORM.pdb
+E:\Projects\VisualStudioProjects\QualityControl\BLL\bin\Debug\EntityFramework.xml
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\BLL\bin\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\BLL\bin\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.dll
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\BLL\bin\Debug\DAL.dll
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\BLL\bin\Debug\ORM.dll
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.dll
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\BLL\bin\Debug\DAL.pdb
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.xml
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\BLL\bin\Debug\ORM.pdb
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.xml
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\BLL\obj\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\BLL\obj\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\28.08.16 QC\QualityControl\BLL\bin\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\28.08.16 QC\QualityControl\BLL\bin\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\28.08.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.dll
+E:\Projects\VisualStudioProjects\28.08.16 QC\QualityControl\BLL\bin\Debug\DAL.dll
+E:\Projects\VisualStudioProjects\28.08.16 QC\QualityControl\BLL\bin\Debug\ORM.dll
+E:\Projects\VisualStudioProjects\28.08.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.dll
+E:\Projects\VisualStudioProjects\28.08.16 QC\QualityControl\BLL\bin\Debug\DAL.pdb
+E:\Projects\VisualStudioProjects\28.08.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.xml
+E:\Projects\VisualStudioProjects\28.08.16 QC\QualityControl\BLL\bin\Debug\ORM.pdb
+E:\Projects\VisualStudioProjects\28.08.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.xml
+E:\Projects\VisualStudioProjects\28.08.16 QC\QualityControl\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\28.08.16 QC\QualityControl\BLL\obj\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\28.08.16 QC\QualityControl\BLL\obj\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\01.09.16 QC\QualityControl\BLL\bin\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\01.09.16 QC\QualityControl\BLL\bin\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\01.09.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.dll
+E:\Projects\VisualStudioProjects\01.09.16 QC\QualityControl\BLL\bin\Debug\DAL.dll
+E:\Projects\VisualStudioProjects\01.09.16 QC\QualityControl\BLL\bin\Debug\ORM.dll
+E:\Projects\VisualStudioProjects\01.09.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.dll
+E:\Projects\VisualStudioProjects\01.09.16 QC\QualityControl\BLL\bin\Debug\DAL.pdb
+E:\Projects\VisualStudioProjects\01.09.16 QC\QualityControl\BLL\bin\Debug\ORM.pdb
+E:\Projects\VisualStudioProjects\01.09.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.xml
+E:\Projects\VisualStudioProjects\01.09.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.xml
+E:\Projects\VisualStudioProjects\01.09.16 QC\QualityControl\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\01.09.16 QC\QualityControl\BLL\obj\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\01.09.16 QC\QualityControl\BLL\obj\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\04.09.16 QC\QualityControl\BLL\bin\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\04.09.16 QC\QualityControl\BLL\bin\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\04.09.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.dll
+E:\Projects\VisualStudioProjects\04.09.16 QC\QualityControl\BLL\bin\Debug\DAL.dll
+E:\Projects\VisualStudioProjects\04.09.16 QC\QualityControl\BLL\bin\Debug\ORM.dll
+E:\Projects\VisualStudioProjects\04.09.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.dll
+E:\Projects\VisualStudioProjects\04.09.16 QC\QualityControl\BLL\bin\Debug\DAL.pdb
+E:\Projects\VisualStudioProjects\04.09.16 QC\QualityControl\BLL\bin\Debug\ORM.pdb
+E:\Projects\VisualStudioProjects\04.09.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.xml
+E:\Projects\VisualStudioProjects\04.09.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.xml
+E:\Projects\VisualStudioProjects\04.09.16 QC\QualityControl\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\04.09.16 QC\QualityControl\BLL\obj\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\04.09.16 QC\QualityControl\BLL\obj\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\06.09.16 QC\QualityControl\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\06.09.16 QC\QualityControl\BLL\obj\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\06.09.16 QC\QualityControl\BLL\obj\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\06.09.16 QC\QualityControl\BLL\bin\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\06.09.16 QC\QualityControl\BLL\bin\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\06.09.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.dll
+E:\Projects\VisualStudioProjects\06.09.16 QC\QualityControl\BLL\bin\Debug\DAL.dll
+E:\Projects\VisualStudioProjects\06.09.16 QC\QualityControl\BLL\bin\Debug\ORM.dll
+E:\Projects\VisualStudioProjects\06.09.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.dll
+E:\Projects\VisualStudioProjects\06.09.16 QC\QualityControl\BLL\bin\Debug\DAL.pdb
+E:\Projects\VisualStudioProjects\06.09.16 QC\QualityControl\BLL\bin\Debug\ORM.pdb
+E:\Projects\VisualStudioProjects\06.09.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.xml
+E:\Projects\VisualStudioProjects\06.09.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.xml
+E:\Projects\VisualStudioProjects\10.09.16 QC\QualityControl\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\10.09.16 QC\QualityControl\BLL\obj\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\10.09.16 QC\QualityControl\BLL\obj\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\10.09.16 QC\QualityControl\BLL\bin\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\10.09.16 QC\QualityControl\BLL\bin\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\10.09.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.dll
+E:\Projects\VisualStudioProjects\10.09.16 QC\QualityControl\BLL\bin\Debug\DAL.dll
+E:\Projects\VisualStudioProjects\10.09.16 QC\QualityControl\BLL\bin\Debug\ORM.dll
+E:\Projects\VisualStudioProjects\10.09.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.dll
+E:\Projects\VisualStudioProjects\10.09.16 QC\QualityControl\BLL\bin\Debug\DAL.pdb
+E:\Projects\VisualStudioProjects\10.09.16 QC\QualityControl\BLL\bin\Debug\ORM.pdb
+E:\Projects\VisualStudioProjects\10.09.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.xml
+E:\Projects\VisualStudioProjects\10.09.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.xml
+E:\Projects\VisualStudioProjects\16.09.16 QC\QualityControl\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\16.09.16 QC\QualityControl\BLL\obj\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\16.09.16 QC\QualityControl\BLL\obj\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\16.09.16 QC\QualityControl\BLL\bin\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\16.09.16 QC\QualityControl\BLL\bin\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\16.09.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.dll
+E:\Projects\VisualStudioProjects\16.09.16 QC\QualityControl\BLL\bin\Debug\DAL.dll
+E:\Projects\VisualStudioProjects\16.09.16 QC\QualityControl\BLL\bin\Debug\ORM.dll
+E:\Projects\VisualStudioProjects\16.09.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.dll
+E:\Projects\VisualStudioProjects\16.09.16 QC\QualityControl\BLL\bin\Debug\DAL.pdb
+E:\Projects\VisualStudioProjects\16.09.16 QC\QualityControl\BLL\bin\Debug\ORM.pdb
+E:\Projects\VisualStudioProjects\16.09.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.xml
+E:\Projects\VisualStudioProjects\16.09.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.xml
+E:\Projects\VisualStudioProjects\24.09.16 QC\QualityControl\BLL\bin\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\24.09.16 QC\QualityControl\BLL\bin\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\24.09.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.dll
+E:\Projects\VisualStudioProjects\24.09.16 QC\QualityControl\BLL\bin\Debug\DAL.dll
+E:\Projects\VisualStudioProjects\24.09.16 QC\QualityControl\BLL\bin\Debug\ORM.dll
+E:\Projects\VisualStudioProjects\24.09.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.dll
+E:\Projects\VisualStudioProjects\24.09.16 QC\QualityControl\BLL\bin\Debug\DAL.pdb
+E:\Projects\VisualStudioProjects\24.09.16 QC\QualityControl\BLL\bin\Debug\ORM.pdb
+E:\Projects\VisualStudioProjects\24.09.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.xml
+E:\Projects\VisualStudioProjects\24.09.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.xml
+E:\Projects\VisualStudioProjects\24.09.16 QC\QualityControl\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\24.09.16 QC\QualityControl\BLL\obj\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\24.09.16 QC\QualityControl\BLL\obj\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\05.10.16 QC\QualityControl\BLL\bin\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\05.10.16 QC\QualityControl\BLL\bin\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\05.10.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.dll
+E:\Projects\VisualStudioProjects\05.10.16 QC\QualityControl\BLL\bin\Debug\DAL.dll
+E:\Projects\VisualStudioProjects\05.10.16 QC\QualityControl\BLL\bin\Debug\ORM.dll
+E:\Projects\VisualStudioProjects\05.10.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.dll
+E:\Projects\VisualStudioProjects\05.10.16 QC\QualityControl\BLL\bin\Debug\DAL.pdb
+E:\Projects\VisualStudioProjects\05.10.16 QC\QualityControl\BLL\bin\Debug\ORM.pdb
+E:\Projects\VisualStudioProjects\05.10.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.xml
+E:\Projects\VisualStudioProjects\05.10.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.xml
+E:\Projects\VisualStudioProjects\05.10.16 QC\QualityControl\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\05.10.16 QC\QualityControl\BLL\obj\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\05.10.16 QC\QualityControl\BLL\obj\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\14.10.16 QC\QualityControl\BLL\bin\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\14.10.16 QC\QualityControl\BLL\bin\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\14.10.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.dll
+E:\Projects\VisualStudioProjects\14.10.16 QC\QualityControl\BLL\bin\Debug\DAL.dll
+E:\Projects\VisualStudioProjects\14.10.16 QC\QualityControl\BLL\bin\Debug\ORM.dll
+E:\Projects\VisualStudioProjects\14.10.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.dll
+E:\Projects\VisualStudioProjects\14.10.16 QC\QualityControl\BLL\bin\Debug\DAL.pdb
+E:\Projects\VisualStudioProjects\14.10.16 QC\QualityControl\BLL\bin\Debug\ORM.pdb
+E:\Projects\VisualStudioProjects\14.10.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.xml
+E:\Projects\VisualStudioProjects\14.10.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.xml
+E:\Projects\VisualStudioProjects\14.10.16 QC\QualityControl\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\14.10.16 QC\QualityControl\BLL\obj\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\14.10.16 QC\QualityControl\BLL\obj\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\BLL\bin\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\BLL\bin\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.dll
+E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\BLL\bin\Debug\DAL.dll
+E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\BLL\bin\Debug\ORM.dll
+E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.dll
+E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\BLL\bin\Debug\DAL.pdb
+E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\BLL\bin\Debug\ORM.pdb
+E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.xml
+E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.xml
+E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\BLL\obj\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\BLL\obj\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\BLL\bin\Debug\BLL.dll.CodeAnalysisLog.xml
+E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\BLL\bin\Debug\BLL.dll.lastcodeanalysissucceeded
+E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\BLL\bin\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\BLL\bin\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.dll
+E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\BLL\bin\Debug\DAL.dll
+E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\BLL\bin\Debug\ORM.dll
+E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.dll
+E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\BLL\bin\Debug\DAL.pdb
+E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\BLL\bin\Debug\ORM.pdb
+E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\BLL\bin\Debug\AutoMapper.xml
+E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\BLL\bin\Debug\EntityFramework.xml
+E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\BLL\obj\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\BLL\obj\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Debug\AutoMapper.dll
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Debug\DAL.dll
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Debug\ORM.dll
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Debug\EntityFramework.dll
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Debug\DAL.pdb
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Debug\ORM.pdb
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Debug\AutoMapper.xml
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Debug\EntityFramework.xml
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\obj\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\obj\Debug\BLL.pdb

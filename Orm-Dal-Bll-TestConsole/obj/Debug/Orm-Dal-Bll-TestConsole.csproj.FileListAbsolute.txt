@@ -1,0 +1,75 @@
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\Orm-Dal-Bll-TestConsole.exe.config
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\Data\ServiceDB.mdf
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\Data\ServiceDB_log.ldf
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\Orm-Dal-Bll-TestConsole.exe
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\Orm-Dal-Bll-TestConsole.pdb
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\BLL.dll
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\DAL.dll
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\ORM.dll
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\QualityControl.exe
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\EntityFramework.dll
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\BLL.pdb
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\DAL.pdb
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\ORM.pdb
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\QualityControl.pdb
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\EntityFramework.xml
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\obj\Debug\Orm-Dal-Bll-TestConsole.csprojResolveAssemblyReference.cache
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\obj\Debug\Orm-Dal-Bll-TestConsole.exe
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\obj\Debug\Orm-Dal-Bll-TestConsole.pdb
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\EntityFramework.SqlServer.dll
+E:\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\EntityFramework.SqlServer.xml
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\Orm-Dal-Bll-TestConsole.exe.config
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\obj\Debug\Orm-Dal-Bll-TestConsole.exe
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\obj\Debug\Orm-Dal-Bll-TestConsole.pdb
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\obj\Debug\Orm-Dal-Bll-TestConsole.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\Orm-Dal-Bll-TestConsole.exe
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\Orm-Dal-Bll-TestConsole.pdb
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\DAL.dll
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\EntityFramework.dll
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\EntityFramework.SqlServer.dll
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\ORM.dll
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\AutoMapper.dll
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\DAL.pdb
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\EntityFramework.xml
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\EntityFramework.SqlServer.xml
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\ORM.pdb
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\AutoMapper.xml
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\Data\ServiceDB.mdf
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\Data\ServiceDB_log.ldf
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\QualityControl_Client.exe
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\QualityControl_Client.pdb
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\ServerWcfService.dll
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\UIL.dll
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\ServerWcfService.pdb
+E:\Projects\VisualStudioProjects\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\UIL.pdb
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\obj\Debug\Orm-Dal-Bll-TestConsole.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\obj\Debug\Orm-Dal-Bll-TestConsole.exe
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\obj\Debug\Orm-Dal-Bll-TestConsole.pdb
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\Data\ServiceDB.mdf
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\Data\ServiceDB_log.ldf
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\Orm-Dal-Bll-TestConsole.exe.config
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\Orm-Dal-Bll-TestConsole.exe
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\Orm-Dal-Bll-TestConsole.pdb
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\BLL.dll
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\DAL.dll
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\EntityFramework.dll
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\EntityFramework.SqlServer.dll
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\ORM.dll
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\QualityControl_Client.exe
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\AutoMapper.dll
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\ServerWcfService.dll
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\UIL.dll
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\DAL.pdb
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\ORM.pdb
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\QualityControl_Client.pdb
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\EntityFramework.xml
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\EntityFramework.SqlServer.xml
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\AutoMapper.xml
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\ServerWcfService.pdb
+E:\Projects\VisualStudioProjects\20.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\bin\Debug\UIL.pdb
+E:\Projects\VisualStudioProjects\28.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\obj\Debug\Orm-Dal-Bll-TestConsole.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\28.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\obj\Debug\Orm-Dal-Bll-TestConsole.exe
+E:\Projects\VisualStudioProjects\28.08.16 QC\QualityControl\Orm-Dal-Bll-TestConsole\obj\Debug\Orm-Dal-Bll-TestConsole.pdb

@@ -1,0 +1,11 @@
+E:\Projects\VisualStudioProjects\QualityControl\QualityControl_Server\bin\Debug\QualityControl_Server.exe.config
+E:\Projects\VisualStudioProjects\QualityControl\QualityControl_Server\obj\Debug\QualityControl_Server.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\QualityControl\QualityControl_Server\obj\Debug\QualityControl_Server.Properties.Resources.resources
+E:\Projects\VisualStudioProjects\QualityControl\QualityControl_Server\obj\Debug\QualityControl_Server.csproj.GenerateResource.Cache
+E:\Projects\VisualStudioProjects\QualityControl\QualityControl_Server\bin\Debug\Data\ServiceDB.mdf
+E:\Projects\VisualStudioProjects\QualityControl\QualityControl_Server\bin\Debug\Data\ServiceDB_log.ldf
+E:\Projects\VisualStudioProjects\QualityControl\QualityControl_Server\bin\Debug\QualityControl_Server.exe
+E:\Projects\VisualStudioProjects\QualityControl\QualityControl_Server\bin\Debug\QualityControl_Server.pdb
+E:\Projects\VisualStudioProjects\QualityControl\QualityControl_Server\obj\Debug\QualityControl_Server.exe
+E:\Projects\VisualStudioProjects\QualityControl\QualityControl_Server\obj\Debug\QualityControl_Server.pdb
+E:\Projects\VisualStudioProjects\QualityControl\QualityControl_Server\obj\Debug\QualityControl.MainForm.resources

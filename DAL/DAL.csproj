@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C76BBD2D-6C3E-4E00-94EF-AA4B8DD57F02}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DAL</RootNamespace>
+    <AssemblyName>DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entities\DalControlMethodDocumentationLib.cs" />
+    <Compile Include="Entities\DalEmployeeLib.cs" />
+    <Compile Include="Entities\DalEquipmentLib.cs" />
+    <Compile Include="Entities\DalJournal.cs" />
+    <Compile Include="Entities\DalCertificate.cs" />
+    <Compile Include="Entities\DalCertificateLib.cs" />
+    <Compile Include="Entities\DalComponent.cs" />
+    <Compile Include="Entities\DalComponentLib.cs" />
+    <Compile Include="Entities\DalControl.cs" />
+    <Compile Include="Entities\DalControlMethodDocumentation.cs" />
+    <Compile Include="Entities\DalControlMethodsLib.cs" />
+    <Compile Include="Entities\DalControlName.cs" />
+    <Compile Include="Entities\DalControlNameLib.cs" />
+    <Compile Include="Entities\DalCustomer.cs" />
+    <Compile Include="Entities\DalEmployee.cs" />
+    <Compile Include="Entities\DalEquipment.cs" />
+    <Compile Include="Entities\DalImage.cs" />
+    <Compile Include="Entities\DalImageLib.cs" />
+    <Compile Include="Entities\DalIndustrialObject.cs" />
+    <Compile Include="Entities\DalMaterial.cs" />
+    <Compile Include="Entities\DalRequirementDocumentation.cs" />
+    <Compile Include="Entities\DalResult.cs" />
+    <Compile Include="Entities\DalResultLib.cs" />
+    <Compile Include="Entities\DalRole.cs" />
+    <Compile Include="Entities\DalSelectedCertificate.cs" />
+    <Compile Include="Entities\DalSelectedComponent.cs" />
+    <Compile Include="Entities\DalSelectedControlMethodDocumentation.cs" />
+    <Compile Include="Entities\DalSelectedControlName.cs" />
+    <Compile Include="Entities\DalSelectedEmployee.cs" />
+    <Compile Include="Entities\DalSelectedEquipment.cs" />
+    <Compile Include="Entities\DalSelectedRequirementDocumentation.cs" />
+    <Compile Include="Entities\DalTemplate.cs" />
+    <Compile Include="Entities\DalUser.cs" />
+    <Compile Include="Entities\DalWeldJoint.cs" />
+    <Compile Include="Entities\Interface\IDalEntity.cs" />
+    <Compile Include="Entities\DalRequirementDocumentationLib.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\CertificateLibRepository.cs" />
+    <Compile Include="Repositories\CertificateRepository.cs" />
+    <Compile Include="Repositories\ComponentLibRepository.cs" />
+    <Compile Include="Repositories\ComponentRepository.cs" />
+    <Compile Include="Repositories\ControlMethodDocumentationLibRepository.cs" />
+    <Compile Include="Repositories\ControlMethodDocumentationRepository.cs" />
+    <Compile Include="Repositories\ControlMethodsLibRepository.cs" />
+    <Compile Include="Repositories\ControlNameLibRepository.cs" />
+    <Compile Include="Repositories\ControlNameRepository.cs" />
+    <Compile Include="Repositories\ControlRepository.cs" />
+    <Compile Include="Repositories\CustomerRepository.cs" />
+    <Compile Include="Repositories\EmployeeLibRepository.cs" />
+    <Compile Include="Repositories\EmployeeRepository.cs" />
+    <Compile Include="Repositories\EquipmentLibRepository.cs" />
+    <Compile Include="Repositories\EquipmentRepository.cs" />
+    <Compile Include="Repositories\ImageLibRepository.cs" />
+    <Compile Include="Repositories\ImageRepository.cs" />
+    <Compile Include="Repositories\IndustrialObjectRepository.cs" />
+    <Compile Include="Repositories\Interface\ICertificateLibRepository.cs" />
+    <Compile Include="Repositories\Interface\ICertificateRepository.cs" />
+    <Compile Include="Repositories\Interface\IComponentLibRepository.cs" />
+    <Compile Include="Repositories\Interface\IComponentRepository.cs" />
+    <Compile Include="Repositories\Interface\IControlMethodDocumentationLibRepository.cs" />
+    <Compile Include="Repositories\Interface\IControlMethodDocumentationRepository.cs" />
+    <Compile Include="Repositories\Interface\IControlMethodsLibRepository.cs" />
+    <Compile Include="Repositories\Interface\IControlNameLibRepository.cs" />
+    <Compile Include="Repositories\Interface\IControlNameRepository.cs" />
+    <Compile Include="Repositories\Interface\IControlRepository.cs" />
+    <Compile Include="Repositories\Interface\ICustomerRepository.cs" />
+    <Compile Include="Repositories\Interface\IEmployeeLibRepository.cs" />
+    <Compile Include="Repositories\Interface\IEmployeeRepository.cs" />
+    <Compile Include="Repositories\Interface\IEquipmentLibRepository.cs" />
+    <Compile Include="Repositories\Interface\IEquipmentRepository.cs" />
+    <Compile Include="Repositories\Interface\IImageLibRepository.cs" />
+    <Compile Include="Repositories\Interface\IImageRepository.cs" />
+    <Compile Include="Repositories\Interface\IIndustrialObjectRepository.cs" />
+    <Compile Include="Repositories\Interface\IJournalRepository.cs" />
+    <Compile Include="Repositories\Interface\IMaterialRepository.cs" />
+    <Compile Include="Repositories\Interface\IRepository.cs" />
+    <Compile Include="Repositories\Interface\IRequirementDocumentationLibRepository.cs" />
+    <Compile Include="Repositories\Interface\IRequirementDocumentationRepository.cs" />
+    <Compile Include="Repositories\Interface\IResultLibRepository.cs" />
+    <Compile Include="Repositories\Interface\IResultRepository.cs" />
+    <Compile Include="Repositories\Interface\IRoleRepository.cs" />
+    <Compile Include="Repositories\Interface\ISelectedCertificateRepository.cs" />
+    <Compile Include="Repositories\Interface\ISelectedComponentRepository.cs" />
+    <Compile Include="Repositories\Interface\ISelectedControlMethodDocumentationRepository.cs" />
+    <Compile Include="Repositories\Interface\ISelectedControlNameRepository.cs" />
+    <Compile Include="Repositories\Interface\ISelectedEmployeeRepository.cs" />
+    <Compile Include="Repositories\Interface\ISelectedEquipmentRepository.cs" />
+    <Compile Include="Repositories\Interface\ISelectedRequirementDocumentationRepository.cs" />
+    <Compile Include="Repositories\Interface\ITemplateRepository.cs" />
+    <Compile Include="Repositories\Interface\IUnitOfWork.cs" />
+    <Compile Include="Repositories\Interface\IUserRepository.cs" />
+    <Compile Include="Repositories\Interface\IWeldJointRepository.cs" />
+    <Compile Include="Repositories\JournalRepository.cs" />
+    <Compile Include="Repositories\MaterialRepository.cs" />
+    <Compile Include="Repositories\Repository.cs" />
+    <Compile Include="Repositories\RequirementDocumentationLibRepository.cs" />
+    <Compile Include="Repositories\RequirementDocumentationRepository.cs" />
+    <Compile Include="Repositories\ResultLibRepository.cs" />
+    <Compile Include="Repositories\ResultRepository.cs" />
+    <Compile Include="Repositories\RoleRepository.cs" />
+    <Compile Include="Repositories\SelectedCertificateRepository.cs" />
+    <Compile Include="Repositories\SelectedComponentRepository.cs" />
+    <Compile Include="Repositories\SelectedControlMethodDocumentationRepository.cs" />
+    <Compile Include="Repositories\SelectedControlNameRepository.cs" />
+    <Compile Include="Repositories\SelectedEmployeeRepository.cs" />
+    <Compile Include="Repositories\SelectedEquipmentRepository.cs" />
+    <Compile Include="Repositories\SelectedRequirementDocumentationRepository.cs" />
+    <Compile Include="Repositories\TemplateRepository.cs" />
+    <Compile Include="Repositories\UnitOfWork.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Repositories\WeldJointRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ORM\ORM.csproj">
+      <Project>{a2f70513-65fe-4c6d-9628-dae4dcefe49c}</Project>
+      <Name>ORM</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
