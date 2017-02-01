@@ -34,7 +34,7 @@ namespace QualityControl_Client
             InitializeComponent();
         }
 
-        public AddJournalForm(AddRowToDataGrid AddRowToDataGridDelegate)
+        public AddJournalForm(AddRowToDataGrid AddRowToDataGridDelegate, UilEmployee user)
         {
             InitializeComponent();
             dateTimePicker1.Focus();
@@ -67,10 +67,13 @@ namespace QualityControl_Client
                     EmployeeLib = new UilEmployeeLib()
                 };
                 control.ControlName = controlName;
+                
                 Journal.ControlMethodsLib.Control.Add(control);
 
                 var tabForm = new ControlMethodTabForm(controlName.Name);
+                tabForm.EnableValidateCheckBox();
                 ControlMethodTabForms.Add(tabForm);
+
                 tabControl1.TabPages.Add(new ControlMethodTab(tabForm, controlName));
                 ControlNames.Add(controlName);
             }
@@ -79,6 +82,7 @@ namespace QualityControl_Client
             {
                 var control = Journal.ControlMethodsLib.Control[i];
                 ControlMethodTabForms[i].SetCurrentControl(control, Journal);
+                ControlMethodTabForms[i].AddEmployee(user);
             }
 
             IndustrialObjects = new List<UilIndustrialObject>();
@@ -249,6 +253,10 @@ namespace QualityControl_Client
             if (Journal.Component == null)
             {
                 unfilledInfo += "\n Объект контроля";
+            }                       
+            if (Journal.Material == null)
+            {
+                unfilledInfo += "\n Материал";
             }
             if (Journal.Size == "")
             {
@@ -287,10 +295,11 @@ namespace QualityControl_Client
 
         private void button4_Click(object sender, EventArgs e)
         {
+            InitializeJournalViaFormControls();
             if (DealWithUnfilledInfo())
             {
                 IJournalRepository repository = ServiceChannelManager.Instance.JournalRepository;
-                InitializeJournalViaFormControls();
+                
                 List<UilControl> temp = Clone(Journal.ControlMethodsLib.Control); //оставляю для следующих добавляемых объектов в этом окне
                 RemoveUncontrolledMethods();
 
@@ -403,7 +412,7 @@ namespace QualityControl_Client
                     ControlMethodTabForms[i].SetLight(currentControl.Light != null ? (float)currentControl.Light : 0);
                     ControlMethodTabForms[i].CopyNewResultFromLib(currentControl.ResultLib);
                     ControlMethodTabForms[i].SetAdditionally(currentControl.Additionally);
-                    ControlMethodTabForms[i].CopyNewEquipmentFromLib(currentControl.EquipmentLib);
+                    //ControlMethodTabForms[i].CopyNewEquipmentFromLib(currentControl.EquipmentLib);
                     ControlMethodTabForms[i].CopyNewImagesFromLib(currentControl.ImageLib);
                     ControlMethodTabForms[i].CopyNewRequirementDocumentationFromLib(currentControl.RequirementDocumentationLib);
                 }

@@ -10,5 +10,6 @@ namespace BLL.Services.Interface
     public interface IResultLibService : IService<BllResultLib>
     {
         new BllResultLib Create(BllResultLib entity);
+        new BllResultLib Update(BllResultLib entity);
     }
 }

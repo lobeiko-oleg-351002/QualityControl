@@ -52,7 +52,7 @@ namespace BLL.Services
             return MapDalToBll(uow.EquipmentLibs.Get(id));
         }
 
-        public override void Update(BllEquipmentLib entity)
+        public new BllEquipmentLib Update(BllEquipmentLib entity)
         {
             Mapper.Initialize(cfg =>
             {
@@ -67,7 +67,9 @@ namespace BLL.Services
                 {
                     var dalEquipment = Mapper.Map<DalSelectedEquipment>(Equipment);
                     dalEquipment.EquipmentLib_id = entity.Id;
-                    uow.SelectedEquipments.Create(dalEquipment);
+                    var ormEq = uow.SelectedEquipments.Create(dalEquipment);
+                    uow.Commit();
+                    Equipment.Id = ormEq.id;
                 }
             }
             var EquipmentsWithLibId = uow.SelectedEquipments.GetEquipmentsByLibId(entity.Id);
@@ -88,6 +90,8 @@ namespace BLL.Services
                 }
             }
             uow.Commit();
+
+            return entity;
         }
 
         private BllEquipmentLib MapDalToBll(DalEquipmentLib dalEntity)

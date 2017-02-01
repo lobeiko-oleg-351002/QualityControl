@@ -60,7 +60,7 @@ namespace BLL.Services
             return retElement;
         }
 
-        public override void Update(BllResultLib entity)
+        public new BllResultLib Update(BllResultLib entity)
         {
             Mapper.Initialize(cfg =>
             {
@@ -107,6 +107,8 @@ namespace BLL.Services
             }
 
             uow.Commit();
+
+            return entity;
         }
     }
 }

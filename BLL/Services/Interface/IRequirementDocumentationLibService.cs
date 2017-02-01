@@ -10,5 +10,6 @@ namespace BLL.Services.Interface
     public interface IRequirementDocumentationLibService : IService<BllRequirementDocumentationLib>
     {
         new BllRequirementDocumentationLib Create(BllRequirementDocumentationLib entity);
+        new BllRequirementDocumentationLib Update(BllRequirementDocumentationLib entity);
     }
 }

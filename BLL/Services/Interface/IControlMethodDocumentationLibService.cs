@@ -10,5 +10,6 @@ namespace BLL.Services.Interface
     public interface IControlMethodDocumentationLibService : IService<BllControlMethodDocumentationLib>
     {
         new BllControlMethodDocumentationLib Create(BllControlMethodDocumentationLib entity);
+        new BllControlMethodDocumentationLib Update(BllControlMethodDocumentationLib entity);
     }
 }

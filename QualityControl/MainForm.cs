@@ -50,6 +50,7 @@ namespace QualityControl
         public MainForm()
         {
             InitializeComponent();
+            
             AppDomain.CurrentDomain.SetData("DataDirectory", System.IO.Directory.GetCurrentDirectory());
             UiUnitOfWork.Instance.Init(new ServiceDB());
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -57,14 +58,6 @@ namespace QualityControl
             tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
             dataGridView1.Columns[1].DefaultCellStyle.Format = "dd.MM.yyyy";
             dataGridView1.Columns[2].DefaultCellStyle.Format = "dd.MM.yyyy";
-            //foreach(ToolStripItem item in menuStrip1.Items)
-            //{
-            //    if (item.Image != null)
-            //    {
-            //        Bitmap bm = (Bitmap)item.Image;
-            //        bm.MakeTransparent(bm.GetPixel(0, 0));
-            //    }
-            //}
             ConnectToServer();
             if (isConnectedToServer)
             {
@@ -79,9 +72,16 @@ namespace QualityControl
             {
                 c.HeaderCell.Style = style;
             }
+            PutScrollBarDown();
+            toolStripTextBox1.Text = "Исполнитель: " + User.Employee.Sirname + " " + User.Employee.Name[0] + "." + User.Employee.Fathername[0] + ".";
 
             //debugForm = new DebugForm();
             //debugForm.Show();
+        }
+
+        private void PutScrollBarDown()
+        {
+            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.Rows.Count - 1;
         }
 
         private void SetGuestPermission()
@@ -290,10 +290,15 @@ namespace QualityControl
             row.Cells[7].Value = journal.Material != null ? journal.Material.Name : null;
             row.Cells[8].Value = journal.WeldJoint != null ? journal.WeldJoint.Name : null;
             row.Cells[9].Value = journal.Welding_type;
+            const int controlsCount = 4;
+            for(int i = 9; i <= 9 + controlsCount; i++)
+            {
+                row.Cells[i].Value = "";
+            }
             foreach (var control in journal.ControlMethodsLib.Control)
             {
                 var control_id = control.ControlName.Id;
-                row.Cells[9 + control_id].Value = "  +";   // 9 a ne 5
+                row.Cells[5 + control_id].Value = "  +";   // 9 a ne 5
             }
 
         }
@@ -693,8 +698,9 @@ namespace QualityControl
 
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AddJournalForm addJournalForm = new AddJournalForm(AddNewJournal);
+            AddJournalForm addJournalForm = new AddJournalForm(AddNewJournal, User.Employee);
             addJournalForm.ShowDialog(this);
+            PutScrollBarDown();
         }
 
         private void редактироватьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -702,7 +708,7 @@ namespace QualityControl
             var rows = dataGridView1.SelectedRows;
             foreach (DataGridViewRow row in rows)
             {
-                ChangeJournalForm changeJournalForm = new ChangeJournalForm(Journals[row.Index]);
+                ChangeJournalForm changeJournalForm = new ChangeJournalForm(Journals[row.Index], User.Employee);
                 changeJournalForm.ShowDialog(this);
                 UpdateRowInDataGrid(changeJournalForm.Journal, row.Index);
             }
@@ -759,9 +765,11 @@ namespace QualityControl
                     }
                 }
                 ExportMethod exportMethod;
+                saveFileDialog1.FileName = chooseControlNameForm.SelectedControlName.Name;
                 if (chooseControlNameForm.isPdfSelected)
                 {
                     saveFileDialog1.Filter = "PDF file (*.pdf)|*.pdf";
+                    
                     exportMethod = ConvertManager.ConvertChosenControlResultsToPdf;
                 }
                 else
@@ -780,7 +788,7 @@ namespace QualityControl
 
         private void экспортPDFToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            saveFileDialog1.FileName = "";
+            saveFileDialog1.FileName = "Журнал";
             saveFileDialog1.Filter = "PDF file (*.pdf)|*.pdf";
             if (DialogResult.OK == saveFileDialog1.ShowDialog())
             {
@@ -790,8 +798,8 @@ namespace QualityControl
 
         private void экспортExcelToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            saveFileDialog1.FileName = "";
             saveFileDialog1.Filter = "Excel files (*.xls)|*.xls";
+            saveFileDialog1.FileName = "Журнал";
             if (DialogResult.OK == saveFileDialog1.ShowDialog())
             {
                 ConvertManager.ConvertDataGridToExcel(dataGridView1, saveFileDialog1.FileName);

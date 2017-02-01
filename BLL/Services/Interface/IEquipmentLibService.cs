@@ -10,5 +10,6 @@ namespace BLL.Services.Interface
     public interface IEquipmentLibService : IService<BllEquipmentLib>
     {
         new BllEquipmentLib Create(BllEquipmentLib entity);
+        new BllEquipmentLib Update(BllEquipmentLib entity);
     }
 }

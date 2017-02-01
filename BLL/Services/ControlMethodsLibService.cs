@@ -56,7 +56,7 @@ namespace BLL.Services
             return retElement;
         }
 
-        public override void Update(BllControlMethodsLib entity)
+        public new BllControlMethodsLib Update(BllControlMethodsLib entity)
         {
             Mapper.Initialize(cfg =>
             {
@@ -73,8 +73,10 @@ namespace BLL.Services
                     currentControl = service.Create(Control);
                     var dal = ControlService.MapBllToDal(currentControl);
                     dal.ControlMethodsLib_id = entity.Id;
-                    uow.Controls.Create(dal);
-
+                    var ormControl = uow.Controls.Create(dal);
+                    uow.Commit();
+                    Control.Id = ormControl.id;
+                    Control.ProtocolNumber = ormControl.protocolNumber;
                 }
                 else
                 {
@@ -82,17 +84,43 @@ namespace BLL.Services
                     dalControl.ControlMethodsLib_id = entity.Id;
 
                     ImageLibService imageLibService = new ImageLibService(uow);
-                    imageLibService.Update(Control.ImageLib);
+                    Control.ImageLib = imageLibService.Update(Control.ImageLib);
                     EquipmentLibService equipmentLibService = new EquipmentLibService(uow);
-                    equipmentLibService.Update(Control.EquipmentLib);
+                    Control.EquipmentLib = equipmentLibService.Update(Control.EquipmentLib);
                     ResultLibService resultLibService = new ResultLibService(uow);
-                    resultLibService.Update(Control.ResultLib);
+                    Control.ResultLib = resultLibService.Update(Control.ResultLib);
+                    RequirementDocumentationLibService reqDocLibService = new RequirementDocumentationLibService(uow);
+                    Control.RequirementDocumentationLib = reqDocLibService.Update(Control.RequirementDocumentationLib);
+                    ControlMethodDocumentationLibService methodDocLibService = new ControlMethodDocumentationLibService(uow);
+                    Control.ControlMethodDocumentationLib = methodDocLibService.Update(Control.ControlMethodDocumentationLib);
+                    EmployeeLibService employeeLibService = new EmployeeLibService(uow);
+                    Control.EmployeeLib = employeeLibService.Update(Control.EmployeeLib);
                     uow.Controls.Update(dalControl);
                 }
                 
             }
-            //var ControlWithLibId = uow.Controls.GetControlsByLibId(entity.Id);
+
+            var ControlsWithLibId = uow.Controls.GetControlsByLibId(entity.Id);
+            foreach (var Control in ControlsWithLibId)
+            {
+                bool isTrashControl = true;
+                foreach (var control in entity.Control)
+                {
+                    if (control.Id == Control.Id)
+                    {
+                        isTrashControl = false;
+                        break;
+                    }
+                }
+                if (isTrashControl == true)
+                {
+                    uow.Controls.Delete(Control);
+                }
+            }
+            
             uow.Commit();
+
+            return entity;
         }
 
         private BllControlMethodsLib MapDalToBll(DalControlMethodsLib dalEntity)

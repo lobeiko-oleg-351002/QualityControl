@@ -55,12 +55,14 @@ namespace BLL.Services
             uow.Commit();
         }
 
-        public override void Update(BllJournal entity)
+        public new BllJournal Update(BllJournal entity)
         {
             ControlMethodsLibService controlMethodsLibService = new ControlMethodsLibService(uow);
-            controlMethodsLibService.Update(entity.ControlMethodsLib);
+            entity.ControlMethodsLib = controlMethodsLibService.Update(entity.ControlMethodsLib);
             uow.Journals.Update(MapBllToDal(entity));
             uow.Commit();
+
+            return entity;
         }
 
         public override BllJournal Get(int id)

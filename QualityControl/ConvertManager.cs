@@ -123,7 +123,7 @@ namespace QualityControl_Client
             return cell;
         }
 
-        public static void ConvertControlResultToExcel(UilControl control, UilJournal journal, string folderPath)
+        public static void ConvertControlResultToExcel(UilControl control, UilJournal journal)
         {
             Microsoft.Office.Interop.Excel.Application ExcelApp = new Microsoft.Office.Interop.Excel.Application();
             ExcelApp = InitResultExcelTable(ExcelApp);
@@ -135,12 +135,12 @@ namespace QualityControl_Client
                 ExcelApp = AddRowToExcelTable(ExcelApp, results[i], journal, i);
             }
 
-            ExportExcelTable(ExcelApp, folderPath);
+            ExportExcelTable(ExcelApp, control.ControlName.Name);
         }
 
-        private static void ExportExcelTable(Microsoft.Office.Interop.Excel.Application ExcelApp, string folderPath)
+        private static void ExportExcelTable(Microsoft.Office.Interop.Excel.Application ExcelApp, string fileName)
         {
-            ExcelApp.ActiveWorkbook.SaveCopyAs(folderPath);
+            ExcelApp.ActiveWorkbook.SaveCopyAs(fileName);
             ExcelApp.ActiveWorkbook.Saved = true;
             ExcelApp.Quit();
         }
@@ -165,13 +165,13 @@ namespace QualityControl_Client
         private static Microsoft.Office.Interop.Excel.Application AddRowToExcelTable(Microsoft.Office.Interop.Excel.Application ExcelApp, UilResult result, UilJournal journal, int row)
         {
             ExcelApp.Cells[row + 2, 1] = result.Number.ToString();
-            ExcelApp.Cells[row + 2, 2] = ConvertDateTimeToString((DateTime)journal.Control_date);
+            ExcelApp.Cells[row + 2, 2] = journal.Control_date != null ? ConvertDateTimeToString((DateTime)journal.Control_date) : "<не указано>";
             ExcelApp.Cells[row + 2, 3] = result.Welder;
             ExcelApp.Cells[row + 2, 4] = journal.Component != null ? journal.Component.Pressmark : "<не указано>";
             ExcelApp.Cells[row + 2, 5] = journal.Request_number.ToString().ToString();
-            ExcelApp.Cells[row + 2, 6] = result.Mark.ToString();
+            ExcelApp.Cells[row + 2, 6] = result.Mark != null ? result.Mark.ToString() : "<не указано>";
             ExcelApp.Cells[row + 2, 7] = result.Defect_description;
-            ExcelApp.Cells[row + 2, 8] = result.Quality.ToString();
+            ExcelApp.Cells[row + 2, 8] = result.Quality != null ? result.Quality.ToString() : "<не указано>";
             ExcelApp.Cells[row + 2, 9] = "";
 
             return ExcelApp;

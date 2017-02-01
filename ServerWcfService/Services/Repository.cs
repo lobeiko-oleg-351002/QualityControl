@@ -55,11 +55,11 @@ namespace ServerWcfService.Services
 
         public virtual T Get(int id)
         {
+            var retElement = service.Get(id);
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<U, T>();
             });
-            var retElement = service.Get(id);
             return Mapper.Map<T>(retElement);
         }
 

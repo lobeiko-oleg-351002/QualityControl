@@ -10,5 +10,6 @@ namespace BLL.Services.Interface
     public interface IImageLibService : IService<BllImageLib>
     {
         new BllImageLib Create(BllImageLib entity);
+        new BllImageLib Update(BllImageLib entity);
     }
 }

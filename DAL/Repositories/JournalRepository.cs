@@ -26,5 +26,19 @@ namespace DAL.Repositories
             var res = context.Set<Journal>().Add(Mapper.Map<Journal>(entity));
             return res;
         }
+
+        public new Journal Update(DalJournal entity)
+        {
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<DalJournal, Journal>();
+            });
+            var res = context.Set<Journal>().Find(entity.Id);
+            if (res != null)
+            {
+                context.Entry(res).CurrentValues.SetValues(Mapper.Map<Journal>(entity));
+            }
+            return res;
+        }
     }
 }

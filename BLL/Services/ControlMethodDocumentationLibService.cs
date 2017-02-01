@@ -52,7 +52,7 @@ namespace BLL.Services
             return MapDalToBll(uow.ControlMethodDocumentationLibs.Get(id));
         }
 
-        public override void Update(BllControlMethodDocumentationLib entity)
+        public new BllControlMethodDocumentationLib Update(BllControlMethodDocumentationLib entity)
         {
             Mapper.Initialize(cfg =>
             {
@@ -67,7 +67,9 @@ namespace BLL.Services
                 {
                     var dalControlMethodDocumentation = Mapper.Map<DalSelectedControlMethodDocumentation>(ControlMethodDocumentation);
                     dalControlMethodDocumentation.ControlMethodDocumentationLib_id = entity.Id;
-                    uow.SelectedControlMethodDocumentations.Create(dalControlMethodDocumentation);
+                    var ormDoc = uow.SelectedControlMethodDocumentations.Create(dalControlMethodDocumentation);
+                    uow.Commit();
+                    ControlMethodDocumentation.Id = ormDoc.id;
                 }
             }
             var ControlMethodDocumentationsWithLibId = uow.SelectedControlMethodDocumentations.GetControlMethodDocumentationsByLibId(entity.Id);
@@ -88,6 +90,8 @@ namespace BLL.Services
                 }
             }
             uow.Commit();
+
+            return entity;
         }
 
         private BllControlMethodDocumentationLib MapDalToBll(DalControlMethodDocumentationLib dalEntity)

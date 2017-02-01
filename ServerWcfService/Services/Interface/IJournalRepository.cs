@@ -12,5 +12,6 @@ namespace ServerWcfService.Services.Interface
     public interface IJournalRepository : IRepository<UilJournal>
     {
         new UilJournal Create(UilJournal entity);
+        new UilJournal Update(UilJournal entity);
     }
 }

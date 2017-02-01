@@ -52,7 +52,7 @@ namespace BLL.Services
             return MapDalToBll(uow.EmployeeLibs.Get(id));
         }
 
-        public override void Update(BllEmployeeLib entity)
+        public new BllEmployeeLib Update(BllEmployeeLib entity)
         {
             Mapper.Initialize(cfg =>
             {
@@ -67,7 +67,9 @@ namespace BLL.Services
                 {
                     var dalEmployee = Mapper.Map<DalSelectedEmployee>(Employee);
                     dalEmployee.EmployeeLib_id = entity.Id;
-                    uow.SelectedEmployees.Create(dalEmployee);
+                    var ormEmployee = uow.SelectedEmployees.Create(dalEmployee);
+                    uow.Commit();
+                    Employee.Id = ormEmployee.id;
                 }
             }
             var EmployeesWithLibId = uow.SelectedEmployees.GetEmployeesByLibId(entity.Id);
@@ -88,6 +90,8 @@ namespace BLL.Services
                 }
             }
             uow.Commit();
+
+            return entity;
         }
 
         private BllEmployeeLib MapDalToBll(DalEmployeeLib dalEntity)

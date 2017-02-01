@@ -51,7 +51,7 @@ namespace BLL.Services
             return MapDalToBll(uow.RequirementDocumentationLibs.Get(id));
         }
 
-        public override void Update(BllRequirementDocumentationLib entity)
+        public new BllRequirementDocumentationLib Update(BllRequirementDocumentationLib entity)
         {
             Mapper.Initialize(cfg =>
             {
@@ -66,7 +66,9 @@ namespace BLL.Services
                 {
                     var dalRequirementDocumentation = Mapper.Map<DalSelectedRequirementDocumentation>(RequirementDocumentation);
                     dalRequirementDocumentation.RequirementDocumentationLib_id = entity.Id;
-                    uow.SelectedRequirementDocumentations.Create(dalRequirementDocumentation);
+                    var ormDoc =  uow.SelectedRequirementDocumentations.Create(dalRequirementDocumentation);
+                    uow.Commit();
+                    RequirementDocumentation.Id = ormDoc.id;
                 }
             }
             var RequirementDocumentationsWithLibId = uow.SelectedRequirementDocumentations.GetRequirementDocumentationsByLibId(entity.Id);
@@ -87,6 +89,8 @@ namespace BLL.Services
                 }
             }
             uow.Commit();
+
+            return entity;
         }
 
         private BllRequirementDocumentationLib MapDalToBll(DalRequirementDocumentationLib dalEntity)

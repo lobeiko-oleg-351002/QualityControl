@@ -33,7 +33,7 @@ namespace QualityControl_Client
             const string obj = "Сертификат";
             const string messageFinal = "Истёк срок действия сертификата";
             const string messagePrevent = "Срок действия сертификата истекает";
-            const int preventDaysCount = 7;
+            const int preventDaysCount = 31;
             ICertificateRepository certificateRepository = ServiceChannelManager.Instance.CertificateRepository;
             var certificates = certificateRepository.GetAll();
             foreach (var item in certificates)
@@ -56,7 +56,7 @@ namespace QualityControl_Client
             const string obj = "Заказчик";
             const string messageFinal = "Истёк срок действия договора";
             const string messagePrevent = "Срок действия договора истекает";
-            const int preventDaysCount = 7;
+            const int preventDaysCount = 31;
             ICustomerRepository CustomerRepository = ServiceChannelManager.Instance.CustomerRepository;
             var Customers = CustomerRepository.GetAll();
             foreach (var item in Customers)
@@ -79,7 +79,7 @@ namespace QualityControl_Client
             const string messageFinal = "Необходимо провести техническую поверку";
             const string messagePrevent = "Срок действия технической поверки истекает";
             IEquipmentRepository EquipmentRepository = ServiceChannelManager.Instance.EquipmentRepository;
-            const int preventDaysCount = 7;
+            const int preventDaysCount = 31;
             var Equipments = EquipmentRepository.GetAll();
             foreach (var item in Equipments)
             {

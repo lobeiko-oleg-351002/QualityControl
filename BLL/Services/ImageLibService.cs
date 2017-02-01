@@ -59,7 +59,7 @@ namespace BLL.Services
             return retElement;
         }
 
-        public override void Update(BllImageLib entity)
+        public new BllImageLib Update(BllImageLib entity)
         {
             Mapper.Initialize(cfg =>
             {
@@ -75,11 +75,34 @@ namespace BLL.Services
                 {
                     var dalImage = Mapper.Map<DalImage>(image);
                     dalImage.Image_lib_id = entity.Id;
-                    uow.Images.Create(dalImage);
+                    var ormImage = uow.Images.Create(dalImage);
+                    uow.Commit();
+                    image.Id = ormImage.id;
                 }
                
             }
+            //uow.Commit();
+
+            var ImagesWithLibId = uow.Images.GetImagesByLibId(entity.Id);
+            foreach (var Image in ImagesWithLibId)
+            {
+                bool isTrashImage = true;
+                foreach (var image in entity.Image)
+                {
+                    if (Image.Id == Image.Id)
+                    {
+                        isTrashImage = false;
+                        break;
+                    }
+                }
+                if (isTrashImage == true)
+                {
+                    uow.Images.Delete(Image);
+                }
+            }
             uow.Commit();
+
+            return entity;
         }
     }
 }

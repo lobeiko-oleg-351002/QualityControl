@@ -28,7 +28,7 @@ namespace QualityControl_Client
             InitializeComponent();
         }
 
-        public ChangeJournalForm(UilJournal oldJournal)
+        public ChangeJournalForm(UilJournal oldJournal, UilEmployee user)
         {
             InitializeComponent();
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -70,6 +70,12 @@ namespace QualityControl_Client
 
 
                 var tabForm = new ControlMethodTabForm(control, oldJournal);
+                if (control.Is_сontrolled != null)
+                {
+                    tabForm.EnableFormControls();
+                }
+                tabForm.EnableValidateCheckBox();
+                //tabForm.AddEmployee(user);
                 ControlMethodTabForms.Add(tabForm);
                 tabForm.FillComponents();
                 tabControl1.TabPages.Add(new ControlMethodTab(tabForm, controlName));
@@ -157,16 +163,11 @@ namespace QualityControl_Client
             List<UilControl> controlsForRemoving = new List<UilControl>();
             for (int i = 0; i < controls.Count; i++)
             {
-                foreach (var tab in ControlMethodTabForms)
+                if (controls[i].Is_сontrolled == null)
                 {
-                    if (tab.currentControl.ControlName.Id == controls[i].ControlName.Id)
-                    {
-                        if (tab.isControlled == false)
-                        {
-                            controlsForRemoving.Add(controls[i]);
-                        }
-                    }
+                    controlsForRemoving.Add(controls[i]);
                 }
+                
             }
 
             foreach(var control in controlsForRemoving)
@@ -192,8 +193,8 @@ namespace QualityControl_Client
             //List<UilControl> temp = Clone(Journal.ControlMethodsLib.Control);
             RemoveUncontrolledMethods();
 
-            repository.Update(Journal);
-            //Journal.ControlMethodsLib.Control = temp;
+            Journal = repository.Update(Journal);
+
             isClosed = false;
             MessageBox.Show("Информация обновлена", "Оповещение");
             Close();
@@ -203,6 +204,8 @@ namespace QualityControl_Client
         private void button5_Click(object sender, EventArgs e)
         {
             isClosed = true;
+            IJournalRepository repository = ServiceChannelManager.Instance.JournalRepository;
+            Journal = repository.Get(Journal.Id);
             Close();
         }
 
@@ -280,7 +283,7 @@ namespace QualityControl_Client
                     ControlMethodTabForms[i].SetLight(currentControl.Light != null ? (float)currentControl.Light : 0);
                     ControlMethodTabForms[i].CopyNewResultFromLib(currentControl.ResultLib);
                     ControlMethodTabForms[i].SetAdditionally(currentControl.Additionally);
-                    ControlMethodTabForms[i].CopyNewEquipmentFromLib(currentControl.EquipmentLib);
+                    //ControlMethodTabForms[i].CopyNewEquipmentFromLib(currentControl.EquipmentLib);
                     ControlMethodTabForms[i].CopyNewImagesFromLib(currentControl.ImageLib);
                     ControlMethodTabForms[i].CopyNewRequirementDocumentationFromLib(currentControl.RequirementDocumentationLib);
                 }

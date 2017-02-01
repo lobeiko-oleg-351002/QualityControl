@@ -27,9 +27,9 @@ namespace ServerWcfService.Services
             return MapBllToUil(JournalService.Create(MapUilToBll(entity)));
         }
 
-        public override void Update(UilJournal entity)
+        public new UilJournal Update(UilJournal entity)
         {
-            JournalService.Update(MapUilToBll(entity));
+            return MapBllToUil(JournalService.Update(MapUilToBll(entity)));
         }
 
         public override void Delete(UilJournal entity)
@@ -51,6 +51,12 @@ namespace ServerWcfService.Services
 
             }
             return retElements;
+        }
+
+        public override UilJournal Get(int id)
+        {
+            var bllEntity = JournalService.Get(id);
+            return MapBllToUil(bllEntity);
         }
 
         public UilJournal MapBllToUil(BllJournal bllEntity)

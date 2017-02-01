@@ -25,6 +25,8 @@ namespace QualityControl_Client.Forms.RequirementDocumentationDirectory
             InitializeComponent();
             this.oldRequirementDocumentation = oldRequirementDocumentation;
             textBox1.Text = (string)currentRow.Cells[0].Value;
+            textBox2.Text = (string)currentRow.Cells[1].Value;
+            textBox3.Text = (string)currentRow.Cells[2].Value;
 
         }
 

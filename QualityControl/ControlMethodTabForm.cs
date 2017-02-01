@@ -23,7 +23,7 @@ namespace QualityControl_Client
         public Panel panel;
         public UilControl currentControl { get; private set; }
         private UilJournal currentJournal;
-        public bool isControlled = false;
+        public bool isControlled = false; // проведено ли
         public bool? isRejected = null;
         public ControlMethodTabForm()
         {
@@ -36,6 +36,7 @@ namespace QualityControl_Client
             InitializeComponent();
             panel = panel1;
             label1.Text = controlName;
+            DisableFormControls();
             
         }
 
@@ -44,6 +45,7 @@ namespace QualityControl_Client
             InitializeComponent();
             panel = panel1;
             SetCurrentControl(control, journal);
+            DisableFormControls();
         }
 
 
@@ -51,18 +53,35 @@ namespace QualityControl_Client
         {
             currentControl = control;
             currentJournal = journal;
+            label1.Text = control.ControlName.Name;
             label11.Text = control.ProtocolNumber.ToString();
             imagesForPicturebox.Clear();
-
+            if (control.Is_сontrolled != null)
+            {
+                isControlled = true;
+            }
+            else
+            {
+                isControlled = false;
+            }
             SetEquipment(control.EquipmentLib);
             SetImages(control.ImageLib);
             SetRequirementDocumentation(control.RequirementDocumentationLib);
 
         }
 
+        public void EnableValidateCheckBox()
+        {
+            checkBox1.Enabled = true;
+        }
+
         public void FillComponents()
         {
-            if(currentControl.Is_сontrolled != null) SetControlCheck(currentControl.Is_сontrolled.Value);
+            if (currentControl.Is_сontrolled != null)
+            {
+                checkBox1.Checked = true;
+                SetControlCheck(currentControl.Is_сontrolled.Value);
+            }
             if (currentControl.ControlMethodDocumentationLib != null)
             {
                 SetControlMethodDocumentation(currentControl.ControlMethodDocumentationLib);
@@ -86,11 +105,12 @@ namespace QualityControl_Client
 
         public void SetControlCheck(bool isControlled)
         {
+            
             if (isControlled)
             {
                 currentControl.Is_сontrolled = true;
                 radioButton2.Checked = true;
-                isRejected = false;
+                isRejected = false;                
             }
             else
             {
@@ -228,6 +248,12 @@ namespace QualityControl_Client
             }
         }
 
+        public void AddEmployee(UilEmployee employee)
+        {
+            currentControl.EmployeeLib.SelectedEmployee.Add(new UilSelectedEmployee { Employee = employee });
+            listBox4.Items.Add(employee.Sirname + " " + employee.Name + " " + employee.Fathername);
+        }
+
         public void SetEmployee(UilEmployeeLib employeeLib)
         {
             currentControl.EmployeeLib = employeeLib;
@@ -362,7 +388,6 @@ namespace QualityControl_Client
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton radioButton = sender as RadioButton;
-            isControlled = true;
             if (currentControl != null)
             {
                 if (radioButton.Checked)
@@ -375,7 +400,6 @@ namespace QualityControl_Client
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            isControlled = true;
             RadioButton radioButton = sender as RadioButton;
             if (currentControl != null)
             {
@@ -417,6 +441,7 @@ namespace QualityControl_Client
 
         public void ClearData()
         {
+            checkBox1.Checked = false;
             radioButton1.Checked = false;
             radioButton2.Checked = false;
             imagesForPicturebox.Clear();
@@ -510,7 +535,7 @@ namespace QualityControl_Client
             saveFileDialog1.Filter = "Excel files (*.xls)|*.xls";
             if (DialogResult.OK == saveFileDialog1.ShowDialog())
             {
-                ConvertManager.ConvertControlResultToExcel(currentControl, currentJournal, saveFileDialog1.FileName);
+                ConvertManager.ConvertControlResultToExcel(currentControl, currentJournal);
             }
         }
 
@@ -533,10 +558,47 @@ namespace QualityControl_Client
             label11.Text = "";
         }
 
+        public void EnableFormControls()
+        {
+            button1.Visible = true;
+            button2.Visible = true;
+            button3.Visible = true;
+            button4.Visible = true;
+            button5.Visible = true;
+            button6.Visible = true;
+            button7.Visible = true;
+            button9.Visible = true;
+            button11.Visible = true;
+            button13.Visible = true;
+            radioButton1.Enabled = true;
+            radioButton2.Enabled = true;
+            textBox3.ReadOnly = false;
+            textBox4.ReadOnly = false;
+            label11.Text = "";
+        }
+
         public void ClearProtocolNumber()
         {
             label11.Text = "";
         }
 
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked)
+            {
+                EnableFormControls();
+                isControlled = true;
+                radioButton2.Checked = true;
+                currentControl.Is_сontrolled = true;
+            }
+            else
+            {
+                DisableFormControls();
+                isControlled = false;
+                currentControl.Is_сontrolled = null;
+                radioButton1.Checked = false;
+                radioButton1.Checked = false;
+            }
+        }
     }
 }

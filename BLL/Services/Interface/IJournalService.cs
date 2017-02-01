@@ -10,5 +10,6 @@ namespace BLL.Services.Interface
     public interface IJournalService : IService<BllJournal>
     {
         new BllJournal Create(BllJournal entity);
+        new BllJournal Update(BllJournal entity);
     }
 }

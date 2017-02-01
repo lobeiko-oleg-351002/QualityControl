@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.listBox4 = new System.Windows.Forms.ListBox();
             this.button13 = new System.Windows.Forms.Button();
@@ -77,6 +78,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel1.Controls.Add(this.checkBox1);
             this.panel1.Controls.Add(this.groupBox3);
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Controls.Add(this.label11);
@@ -87,6 +89,18 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(332, 671);
             this.panel1.TabIndex = 0;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Enabled = false;
+            this.checkBox1.Location = new System.Drawing.Point(13, 11);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(82, 17);
+            this.checkBox1.TabIndex = 38;
+            this.checkBox1.Text = "Проведено";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.Click += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // groupBox3
             // 
@@ -185,7 +199,7 @@
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBox2.Location = new System.Drawing.Point(13, 73);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(306, 377);
+            this.groupBox2.Size = new System.Drawing.Size(306, 411);
             this.groupBox2.TabIndex = 33;
             this.groupBox2.TabStop = false;
             // 
@@ -217,13 +231,13 @@
             this.listBox1.ItemHeight = 15;
             this.listBox1.Location = new System.Drawing.Point(10, 231);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(210, 34);
+            this.listBox1.Size = new System.Drawing.Size(210, 64);
             this.listBox1.TabIndex = 29;
             this.listBox1.TabStop = false;
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(206, 344);
+            this.button7.Location = new System.Drawing.Point(205, 375);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(91, 25);
             this.button7.TabIndex = 28;
@@ -234,7 +248,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(232, 284);
+            this.button8.Location = new System.Drawing.Point(231, 315);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(24, 23);
             this.button8.TabIndex = 27;
@@ -245,7 +259,7 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(205, 284);
+            this.button10.Location = new System.Drawing.Point(204, 315);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(24, 23);
             this.button10.TabIndex = 26;
@@ -257,7 +271,7 @@
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.pictureBox1.Location = new System.Drawing.Point(11, 286);
+            this.pictureBox1.Location = new System.Drawing.Point(10, 317);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(188, 85);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -266,7 +280,7 @@
             // 
             // button11
             // 
-            this.button11.Location = new System.Drawing.Point(205, 313);
+            this.button11.Location = new System.Drawing.Point(204, 344);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(92, 25);
             this.button11.TabIndex = 22;
@@ -298,7 +312,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(7, 268);
+            this.label9.Location = new System.Drawing.Point(6, 299);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(79, 15);
             this.label9.TabIndex = 18;
@@ -438,11 +452,11 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Location = new System.Drawing.Point(101, 10);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(224, 15);
+            this.label1.Size = new System.Drawing.Size(32, 15);
             this.label1.TabIndex = 31;
-            this.label1.Text = "Визуально-измерительный контроль";
+            this.label1.Text = "ВИК";
             // 
             // groupBox1
             // 
@@ -467,7 +481,6 @@
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(65, 20);
             this.radioButton2.TabIndex = 16;
-            this.radioButton2.TabStop = true;
             this.radioButton2.Text = "Годен";
             this.radioButton2.UseVisualStyleBackColor = true;
             this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
@@ -551,5 +564,6 @@
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

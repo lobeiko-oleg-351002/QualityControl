@@ -53,7 +53,14 @@ namespace QualityControl_Client.Forms.UserDirectory
             var rows = dataGridView1.SelectedRows;
             foreach (DataGridViewRow row in rows)
             {
-                repository.Delete(Users[row.Index]);
+                if (Users[row.Index].Role.Name != "Администратор")
+                {
+                    repository.Delete(Users[row.Index]);
+                }
+                else
+                {
+                    MessageBox.Show("В системе должен быть адинистратор", "Оповещение");
+                }
             }
             RefreshData();
         }
