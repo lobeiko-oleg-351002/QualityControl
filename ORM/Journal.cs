@@ -44,6 +44,12 @@ namespace ORM
 
         public int? controlMethodsLib_id { get; set; }
 
+        public int? user_owner_id { get; set; }
+
+        public string user_modifier_login{ get; set; }
+
+        public DateTime? modified_date { get; set; }
+
         public virtual Component Component { get; set; }
 
         public virtual ControlMethodsLib ControlMethodsLib { get; set; }
@@ -53,5 +59,9 @@ namespace ORM
         public virtual IndustrialObject IndustrialObject { get; set; }
 
         public virtual WeldJoint WeldJoint { get; set; }
+
+        public virtual User UserOwner { get; set; }
+
+
     }
 }

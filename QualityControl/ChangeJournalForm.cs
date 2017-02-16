@@ -20,6 +20,7 @@ namespace QualityControl_Client
         List<ControlMethodTabForm> ControlMethodTabForms;
         List<UilIndustrialObject> IndustrialObjects;
         List<UilCustomer> Customers;
+        UilUser User;
 
         public UilJournal Journal { get; private set; }
 
@@ -28,13 +29,13 @@ namespace QualityControl_Client
             InitializeComponent();
         }
 
-        public ChangeJournalForm(UilJournal oldJournal, UilEmployee user)
+        public ChangeJournalForm(UilJournal oldJournal, UilUser user)
         {
             InitializeComponent();
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             CenterToScreen();
             Journal = oldJournal;
-
+            User = user;
             IControlNameRepository controlNameRepository = ServiceChannelManager.Instance.ControlNameRepository;
             var controlNames = controlNameRepository.GetAll();
             ControlMethodTabForms = new List<ControlMethodTabForm>();
@@ -192,6 +193,8 @@ namespace QualityControl_Client
             InitializeJournalViaFormControls();
             //List<UilControl> temp = Clone(Journal.ControlMethodsLib.Control);
             RemoveUncontrolledMethods();
+            Journal.Modified_date = DateTime.Now;
+            Journal.User_Modifier_Login = User != null ? User.Login : "";
 
             Journal = repository.Update(Journal);
 

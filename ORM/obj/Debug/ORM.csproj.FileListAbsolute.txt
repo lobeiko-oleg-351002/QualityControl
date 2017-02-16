@@ -27,6 +27,5 @@ E:\Projects\VisualStudioProjects\17.01.17\QualityControl\ORM\bin\Debug\EntityFra
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\ORM\bin\Debug\EntityFramework.SqlServer.dll
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\ORM\bin\Debug\EntityFramework.xml
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\ORM\bin\Debug\EntityFramework.SqlServer.xml
-E:\Projects\VisualStudioProjects\17.01.17\QualityControl\ORM\obj\Debug\ORM.csprojResolveAssemblyReference.cache
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\ORM\obj\Debug\ORM.dll
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\ORM\obj\Debug\ORM.pdb

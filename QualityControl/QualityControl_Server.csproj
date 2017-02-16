@@ -733,7 +733,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DependentUpon>ServiceDB.mdf</DependentUpon>
     </Content>
-    <None Include="Resources\удаление.png" />
+    <None Include="Resources\удаление1.png" />
     <None Include="Resources\стрелка начало.png" />
     <None Include="Resources\стрелка конец.png" />
     <None Include="Resources\стрелка вниз.png" />

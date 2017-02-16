@@ -118,28 +118,28 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="оформить_заключение" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\оформить заключение.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Поиск" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\поиск.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="персонал" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\персонал.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="печать" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\печать.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Поиск" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\поиск.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="события" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\события.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="редактирование" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\редактирование.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="события" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\события.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="оформить_заключение" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\оформить заключение.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="печать" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\печать.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="справочники" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\справочники.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="удаление" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\удаление.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="удаление1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\удаление1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -34,8 +34,8 @@ namespace QualityControl_Client.Forms.EmployeeDirectory
                 DataGridViewRow row = new DataGridViewRow();
                 row.CreateCells(dataGridView1);
                 row.Cells[0].Value = Employee.Name;
-                row.Cells[1].Value = Employee.Sirname;
-                row.Cells[2].Value = Employee.Fathername;
+                row.Cells[2].Value = Employee.Sirname;
+                row.Cells[1].Value = Employee.Fathername;
                 row.Cells[3].Value = Employee.Function;
                 //if (Employee.CertificateLib != null)
                 //{

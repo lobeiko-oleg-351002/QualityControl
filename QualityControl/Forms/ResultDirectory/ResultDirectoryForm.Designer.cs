@@ -50,6 +50,7 @@
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(160, 321);
+            this.button3.TabStop = false;
             this.button3.Visible = false;
             // 
             // dataGridView1
@@ -112,7 +113,7 @@
             this.button5.Location = new System.Drawing.Point(174, 258);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 7;
+            this.button5.TabIndex = 3;
             this.button5.Text = "Копировать";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);

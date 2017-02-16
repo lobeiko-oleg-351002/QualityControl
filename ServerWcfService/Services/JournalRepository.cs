@@ -66,7 +66,8 @@ namespace ServerWcfService.Services
                 cfg.CreateMap<BllMaterial, UilMaterial>();
                 cfg.CreateMap<BllJournal, UilJournal>().ForMember(x => x.ControlMethodsLib, opt => opt.Ignore())
                                                        .ForMember(x => x.Component, opt => opt.Ignore())
-                                                       .ForMember(x => x.IndustrialObject, opt => opt.Ignore());
+                                                       .ForMember(x => x.IndustrialObject, opt => opt.Ignore())
+                                                       .ForMember(x => x.UserOwner, opt => opt.Ignore());
                 cfg.CreateMap<BllCustomer, UilCustomer>();
                 cfg.CreateMap<BllWeldJoint, UilWeldJoint>();
                 cfg.CreateMap<BllControlMethodsLib, UilControlMethodsLib>();
@@ -83,6 +84,8 @@ namespace ServerWcfService.Services
             //}
 
             uilEntity.Component = bllEntity.Component != null ? ComponentRepository.MapBllToUil(bllEntity.Component) : null;
+
+            uilEntity.UserOwner = bllEntity.UserOwner != null ? UserRepository.MapBllToUil(bllEntity.UserOwner) : null;
 
             //Task<UilControlMethodsLib> mapControlMethodsLibTask = Task.Run(() => {
             //    UilControlMethodsLib target = null;
@@ -104,7 +107,7 @@ namespace ServerWcfService.Services
             {
                 cfg.CreateMap<BllControlMethodsLib, UilControlMethodsLib>().ForMember(x => x.Control, opt => opt.Ignore());
             });
-           uilEntity.ControlMethodsLib = Mapper.Map<UilControlMethodsLib>(bllEntity.ControlMethodsLib);
+            uilEntity.ControlMethodsLib = Mapper.Map<UilControlMethodsLib>(bllEntity.ControlMethodsLib);
 
             if (uilEntity.ControlMethodsLib != null)
             {
@@ -177,7 +180,8 @@ namespace ServerWcfService.Services
                 cfg.CreateMap<UilMaterial, BllMaterial>();
                 cfg.CreateMap<UilJournal, BllJournal>().ForMember(x => x.ControlMethodsLib, opt => opt.Ignore())
                                                        .ForMember(x => x.Component, opt => opt.Ignore())
-                                                       .ForMember(x => x.IndustrialObject, opt => opt.Ignore());
+                                                       .ForMember(x => x.IndustrialObject, opt => opt.Ignore())
+                                                       .ForMember(x => x.UserOwner, opt => opt.Ignore());
                 cfg.CreateMap<UilCustomer, BllCustomer>();
                 cfg.CreateMap<UilWeldJoint, BllWeldJoint>();
                 cfg.CreateMap<UilControlMethodsLib, BllControlMethodsLib>().ForMember(x => x.Control, opt => opt.Ignore());
@@ -208,6 +212,8 @@ namespace ServerWcfService.Services
                 cfg.CreateMap<UilWeldJoint, BllWeldJoint>();
             });
             bllEntity.WeldJoint = Mapper.Map<BllWeldJoint>(entity.WeldJoint);
+
+            bllEntity.UserOwner = entity.UserOwner != null ? UserRepository.MapUilToBll(entity.UserOwner) : null;
             return bllEntity;
         }
     }

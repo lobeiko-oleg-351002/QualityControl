@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UIL.Entities.Interface;
 
 namespace QualityControl_Client.Forms
 {
@@ -37,6 +38,11 @@ namespace QualityControl_Client.Forms
         }
 
         protected virtual void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        public virtual void SelectRow(IUilEntity entity)
         {
 
         }

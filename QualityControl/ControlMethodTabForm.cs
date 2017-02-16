@@ -250,8 +250,11 @@ namespace QualityControl_Client
 
         public void AddEmployee(UilEmployee employee)
         {
-            currentControl.EmployeeLib.SelectedEmployee.Add(new UilSelectedEmployee { Employee = employee });
-            listBox4.Items.Add(employee.Sirname + " " + employee.Name + " " + employee.Fathername);
+            if (employee != null)
+            {
+                currentControl.EmployeeLib.SelectedEmployee.Add(new UilSelectedEmployee { Employee = employee });
+                listBox4.Items.Add(employee.Sirname + " " + employee.Name + " " + employee.Fathername);
+            }
         }
 
         public void SetEmployee(UilEmployeeLib employeeLib)
@@ -286,7 +289,7 @@ namespace QualityControl_Client
             currentControl.ResultLib.Result.Clear();
             foreach (var res in ResultLib.Result)
             {
-                currentControl.ResultLib.Result.Add(res);
+                currentControl.ResultLib.Result.Add(new UilResult { Welder = res.Welder, Mark = res.Mark});
             }
             SetResult(currentControl.ResultLib);
         }
@@ -598,6 +601,20 @@ namespace QualityControl_Client
                 currentControl.Is_сontrolled = null;
                 radioButton1.Checked = false;
                 radioButton1.Checked = false;
+            }
+        }
+
+        private void pictureBox1_DoubleClick(object sender, EventArgs e)
+        {
+            PictureBox pb = (PictureBox)sender;
+            if (pb.Dock == DockStyle.None)
+            {
+                pb.Dock = DockStyle.Fill;
+                pb.BringToFront();
+            }
+            else
+            {
+                pb.Dock = DockStyle.None;
             }
         }
     }

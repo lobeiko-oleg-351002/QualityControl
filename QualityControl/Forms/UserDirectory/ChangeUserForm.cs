@@ -46,7 +46,7 @@ namespace QualityControl_Client.Forms.UserDirectory
                 oldUser.Login = textBox1.Text;
                 oldUser.Password = textBox2.Text;
                 oldUser.Employee = employee;
-
+                oldUser.Modified_date = DateTime.Now;
                 IUserRepository repository = ServiceChannelManager.Instance.UserRepository;
                 repository.Update(oldUser);
                 base.button2_Click(sender, e);

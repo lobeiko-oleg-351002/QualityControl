@@ -51,7 +51,7 @@ namespace ServerWcfService.Services
             return MapBllToUil(UserService.Authorize(login, password));
         }
 
-        public UilUser MapBllToUil(BllUser bllEntity)
+        public static UilUser MapBllToUil(BllUser bllEntity)
         {
             Mapper.Initialize(cfg =>
             {
@@ -74,7 +74,7 @@ namespace ServerWcfService.Services
             return uilEntity;
         }
 
-        public BllUser MapUilToBll(UilUser entity)
+        public static BllUser MapUilToBll(UilUser entity)
         {
             Mapper.Initialize(cfg =>
             {

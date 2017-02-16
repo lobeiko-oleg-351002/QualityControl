@@ -16,14 +16,14 @@ namespace QualityControl_Server
         [STAThread]
         static void Main()
         {
-            String thisprocessname = Process.GetCurrentProcess().ProcessName;
+            //String thisprocessname = Process.GetCurrentProcess().ProcessName;
 
-            if (Process.GetProcesses().Count(p => p.ProcessName == thisprocessname) > 1)
-            {
-                MessageBox.Show("Программа уже запущена", "Оповещение");
-                return;
-            }
-                
+            //if (Process.GetProcesses().Count(p => p.ProcessName == thisprocessname) > 1)
+            //{
+            //    MessageBox.Show("Программа уже запущена", "Оповещение");
+            //    return;
+            //}
+                          
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

@@ -39,17 +39,19 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(40, 179);
+            this.button1.TabIndex = 5;
             // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(156, 179);
+            this.button2.TabIndex = 4;
             // 
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(122, 48);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(150, 20);
-            this.textBox1.TabIndex = 5;
+            this.textBox1.TabIndex = 1;
             // 
             // label1
             // 
@@ -65,7 +67,7 @@
             this.textBox2.Location = new System.Drawing.Point(122, 90);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(150, 20);
-            this.textBox2.TabIndex = 7;
+            this.textBox2.TabIndex = 2;
             // 
             // label2
             // 
@@ -91,7 +93,7 @@
             this.comboBox1.Location = new System.Drawing.Point(122, 130);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(150, 21);
-            this.comboBox1.TabIndex = 9;
+            this.comboBox1.TabIndex = 3;
             // 
             // AddControlMethodDocumentationForm
             // 

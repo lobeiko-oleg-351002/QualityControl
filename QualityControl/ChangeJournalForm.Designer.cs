@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChangeJournalForm));
             this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
@@ -68,9 +69,9 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(217, 622);
+            this.button7.Location = new System.Drawing.Point(39, 563);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(263, 23);
+            this.button7.Size = new System.Drawing.Size(135, 34);
             this.button7.TabIndex = 81;
             this.button7.Text = "Копировать данные в остальные вкладки";
             this.button7.UseVisualStyleBackColor = true;
@@ -96,8 +97,9 @@
             // 
             // button5
             // 
+            this.button5.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.button5.Location = new System.Drawing.Point(323, 671);
+            this.button5.Location = new System.Drawing.Point(320, 625);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(103, 30);
             this.button5.TabIndex = 78;
@@ -107,8 +109,9 @@
             // 
             // button4
             // 
+            this.button4.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.button4.Location = new System.Drawing.Point(121, 671);
+            this.button4.Location = new System.Drawing.Point(118, 625);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(103, 30);
             this.button4.TabIndex = 77;
@@ -384,12 +387,12 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Right;
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.tabControl1.Location = new System.Drawing.Point(538, 1);
+            this.tabControl1.Location = new System.Drawing.Point(534, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(348, 710);
+            this.tabControl1.Size = new System.Drawing.Size(348, 667);
             this.tabControl1.TabIndex = 48;
             // 
             // ChangeJournalForm
@@ -397,7 +400,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.ClientSize = new System.Drawing.Size(882, 706);
+            this.ClientSize = new System.Drawing.Size(882, 667);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.numericUpDown2);
@@ -432,6 +435,9 @@
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tabControl1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximumSize = new System.Drawing.Size(898, 706);
+            this.MinimumSize = new System.Drawing.Size(898, 706);
             this.Name = "ChangeJournalForm";
             this.Text = "Изменить объект контроля";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();

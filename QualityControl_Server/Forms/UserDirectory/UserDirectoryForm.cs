@@ -37,6 +37,7 @@ namespace QualityControl_Client.Forms.UserDirectory
                 row.Cells[2].Value = User.Login;
                 row.Cells[3].Value = User.Password;
                 row.Cells[4].Value = User.Role != null ? User.Role.Name : "";
+                row.Cells[5].Value = User.Modified_date != null ? "Отредактировано " + User.Modified_date.Value.Date.ToString() : "";
                 dataGridView1.Rows.Add(row);
             }
         }

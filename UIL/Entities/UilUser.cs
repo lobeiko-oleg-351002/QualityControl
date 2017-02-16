@@ -18,5 +18,7 @@ namespace UIL.Entities
         public UilRole Role { get; set; }
         
         public UilEmployee Employee { get; set; }
+
+        public DateTime? Modified_date { get; set; }
     }
 }

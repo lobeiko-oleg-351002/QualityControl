@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UIL.Entities;
+using UIL.Entities.Interface;
 
 namespace QualityControl_Client.Forms.CustomerDirectory
 {
@@ -98,5 +99,13 @@ namespace QualityControl_Client.Forms.CustomerDirectory
                 ConvertManager.ConvertDataGridToExcel(dataGridView1, saveFileDialog2.FileName);
             }
         }
+
+        public override void SelectRow(IUilEntity entity)
+        {
+            dataGridView1.ClearSelection();
+            var id = Customers.FindIndex(customer => customer.Id == entity.Id);
+            if (id > -1) dataGridView1.Rows[id].Selected = true;
+        }
     }
+
 }

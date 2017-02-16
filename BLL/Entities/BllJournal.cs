@@ -38,5 +38,11 @@ namespace BLL.Entities
         public string Contract { get; set; }
 
         public string Description { get; set; }
+
+        public BllUser UserOwner { get; set; }
+
+        public string User_Modifier_Login { get; set; }
+
+        public DateTime? Modified_date { get; set; }
     }
 }

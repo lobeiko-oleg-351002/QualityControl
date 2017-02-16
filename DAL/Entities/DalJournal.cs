@@ -38,5 +38,11 @@ namespace DAL
         public string Contract { get; set; }
 
         public string Description { get; set; }
+
+        public string User_Modifier_Login { get; set; }
+
+        public int? User_Owner_id { get; set; }
+
+        public DateTime? Modified_date { get; set; }
     }
 }

@@ -18,5 +18,9 @@ namespace BLL.Entities
         public BllRole Role { get; set; }
 
         public BllEmployee Employee { get; set; }
+
+        public DateTime? Modified_date { get; set; }
+
+
     }
 }

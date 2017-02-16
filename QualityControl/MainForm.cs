@@ -50,8 +50,10 @@ namespace QualityControl
         public MainForm()
         {
             InitializeComponent();
-            
+
+            //CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
             AppDomain.CurrentDomain.SetData("DataDirectory", System.IO.Directory.GetCurrentDirectory());
+
             UiUnitOfWork.Instance.Init(new ServiceDB());
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             CenterToScreen();
@@ -73,7 +75,21 @@ namespace QualityControl
                 c.HeaderCell.Style = style;
             }
             PutScrollBarDown();
-            toolStripTextBox1.Text = "Исполнитель: " + User.Employee.Sirname + " " + User.Employee.Name[0] + "." + User.Employee.Fathername[0] + ".";
+            if (User.Employee != null)
+            {
+                toolStripTextBox1.Text = "Исполнитель: " + User.Employee.Sirname + " " + User.Employee.Name[0] + "." + User.Employee.Fathername[0] + ".";
+            }
+            else
+            {
+                if (User.Role.Name == "Гость")
+                {
+                    toolStripTextBox1.Text = "Гостевой допуск";
+                }
+                else
+                {
+                    toolStripTextBox1.Text = "Исполнитель: <не указан>";
+                }
+            }
 
             //debugForm = new DebugForm();
             //debugForm.Show();
@@ -81,7 +97,10 @@ namespace QualityControl
 
         private void PutScrollBarDown()
         {
-            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.Rows.Count - 1;
+            if (dataGridView1.Rows.Count > 0)
+            {
+                dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.Rows.Count - 1;
+            }
         }
 
         private void SetGuestPermission()
@@ -90,6 +109,7 @@ namespace QualityControl
             добавитьToolStripMenuItem.Enabled = false;
             редактироватьToolStripMenuItem.Enabled = false;
             удалитьToolStripMenuItem.Enabled = false;
+            toolStripMenuItem3.Enabled = false;
         }
 
         private void SetWorkerPermission()
@@ -291,7 +311,7 @@ namespace QualityControl
             row.Cells[8].Value = journal.WeldJoint != null ? journal.WeldJoint.Name : null;
             row.Cells[9].Value = journal.Welding_type;
             const int controlsCount = 4;
-            for(int i = 9; i <= 9 + controlsCount; i++)
+            for(int i = 10; i <= 9 + controlsCount; i++)
             {
                 row.Cells[i].Value = "";
             }
@@ -307,7 +327,8 @@ namespace QualityControl
         {
             DataGridViewRow row = new DataGridViewRow();
             FillRowUsingJournal(row, journal);
-            dataGridView1.Rows.Add(row);                    
+            dataGridView1.Rows.Add(row);
+            PutScrollBarDown();
         }
 
         public void AddNewJournal(UilJournal journal)
@@ -490,6 +511,27 @@ namespace QualityControl
 
             tabControl1.Invalidate();
 
+            if (currentJournal.UserOwner != null)
+            {
+                label2.Text = currentJournal.UserOwner.Login;
+            }
+            else
+            {
+                label2.Text = "-";
+            }
+
+            if (currentJournal.User_Modifier_Login != null)
+            {
+                label3.Visible = true;
+                label4.Visible = true;
+                label3.Text = currentJournal.User_Modifier_Login + " " + currentJournal.Modified_date.Value.Date.ToString("dd.MM.yyyy");
+            }
+            else
+            {
+                label3.Visible = false;
+                label4.Visible = false;
+            }
+            
         }
 
         private void clearDataContainers()
@@ -695,12 +737,19 @@ namespace QualityControl
             }
         }
 
+        private void DisableTabControl()
+        {
+            foreach(TabPage tab in tabControl1.TabPages)
+            {
+               
+            }
+        }
 
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AddJournalForm addJournalForm = new AddJournalForm(AddNewJournal, User.Employee);
-            addJournalForm.ShowDialog(this);
-            PutScrollBarDown();
+            AddJournalForm addJournalForm = new AddJournalForm(AddNewJournal, User);
+            addJournalForm.Show();
+            
         }
 
         private void редактироватьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -708,9 +757,16 @@ namespace QualityControl
             var rows = dataGridView1.SelectedRows;
             foreach (DataGridViewRow row in rows)
             {
-                ChangeJournalForm changeJournalForm = new ChangeJournalForm(Journals[row.Index], User.Employee);
-                changeJournalForm.ShowDialog(this);
-                UpdateRowInDataGrid(changeJournalForm.Journal, row.Index);
+                if (Journals[row.Index].UserOwner == null || Journals[row.Index].UserOwner.Id == User.Id || User.Role.Name == "Администратор")
+                {
+                    ChangeJournalForm changeJournalForm = new ChangeJournalForm(Journals[row.Index], User);
+                    changeJournalForm.ShowDialog(this);
+                    UpdateRowInDataGrid(changeJournalForm.Journal, row.Index);
+                }
+                else
+                {
+                    MessageBox.Show("Невозможно редактировать запись по объекту " + (Journals[row.Index].Component != null ? Journals[row.Index].Component.Name : "<не указан>")  + ". Доступ запрещён.", "Оповещение");
+                }
             }
 
         }
@@ -726,9 +782,16 @@ namespace QualityControl
                 List<UilJournal> journalsForRemoving = new List<UilJournal>();
                 foreach (DataGridViewRow row in rows)
                 {
-                    journalsForRemoving.Add(Journals[row.Index]);
-                    repository.Delete(Journals[row.Index]);
-                    dataGridView1.Rows.Remove(row);
+                    if (Journals[row.Index].UserOwner == null || Journals[row.Index].UserOwner.Id == User.Id)
+                    {
+                        journalsForRemoving.Add(Journals[row.Index]);
+                        repository.Delete(Journals[row.Index]);
+                        dataGridView1.Rows.Remove(row);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Невозможно удалить запись по объекту " + (Journals[row.Index].Component != null ? Journals[row.Index].Component.Name : "<не указан>") + ". Доступ запрещён.", "Оповещение");
+                    }
                 }
                 foreach (var journal in journalsForRemoving)
                 {
@@ -755,9 +818,10 @@ namespace QualityControl
             chooseControlNameForm.ShowDialog(this);
             List<UilJournal> SelectedJournals = new List<UilJournal>();
 
+
             if (chooseControlNameForm.SelectedControlName != null)
             {
-                foreach (DataGridViewRow row in dataGridView1.Rows)
+                foreach (DataGridViewRow row in dataGridView1.SelectedRows)
                 {
                     if (row.Visible)
                     {
@@ -765,7 +829,7 @@ namespace QualityControl
                     }
                 }
                 ExportMethod exportMethod;
-                saveFileDialog1.FileName = chooseControlNameForm.SelectedControlName.Name;
+               
                 if (chooseControlNameForm.isPdfSelected)
                 {
                     saveFileDialog1.Filter = "PDF file (*.pdf)|*.pdf";
@@ -777,6 +841,29 @@ namespace QualityControl
                     saveFileDialog1.Filter = "Excel files (*.xls)|*.xls";
                     exportMethod = ConvertManager.ConvertChosenControlResultsToExcel;
                 }
+
+                int minProtocolNum = int.MaxValue, maxProtocolNum = -1;
+                foreach (var journal in SelectedJournals)
+                {
+                    foreach (var control in journal.ControlMethodsLib.Control)
+                    {
+                        if (control.ControlName.Id == chooseControlNameForm.SelectedControlName.Id)
+                        {
+                            if (control.ProtocolNumber.Value > maxProtocolNum)
+                            {
+                                maxProtocolNum = control.ProtocolNumber.Value ;
+                            }
+                            if (control.ProtocolNumber.Value < minProtocolNum)
+                            {
+                                minProtocolNum = control.ProtocolNumber.Value ;
+                            }
+                            
+
+                        }
+                    }
+                }
+
+                saveFileDialog1.FileName = chooseControlNameForm.SelectedControlName.Name + "№" + minProtocolNum.ToString() + "-" + maxProtocolNum.ToString();
 
                 if (DialogResult.OK == saveFileDialog1.ShowDialog())
                 {
@@ -804,6 +891,11 @@ namespace QualityControl
             {
                 ConvertManager.ConvertDataGridToExcel(dataGridView1, saveFileDialog1.FileName);
             }
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

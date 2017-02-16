@@ -39,10 +39,12 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(58, 178);
+            this.button1.TabIndex = 4;
             // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(175, 178);
+            this.button2.TabIndex = 3;
             // 
             // label1
             // 
@@ -58,7 +60,7 @@
             this.textBox1.Location = new System.Drawing.Point(107, 42);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(193, 20);
-            this.textBox1.TabIndex = 3;
+            this.textBox1.TabIndex = 1;
             // 
             // button4
             // 
@@ -76,14 +78,15 @@
             this.comboBox1.Location = new System.Drawing.Point(107, 92);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(101, 21);
-            this.comboBox1.TabIndex = 21;
+            this.comboBox1.TabIndex = 2;
+            this.comboBox1.TabStop = false;
             // 
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(225, 92);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 20;
+            this.button3.TabIndex = 2;
             this.button3.Text = "Добавить";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);

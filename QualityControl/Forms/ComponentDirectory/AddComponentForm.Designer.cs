@@ -40,10 +40,12 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(79, 163);
+            this.button1.TabIndex = 5;
             // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(209, 163);
+            this.button2.TabIndex = 4;
             // 
             // label1
             // 
@@ -59,7 +61,7 @@
             this.textBox1.Location = new System.Drawing.Point(156, 36);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 3;
+            this.textBox1.TabIndex = 1;
             // 
             // maskedTextBox1
             // 
@@ -68,6 +70,7 @@
             this.maskedTextBox1.ReadOnly = true;
             this.maskedTextBox1.Size = new System.Drawing.Size(100, 20);
             this.maskedTextBox1.TabIndex = 4;
+            this.maskedTextBox1.TabStop = false;
             // 
             // label2
             // 
@@ -83,7 +86,7 @@
             this.button3.Location = new System.Drawing.Point(288, 69);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 6;
+            this.button3.TabIndex = 2;
             this.button3.Text = "Выбрать";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -102,7 +105,7 @@
             this.textBox2.Location = new System.Drawing.Point(156, 107);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 8;
+            this.textBox2.TabIndex = 3;
             // 
             // AddComponentForm
             // 

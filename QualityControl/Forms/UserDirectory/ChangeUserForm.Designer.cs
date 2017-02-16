@@ -37,8 +37,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
+            // button1
+            // 
+            this.button1.TabIndex = 5;
+            // 
             // button2
             // 
+            this.button2.TabIndex = 4;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
@@ -46,7 +51,7 @@
             this.button3.Location = new System.Drawing.Point(183, 152);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 24;
+            this.button3.TabIndex = 3;
             this.button3.Text = "Выбрать";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -67,13 +72,14 @@
             this.textBox3.ReadOnly = true;
             this.textBox3.Size = new System.Drawing.Size(171, 20);
             this.textBox3.TabIndex = 22;
+            this.textBox3.TabStop = false;
             // 
             // textBox2
             // 
             this.textBox2.Location = new System.Drawing.Point(87, 68);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(171, 20);
-            this.textBox2.TabIndex = 21;
+            this.textBox2.TabIndex = 2;
             // 
             // textBox1
             // 
@@ -81,7 +87,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(171, 20);
-            this.textBox1.TabIndex = 20;
+            this.textBox1.TabIndex = 1;
             // 
             // label2
             // 

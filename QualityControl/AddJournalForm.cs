@@ -18,10 +18,13 @@ namespace QualityControl_Client
 {
     public partial class AddJournalForm : Form
     {
+        AutoCompleteStringCollection autoComplete = new AutoCompleteStringCollection();
+
         List<UilControlName> ControlNames;
         List<ControlMethodTabForm> ControlMethodTabForms;
         List<UilIndustrialObject> IndustrialObjects;
         List<UilCustomer> Customers;
+        UilUser User = null;
 
         public UilJournal Journal { get; private set; }
 
@@ -34,9 +37,14 @@ namespace QualityControl_Client
             InitializeComponent();
         }
 
-        public AddJournalForm(AddRowToDataGrid AddRowToDataGridDelegate, UilEmployee user)
+        public AddJournalForm(AddRowToDataGrid AddRowToDataGridDelegate, UilUser user)
         {
             InitializeComponent();
+            textBox6.AutoCompleteMode = AutoCompleteMode.Suggest;
+            textBox6.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            textBox6.AutoCompleteCustomSource = autoComplete;
+
+            User = user;
             dateTimePicker1.Focus();
             this.AddRowToDataGridDelegate = AddRowToDataGridDelegate;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -47,6 +55,7 @@ namespace QualityControl_Client
                 Control_date = DateTime.Now,
                 Request_number = 0,
                 Amount = 0,
+
             };
             Journal.ControlMethodsLib = new UilControlMethodsLib();
 
@@ -82,7 +91,7 @@ namespace QualityControl_Client
             {
                 var control = Journal.ControlMethodsLib.Control[i];
                 ControlMethodTabForms[i].SetCurrentControl(control, Journal);
-                ControlMethodTabForms[i].AddEmployee(user);
+                ControlMethodTabForms[i].AddEmployee(user.Employee);
             }
 
             IndustrialObjects = new List<UilIndustrialObject>();
@@ -350,6 +359,7 @@ namespace QualityControl_Client
             Journal.Description = richTextBox2.Text;
             Journal.Customer = comboBox2.SelectedIndex != -1 ? Customers[comboBox2.SelectedIndex] : null;
             Journal.IndustrialObject = comboBox1.SelectedIndex != -1 ? IndustrialObjects[comboBox1.SelectedIndex] : null;
+            Journal.UserOwner = User;
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -420,6 +430,9 @@ namespace QualityControl_Client
             }               
          }
 
-
+        private void textBox6_TextChanged(object sender, EventArgs e)
+        {
+            autoComplete.Add(textBox6.Text);
+        }
     }
 }

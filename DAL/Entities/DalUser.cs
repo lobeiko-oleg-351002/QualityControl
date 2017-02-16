@@ -18,5 +18,7 @@ namespace DAL.Entities
         public int Role_id { get; set; }
 
         public int? Employee_id { get; set; }
+
+        public DateTime? Modified_date { get; set; }
     }
 }

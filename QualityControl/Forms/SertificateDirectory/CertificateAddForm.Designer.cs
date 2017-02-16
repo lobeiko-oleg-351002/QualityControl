@@ -46,10 +46,12 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(41, 209);
+            this.button1.TabIndex = 7;
             // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(164, 209);
+            this.button2.TabIndex = 6;
             // 
             // label1
             // 
@@ -74,14 +76,14 @@
             this.textBox1.Location = new System.Drawing.Point(138, 25);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(128, 20);
-            this.textBox1.TabIndex = 4;
+            this.textBox1.TabIndex = 1;
             // 
             // dateTimePicker1
             // 
             this.dateTimePicker1.Location = new System.Drawing.Point(138, 51);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(128, 20);
-            this.dateTimePicker1.TabIndex = 5;
+            this.dateTimePicker1.TabIndex = 2;
             // 
             // label6
             // 
@@ -98,7 +100,7 @@
             this.comboBox1.Location = new System.Drawing.Point(139, 140);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(127, 21);
-            this.comboBox1.TabIndex = 13;
+            this.comboBox1.TabIndex = 4;
             // 
             // label7
             // 
@@ -114,7 +116,7 @@
             this.numericUpDown1.Location = new System.Drawing.Point(140, 171);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(56, 20);
-            this.numericUpDown1.TabIndex = 15;
+            this.numericUpDown1.TabIndex = 5;
             // 
             // label8
             // 
@@ -138,6 +140,7 @@
             // 
             this.textBox2.Location = new System.Drawing.Point(32, 109);
             this.textBox2.Name = "textBox2";
+            this.textBox2.ReadOnly = true;
             this.textBox2.Size = new System.Drawing.Size(233, 20);
             this.textBox2.TabIndex = 18;
             // 
@@ -146,7 +149,7 @@
             this.button3.Location = new System.Drawing.Point(190, 80);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 19;
+            this.button3.TabIndex = 3;
             this.button3.Text = "Выбрать";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);

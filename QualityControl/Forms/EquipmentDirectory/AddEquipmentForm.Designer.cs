@@ -51,10 +51,12 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(63, 389);
+            this.button1.TabIndex = 11;
             // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(261, 389);
+            this.button2.TabIndex = 10;
             // 
             // label1
             // 
@@ -70,14 +72,14 @@
             this.textBox1.Location = new System.Drawing.Point(175, 24);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(177, 20);
-            this.textBox1.TabIndex = 3;
+            this.textBox1.TabIndex = 1;
             // 
             // textBox2
             // 
             this.textBox2.Location = new System.Drawing.Point(175, 58);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(177, 20);
-            this.textBox2.TabIndex = 5;
+            this.textBox2.TabIndex = 2;
             // 
             // label2
             // 
@@ -130,7 +132,7 @@
             this.checkBox1.Location = new System.Drawing.Point(42, 175);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(158, 17);
-            this.checkBox1.TabIndex = 15;
+            this.checkBox1.TabIndex = 5;
             this.checkBox1.Text = "Поверено/откалибровано";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
@@ -139,21 +141,21 @@
             this.dateTimePicker1.Location = new System.Drawing.Point(261, 240);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(120, 20);
-            this.dateTimePicker1.TabIndex = 16;
+            this.dateTimePicker1.TabIndex = 7;
             // 
             // dateTimePicker2
             // 
             this.dateTimePicker2.Location = new System.Drawing.Point(261, 295);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(120, 20);
-            this.dateTimePicker2.TabIndex = 17;
+            this.dateTimePicker2.TabIndex = 8;
             // 
             // dateTimePicker3
             // 
             this.dateTimePicker3.Location = new System.Drawing.Point(261, 336);
             this.dateTimePicker3.Name = "dateTimePicker3";
             this.dateTimePicker3.Size = new System.Drawing.Size(120, 20);
-            this.dateTimePicker3.TabIndex = 18;
+            this.dateTimePicker3.TabIndex = 9;
             // 
             // numericUpDown1
             // 
@@ -165,7 +167,7 @@
             0});
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(177, 20);
-            this.numericUpDown1.TabIndex = 19;
+            this.numericUpDown1.TabIndex = 3;
             // 
             // label4
             // 
@@ -181,7 +183,7 @@
             this.textBox3.Location = new System.Drawing.Point(261, 203);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(120, 20);
-            this.textBox3.TabIndex = 21;
+            this.textBox3.TabIndex = 6;
             // 
             // label8
             // 
@@ -197,7 +199,7 @@
             this.textBox4.Location = new System.Drawing.Point(175, 136);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(177, 20);
-            this.textBox4.TabIndex = 23;
+            this.textBox4.TabIndex = 4;
             // 
             // AddEquipmentForm
             // 

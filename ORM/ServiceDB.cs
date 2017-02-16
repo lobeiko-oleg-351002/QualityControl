@@ -320,6 +320,12 @@ namespace ORM
                 .WithOptional(e => e.User)
                 .HasForeignKey(e => e.creator_id);
 
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.Journal)
+                .WithOptional(e => e.UserOwner)
+                .HasForeignKey(e => e.user_owner_id);
+
+
             modelBuilder.Entity<WeldJoint>()
                 .HasMany(e => e.Journal)
                 .WithOptional(e => e.WeldJoint)

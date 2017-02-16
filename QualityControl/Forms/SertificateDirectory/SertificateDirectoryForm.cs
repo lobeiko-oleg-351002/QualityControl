@@ -76,5 +76,12 @@ namespace QualityControl_Client.Forms
             }
             RefreshData();
         }
+
+        public override void SelectRow(IUilEntity entity)
+        {
+            dataGridView1.ClearSelection();
+            var id = certificates.FindIndex(certificate => certificate.Id == entity.Id);
+            if (id > -1) dataGridView1.Rows[id].Selected = true;
+        }
     }
 }

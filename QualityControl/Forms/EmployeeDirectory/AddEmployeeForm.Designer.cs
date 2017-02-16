@@ -45,12 +45,14 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(106, 286);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.TabIndex = 8;
             // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(223, 286);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
+            this.button2.TabIndex = 7;
             // 
             // label1
             // 
@@ -66,14 +68,14 @@
             this.textBox1.Location = new System.Drawing.Point(177, 31);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 3;
+            this.textBox1.TabIndex = 1;
             // 
             // textBox2
             // 
             this.textBox2.Location = new System.Drawing.Point(177, 105);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 5;
+            this.textBox2.TabIndex = 3;
             // 
             // label2
             // 
@@ -89,7 +91,7 @@
             this.textBox3.Location = new System.Drawing.Point(177, 69);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(100, 20);
-            this.textBox3.TabIndex = 7;
+            this.textBox3.TabIndex = 2;
             // 
             // label3
             // 
@@ -105,7 +107,7 @@
             this.textBox4.Location = new System.Drawing.Point(177, 146);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(100, 20);
-            this.textBox4.TabIndex = 9;
+            this.textBox4.TabIndex = 4;
             // 
             // label4
             // 
@@ -139,14 +141,14 @@
             this.dateTimePicker1.Location = new System.Drawing.Point(223, 192);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(122, 20);
-            this.dateTimePicker1.TabIndex = 15;
+            this.dateTimePicker1.TabIndex = 5;
             // 
             // dateTimePicker2
             // 
             this.dateTimePicker2.Location = new System.Drawing.Point(223, 228);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(122, 20);
-            this.dateTimePicker2.TabIndex = 16;
+            this.dateTimePicker2.TabIndex = 6;
             // 
             // AddEmployeeForm
             // 
@@ -165,7 +167,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "AddEmployeeForm";
             this.Text = "Добавить сотрудника";
             this.Controls.SetChildIndex(this.button1, 0);

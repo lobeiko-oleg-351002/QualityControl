@@ -24,6 +24,7 @@ namespace BLL.Services
         MaterialService materialService;
         WeldJointService weldJointService;
         ControlMethodsLibService controlMethodsLibService;
+        UserService userService;
 
 
         public JournalService(IUnitOfWork uow) : base(uow, uow.Journals)
@@ -35,6 +36,7 @@ namespace BLL.Services
             materialService = new MaterialService(uow);
             weldJointService = new WeldJointService(uow);
             controlMethodsLibService = new ControlMethodsLibService(uow);
+            userService = new UserService(uow);
         }
 
 
@@ -96,6 +98,7 @@ namespace BLL.Services
             dalEntity.Industrial_object_id = entity.IndustrialObject != null ? entity.IndustrialObject.Id : (int?)null;
             dalEntity.Material_id = entity.Material != null ? entity.Material.Id : (int?)null;
             dalEntity.Weld_joint_id = entity.WeldJoint != null ? entity.WeldJoint.Id : (int?)null;
+            dalEntity.User_Owner_id = entity.UserOwner != null ?  entity.UserOwner.Id : (int?)null;
             return dalEntity;
         }
 
@@ -113,6 +116,7 @@ namespace BLL.Services
             bllJournal.Material = entity.Material_id != null ? materialService.Get((int)entity.Material_id) : null;
             bllJournal.WeldJoint = entity.Weld_joint_id != null ? weldJointService.Get((int)entity.Weld_joint_id) : null;
             bllJournal.ControlMethodsLib = entity.ControlMethodsLib_id != null ? controlMethodsLibService.Get((int)entity.ControlMethodsLib_id) : null;
+            bllJournal.UserOwner = entity.User_Owner_id != null ? userService.Get((int)entity.User_Owner_id) : null;
             return bllJournal;
         }
     }

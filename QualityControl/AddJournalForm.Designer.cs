@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddJournalForm));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.label1 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
@@ -68,12 +69,12 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Right;
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.tabControl1.Location = new System.Drawing.Point(532, 2);
+            this.tabControl1.Location = new System.Drawing.Point(534, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(348, 710);
+            this.tabControl1.Size = new System.Drawing.Size(348, 664);
             this.tabControl1.TabIndex = 50;
             // 
             // label1
@@ -268,11 +269,14 @@
             // 
             // textBox6
             // 
+            this.textBox6.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.textBox6.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList;
             this.textBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.textBox6.Location = new System.Drawing.Point(211, 358);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(263, 20);
             this.textBox6.TabIndex = 10;
+            this.textBox6.Leave += new System.EventHandler(this.textBox6_TextChanged);
             // 
             // label9
             // 
@@ -362,8 +366,9 @@
             // 
             // button4
             // 
+            this.button4.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.button4.Location = new System.Drawing.Point(115, 672);
+            this.button4.Location = new System.Drawing.Point(109, 622);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(103, 30);
             this.button4.TabIndex = 43;
@@ -373,8 +378,9 @@
             // 
             // button5
             // 
+            this.button5.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.button5.Location = new System.Drawing.Point(317, 672);
+            this.button5.Location = new System.Drawing.Point(311, 622);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(103, 30);
             this.button5.TabIndex = 44;
@@ -407,9 +413,9 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(211, 623);
+            this.button7.Location = new System.Drawing.Point(32, 555);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(263, 23);
+            this.button7.Size = new System.Drawing.Size(136, 43);
             this.button7.TabIndex = 47;
             this.button7.TabStop = false;
             this.button7.Text = "Копировать данные в остальные вкладки";
@@ -422,7 +428,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.ClientSize = new System.Drawing.Size(882, 706);
+            this.ClientSize = new System.Drawing.Size(882, 664);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.numericUpDown2);
@@ -457,6 +463,9 @@
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tabControl1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximumSize = new System.Drawing.Size(898, 703);
+            this.MinimumSize = new System.Drawing.Size(898, 703);
             this.Name = "AddJournalForm";
             this.Text = "Добавить объект в журнал контроля";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();

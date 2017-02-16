@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UIL.Entities;
+using UIL.Entities.Interface;
 
 namespace QualityControl_Client.Forms.EmployeeDirectory
 {
@@ -35,8 +36,8 @@ namespace QualityControl_Client.Forms.EmployeeDirectory
                 DataGridViewRow row = new DataGridViewRow();
                 row.CreateCells(dataGridView1);
                 row.Cells[0].Value = Employee.Name;
-                row.Cells[1].Value = Employee.Sirname;
-                row.Cells[2].Value = Employee.Fathername;
+                row.Cells[2].Value = Employee.Sirname;
+                row.Cells[1].Value = Employee.Fathername;
                 row.Cells[3].Value = Employee.Function;
                 //if (Employee.CertificateLib != null)
                 //{
@@ -105,6 +106,13 @@ namespace QualityControl_Client.Forms.EmployeeDirectory
             {
                 ConvertManager.ConvertDataGridToExcel(dataGridView1, saveFileDialog2.FileName);
             }
+        }
+
+        public override void SelectRow(IUilEntity entity)
+        {
+            dataGridView1.ClearSelection();
+            var id = Employees.FindIndex(employee => employee.Id == entity.Id);
+            if (id > -1) dataGridView1.Rows[id].Selected = true;
         }
     }
 }
