@@ -117,7 +117,7 @@
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ExportControlResultForm";
-            this.Text = "Экспорт журнала";
+            this.Text = "Заключения";
             this.ResumeLayout(false);
             this.PerformLayout();
 

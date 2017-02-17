@@ -107,6 +107,12 @@
       <DependentUpon>ControlMethodTabForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ConvertManager.cs" />
+    <Compile Include="DateRangeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DateRangeForm.Designer.cs">
+      <DependentUpon>DateRangeForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="DebugForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -482,6 +488,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ControlMethodTabForm.resx">
       <DependentUpon>ControlMethodTabForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DateRangeForm.resx">
+      <DependentUpon>DateRangeForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DebugForm.resx">
       <DependentUpon>DebugForm.cs</DependentUpon>

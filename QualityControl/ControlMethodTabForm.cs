@@ -260,6 +260,7 @@ namespace QualityControl_Client
         public void SetEmployee(UilEmployeeLib employeeLib)
         {
             currentControl.EmployeeLib = employeeLib;
+            listBox4.Items.Clear();
             if (employeeLib != null)
             {
                 foreach (var employee in employeeLib.SelectedEmployee)

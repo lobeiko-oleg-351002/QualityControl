@@ -483,7 +483,7 @@ namespace QualityControl
 
         private void dataGridView1_RowStateChanged(object sender, DataGridViewRowStateChangedEventArgs e)
         {
-            if ((e.StateChanged != DataGridViewElementStates.Selected) || (dataGridView1.SelectedRows.Count == 0))
+            if ( (dataGridView1.SelectedRows.Count == 0))
             {
                 clearDataContainers();
                 tabControl1.Enabled = false;
@@ -889,7 +889,7 @@ namespace QualityControl
             saveFileDialog1.FileName = "Журнал";
             if (DialogResult.OK == saveFileDialog1.ShowDialog())
             {
-                ConvertManager.ConvertDataGridToExcel(dataGridView1, saveFileDialog1.FileName);
+                ConvertManager.WriteJournalToExcel(Journals, saveFileDialog1.FileName);
             }
         }
 

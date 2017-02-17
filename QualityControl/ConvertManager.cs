@@ -10,6 +10,7 @@ using System.IO;
 using System.Security.AccessControl;
 using Microsoft.Office.Interop;
 using UIL.Entities;
+using Microsoft.Office.Interop.Excel;
 
 namespace QualityControl_Client
 {
@@ -50,7 +51,7 @@ namespace QualityControl_Client
         {
             string fontsfolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Fonts);
             BaseFont baseFont = BaseFont.CreateFont(fontsfolder + "\\arial.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-            Font font = new Font(baseFont, Font.DEFAULTSIZE, Font.NORMAL);
+            iTextSharp.text.Font font = new iTextSharp.text.Font(baseFont, iTextSharp.text.Font.DEFAULTSIZE, iTextSharp.text.Font.NORMAL);
 
             //Creating iTextSharp Table from the DataTable data
             PdfPTable pdfTable = new PdfPTable(dataGridView.ColumnCount);
@@ -97,7 +98,7 @@ namespace QualityControl_Client
         {
             string fontsfolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Fonts);
             BaseFont baseFont = BaseFont.CreateFont(fontsfolder + "\\arial.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-            Font font = new Font(baseFont, Font.DEFAULTSIZE, Font.NORMAL);
+            iTextSharp.text.Font font = new iTextSharp.text.Font(baseFont, iTextSharp.text.Font.DEFAULTSIZE, iTextSharp.text.Font.NORMAL);
 
             List<UilResult> results = control.ResultLib.Result;
             //Creating iTextSharp Table from the DataTable data
@@ -116,7 +117,7 @@ namespace QualityControl_Client
             ExportPdfTable(pdfTable, folderPath);
         }
 
-        private static PdfPCell CreateHeaderCell(String header, Font font)
+        private static PdfPCell CreateHeaderCell(String header, iTextSharp.text.Font font)
         {
             PdfPCell cell = new PdfPCell(new Phrase(header, font));
             cell.BackgroundColor = new Color(240, 240, 240);
@@ -126,13 +127,13 @@ namespace QualityControl_Client
         public static void ConvertControlResultToExcel(UilControl control, UilJournal journal)
         {
             Microsoft.Office.Interop.Excel.Application ExcelApp = new Microsoft.Office.Interop.Excel.Application();
-            ExcelApp = InitResultExcelTable(ExcelApp);
+            //ExcelApp = InitResultExcelTable(ExcelApp);
 
             List<UilResult> results = control.ResultLib.Result;
 
             for (var i = 0; i < results.Count; i++)
             {
-                ExcelApp = AddRowToExcelTable(ExcelApp, results[i], journal, i);
+               // ExcelApp = AddRowToExcelTable(ExcelApp, results[i], journal, i);
             }
 
             ExportExcelTable(ExcelApp, control.ControlName.Name);
@@ -145,34 +146,39 @@ namespace QualityControl_Client
             ExcelApp.Quit();
         }
 
-        private static Microsoft.Office.Interop.Excel.Application InitResultExcelTable(Microsoft.Office.Interop.Excel.Application ExcelApp)
+        private static Microsoft.Office.Interop.Excel.Workbook InitResultExcelTable(Workbook workbook, Microsoft.Office.Interop.Excel.Application ExcelApp, string controlName)
         {
-            ExcelApp.Application.Workbooks.Add(Type.Missing);
-            ExcelApp.Columns.ColumnWidth = 15;
-            ExcelApp.Cells[1, 1] = "№ п/п";
-            ExcelApp.Cells[1, 2] = "Дата";
-            ExcelApp.Cells[1, 3] = "Контролёр";
-            ExcelApp.Cells[1, 4] = "Код изделия";
-            ExcelApp.Cells[1, 5] = "Номер заявки";
-            ExcelApp.Cells[1, 6] = "Клеймо сварщика";
-            ExcelApp.Cells[1, 7] = "Обнаруженные дефекты";
-            ExcelApp.Cells[1, 8] = "Оценка качества";
-            ExcelApp.Cells[1, 9] = "Подпись";
 
-            return ExcelApp;
+            var worksheet = workbook.Worksheets.Add();
+            worksheet.Name = controlName;
+            ExcelApp.Columns.ColumnWidth = 20;
+            ExcelApp.Cells[1, 1] = "№ п/п";
+            ExcelApp.Cells[1, 2] = "№ св.соед.";
+            ExcelApp.Cells[1, 3] = "Дата";
+            ExcelApp.Cells[1, 4] = "№ заявки";
+            ExcelApp.Cells[1, 5] = "Контролёр";
+            ExcelApp.Cells[1, 6] = "Наименование изделия";
+            ExcelApp.Cells[1, 7] = "Типовой размер";
+            ExcelApp.Cells[1, 8] = "Клеймо сварщика";
+            ExcelApp.Cells[1, 9] = "Обнаруженные дефекты";
+            ExcelApp.Cells[1, 10] = "Годен / не годен";
+            ExcelApp.Cells[1, 11] = "Подпись";
+
+            return workbook;
         }
 
-        private static Microsoft.Office.Interop.Excel.Application AddRowToExcelTable(Microsoft.Office.Interop.Excel.Application ExcelApp, UilResult result, UilJournal journal, int row)
+        private static Microsoft.Office.Interop.Excel.Worksheet AddRowToExcelTable(Microsoft.Office.Interop.Excel.Worksheet ExcelApp, UilResult result, UilJournal journal, int row, bool isControlled)
         {
-            ExcelApp.Cells[row + 2, 1] = result.Number.ToString();
-            ExcelApp.Cells[row + 2, 2] = journal.Control_date != null ? ConvertDateTimeToString((DateTime)journal.Control_date) : "<не указано>";
-            ExcelApp.Cells[row + 2, 3] = result.Welder;
-            ExcelApp.Cells[row + 2, 4] = journal.Component != null ? journal.Component.Pressmark : "<не указано>";
-            ExcelApp.Cells[row + 2, 5] = journal.Request_number.ToString().ToString();
-            ExcelApp.Cells[row + 2, 6] = result.Mark != null ? result.Mark.ToString() : "<не указано>";
-            ExcelApp.Cells[row + 2, 7] = result.Defect_description;
-            ExcelApp.Cells[row + 2, 8] = result.Quality != null ? result.Quality.ToString() : "<не указано>";
-            ExcelApp.Cells[row + 2, 9] = "";
+            ExcelApp.Cells[row , 2] = result.Number.ToString();
+            ExcelApp.Cells[row , 3] = journal.Control_date != null ? ConvertDateTimeToString((DateTime)journal.Control_date) : "<не указано>";
+            ExcelApp.Cells[row , 4] = journal.Request_number.ToString();
+            ExcelApp.Cells[row , 5] = result.Welder;
+            ExcelApp.Cells[row , 6] = journal.Component != null ? journal.Component.Name : "<не указано>";
+            ExcelApp.Cells[row , 7] = journal.Size;
+            ExcelApp.Cells[row , 8] = result.Mark != null ? result.Mark.ToString() : "<не указано>";
+            ExcelApp.Cells[row , 9] = result.Defect_description;
+            ExcelApp.Cells[row , 10] = isControlled ? "годен" : "не годен";
+            ExcelApp.Cells[row , 11] = "";
 
             return ExcelApp;
         }
@@ -205,7 +211,7 @@ namespace QualityControl_Client
         public static void ConvertChosenControlResultsToExcel(UilControlName controlName, List<UilJournal> journals, string folderPath)
         {
             Microsoft.Office.Interop.Excel.Application ExcelApp = new Microsoft.Office.Interop.Excel.Application();
-            ExcelApp = InitResultExcelTable(ExcelApp);
+            //ExcelApp = InitResultExcelTable(ExcelApp);
             int rowNumber = -1;
             foreach (var journal in journals)
             {
@@ -216,7 +222,7 @@ namespace QualityControl_Client
                         foreach (var result in control.ResultLib.Result)
                         {
                             rowNumber++;
-                            ExcelApp = AddRowToExcelTable(ExcelApp, result, journal, rowNumber);
+                           // ExcelApp = AddRowToExcelTable(ExcelApp, result, journal, rowNumber);
                         }
 
                     }
@@ -230,7 +236,7 @@ namespace QualityControl_Client
         {
             string fontsfolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Fonts);
             BaseFont baseFont = BaseFont.CreateFont(fontsfolder + "\\arial.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-            Font font = new Font(baseFont, Font.DEFAULTSIZE, Font.NORMAL);
+            iTextSharp.text.Font font = new iTextSharp.text.Font(baseFont, iTextSharp.text.Font.DEFAULTSIZE, iTextSharp.text.Font.NORMAL);
 
 
             //Creating iTextSharp Table from the DataTable data
@@ -258,7 +264,7 @@ namespace QualityControl_Client
             ExportPdfTable(pdfTable, folderPath);
         }
 
-        private static PdfPTable InitPdfTable(PdfPTable pdfTable, Font font)
+        private static PdfPTable InitPdfTable(PdfPTable pdfTable, iTextSharp.text.Font font)
         {
             float[] widths = new float[] { 20f, 50f, 60f, 50f, 40f, 60f, 60f, 50f, 40f };
             pdfTable.SetWidths(widths);
@@ -281,7 +287,7 @@ namespace QualityControl_Client
             return pdfTable;
         }
 
-        private static PdfPTable AddResultToPdfTable(PdfPTable pdfTable, UilResult result, UilJournal journal, Font font)
+        private static PdfPTable AddResultToPdfTable(PdfPTable pdfTable, UilResult result, UilJournal journal, iTextSharp.text.Font font)
         {
             pdfTable.AddCell(CreateHeaderCell(result.Number.ToString(), font));
             pdfTable.AddCell(CreateHeaderCell(ConvertDateTimeToString((DateTime)journal.Control_date), font));
@@ -318,6 +324,46 @@ namespace QualityControl_Client
                 pdfDoc.Close();
                 stream.Close();
             }
+        }
+
+        public static void WriteJournalToExcel(List<UilJournal> journals, string fileName)
+        {
+            Microsoft.Office.Interop.Excel.Application ExcelApp = new Microsoft.Office.Interop.Excel.Application();
+            var workbook = ExcelApp.Application.Workbooks.Add(Type.Missing);
+            int journalNum = -1;
+            int rowNumber = 0;
+            workbook = InitResultExcelTable(workbook, ExcelApp, "ВИК");
+            workbook = InitResultExcelTable(workbook, ExcelApp, "УЗК");
+            workbook = InitResultExcelTable(workbook, ExcelApp, "РГК");
+            workbook = InitResultExcelTable(workbook, ExcelApp, "ПВК");
+            foreach (var journal in journals)
+            {
+                journalNum++;
+                int sheetNum = 0;    
+                foreach (var control in journal.ControlMethodsLib.Control)
+                {
+                    sheetNum++;
+                    foreach(Worksheet currentSheet in workbook.Sheets)
+                    {
+                        if (currentSheet.Name == control.ControlName.Name)
+                        {
+                            Microsoft.Office.Interop.Excel.Range last = currentSheet.Cells.SpecialCells(Microsoft.Office.Interop.Excel.XlCellType.xlCellTypeLastCell, Type.Missing);
+                            rowNumber = last.Row + 1;
+                            if (control.ResultLib.Result.Count != 0)
+                            {
+                                currentSheet.Cells[rowNumber , 1] = control.ProtocolNumber.ToString();
+                            }
+                            foreach (var result in control.ResultLib.Result)
+                            {
+                                AddRowToExcelTable(currentSheet, result, journal, rowNumber, control.Is_сontrolled.Value);
+                                rowNumber++;
+                            }
+                        }
+                    }                                  
+                }
+            }
+            workbook.Sheets[workbook.Sheets.Count].Delete();
+            ExportExcelTable(ExcelApp, fileName);
         }
     }
 }
