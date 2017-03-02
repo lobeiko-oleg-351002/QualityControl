@@ -78,5 +78,11 @@ namespace BLL.Services
             bllCertificate.Employee = entity.Employee_id != null ? employeeService.Get((int)entity.Employee_id) : null;
             return bllCertificate;
         }
+
+        public BllCertificate GetCertificateByEmployeeAndControlName(BllEmployee employee, BllControlName name)
+        {
+            Mapper.CreateMap<DalCertificate, BllCertificate>();
+            return Mapper.Map<BllCertificate>(uow.Certificates.GetCertificateByEmployeeIdAndControlId(employee.Id, name.Id));
+        }
     }
 }

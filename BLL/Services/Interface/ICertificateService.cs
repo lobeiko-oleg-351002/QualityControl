@@ -10,5 +10,6 @@ namespace BLL.Services.Interface
     public interface ICertificateService : IService<BllCertificate>
     {
         BllCertificate GetCertificateByTitle(string title);
+        BllCertificate GetCertificateByEmployeeAndControlName(BllEmployee employee, BllControlName name);
     }
 }

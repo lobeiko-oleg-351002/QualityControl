@@ -439,4 +439,4 @@ E:\Projects\VisualStudioProjects\17.01.17\QualityControl\QualityControl\bin\Debu
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\QualityControl\bin\Debug\EntityFramework.SqlServer.xml
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\QualityControl\bin\Debug\AutoMapper.xml
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\QualityControl\obj\Debug\QualityControl_Server.ContinueChoiceForm.resources
-E:\Projects\VisualStudioProjects\17.01.17\QualityControl\QualityControl\obj\Debug\QualityControl_Server.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\QualityControl\obj\Debug\QualityControl_Server.DateRangeForm.resources

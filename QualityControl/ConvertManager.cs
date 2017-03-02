@@ -332,10 +332,13 @@ namespace QualityControl_Client
             var workbook = ExcelApp.Application.Workbooks.Add(Type.Missing);
             int journalNum = -1;
             int rowNumber = 0;
-            workbook = InitResultExcelTable(workbook, ExcelApp, "ВИК");
-            workbook = InitResultExcelTable(workbook, ExcelApp, "УЗК");
-            workbook = InitResultExcelTable(workbook, ExcelApp, "РГК");
             workbook = InitResultExcelTable(workbook, ExcelApp, "ПВК");
+            workbook = InitResultExcelTable(workbook, ExcelApp, "РГК");
+            workbook = InitResultExcelTable(workbook, ExcelApp, "УЗК");
+            workbook = InitResultExcelTable(workbook, ExcelApp, "ВИК");
+
+
+
             foreach (var journal in journals)
             {
                 journalNum++;

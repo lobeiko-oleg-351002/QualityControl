@@ -81,5 +81,14 @@ namespace ServerWcfService.Services
             BllCertificate bllEntity = Mapper.Map<BllCertificate>(entity);
             return bllEntity;
         }
+
+        public UilCertificate GetCertificateByEmployeeAndControlName(UilEmployee employee, UilControlName name)
+        {
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<UilControlName, BllControlName>();
+            });
+            return MapBllToUil(certificateService.GetCertificateByEmployeeAndControlName(EmployeeRepository.MapUilToBll(employee), Mapper.Map<BllControlName>(name)));
+        }
     }
 }

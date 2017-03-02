@@ -318,7 +318,7 @@ namespace QualityControl
             foreach (var control in journal.ControlMethodsLib.Control)
             {
                 var control_id = control.ControlName.Id;
-                row.Cells[5 + control_id].Value = "  +";   // 9 a ne 5
+                row.Cells[9 + control_id].Value = "  +";   // 9 a ne 5
             }
 
         }
@@ -830,17 +830,10 @@ namespace QualityControl
                 }
                 ExportMethod exportMethod;
                
-                if (chooseControlNameForm.isPdfSelected)
-                {
-                    saveFileDialog1.Filter = "PDF file (*.pdf)|*.pdf";
-                    
-                    exportMethod = ConvertManager.ConvertChosenControlResultsToPdf;
-                }
-                else
-                {
-                    saveFileDialog1.Filter = "Excel files (*.xls)|*.xls";
-                    exportMethod = ConvertManager.ConvertChosenControlResultsToExcel;
-                }
+                
+                saveFileDialog1.Filter = "Word files (*.docx)|*.docx";
+                //exportMethod = ConvertManager.ConvertChosenControlResultsToExcel;
+                
 
                 int minProtocolNum = int.MaxValue, maxProtocolNum = -1;
                 foreach (var journal in SelectedJournals)
@@ -867,35 +860,50 @@ namespace QualityControl
 
                 if (DialogResult.OK == saveFileDialog1.ShowDialog())
                 {
-                    exportMethod(chooseControlNameForm.SelectedControlName, SelectedJournals, saveFileDialog1.FileName);
+                    //exportMethod(chooseControlNameForm.SelectedControlName, SelectedJournals, saveFileDialog1.FileName);
+                    WordDocumentManager wdm = new WordDocumentManager();
+                    try
+                    {
+                        wdm.CreateWordDocument(saveFileDialog1.FileName, SelectedJournals);
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Ошибка");
+                    }
                 }
 
             }
         }
 
-        private void экспортPDFToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            saveFileDialog1.FileName = "Журнал";
-            saveFileDialog1.Filter = "PDF file (*.pdf)|*.pdf";
-            if (DialogResult.OK == saveFileDialog1.ShowDialog())
-            {
-                ConvertManager.ConvertDataGridToPdf(dataGridView1, saveFileDialog1.FileName);
-            }
-        }
-
-        private void экспортExcelToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            saveFileDialog1.Filter = "Excel files (*.xls)|*.xls";
-            saveFileDialog1.FileName = "Журнал";
-            if (DialogResult.OK == saveFileDialog1.ShowDialog())
-            {
-                ConvertManager.WriteJournalToExcel(Journals, saveFileDialog1.FileName);
-            }
-        }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void журналОбъектовPDFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DateRangeForm form = new DateRangeForm();
+            form.ShowDialog();
+            if (!form.isCanceled)
+            {
+                List<UilJournal> selectedJournal = new List<UilJournal>();
+                var left = form.left.Date;
+                var right = form.right.Date;
+                foreach (var journal in Journals)
+                {
+                    if (journal.Control_date.Value.Date.CompareTo(left) >= 0 && journal.Control_date.Value.Date.CompareTo(right) <= 0)
+                    {
+                        selectedJournal.Add(journal);
+                    }
+                }
+                saveFileDialog1.Filter = "Excel files (*.xls)|*.xls";
+                saveFileDialog1.FileName = "Журнал";
+                if (DialogResult.OK == saveFileDialog1.ShowDialog())
+                {
+                    ConvertManager.WriteJournalToExcel(selectedJournal, saveFileDialog1.FileName);
+                }
+            }
         }
     }
 }

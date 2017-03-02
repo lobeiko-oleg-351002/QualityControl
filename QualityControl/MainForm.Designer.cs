@@ -47,8 +47,6 @@
             this.сотрудникиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.печатьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.журналОбъектовPDFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.экспортPDFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.экспортExcelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.протоколыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.администрированиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -254,32 +252,16 @@
             // 
             // журналОбъектовPDFToolStripMenuItem
             // 
-            this.журналОбъектовPDFToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.экспортPDFToolStripMenuItem,
-            this.экспортExcelToolStripMenuItem});
             this.журналОбъектовPDFToolStripMenuItem.Name = "журналОбъектовPDFToolStripMenuItem";
             this.журналОбъектовPDFToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.журналОбъектовPDFToolStripMenuItem.Text = "Журнал контроля";
-            // 
-            // экспортPDFToolStripMenuItem
-            // 
-            this.экспортPDFToolStripMenuItem.Name = "экспортPDFToolStripMenuItem";
-            this.экспортPDFToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.экспортPDFToolStripMenuItem.Text = "Экспорт PDF";
-            this.экспортPDFToolStripMenuItem.Click += new System.EventHandler(this.экспортPDFToolStripMenuItem_Click);
-            // 
-            // экспортExcelToolStripMenuItem
-            // 
-            this.экспортExcelToolStripMenuItem.Name = "экспортExcelToolStripMenuItem";
-            this.экспортExcelToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.экспортExcelToolStripMenuItem.Text = "Экспорт Excel";
-            this.экспортExcelToolStripMenuItem.Click += new System.EventHandler(this.экспортExcelToolStripMenuItem_Click);
+            this.журналОбъектовPDFToolStripMenuItem.Click += new System.EventHandler(this.журналОбъектовPDFToolStripMenuItem_Click);
             // 
             // протоколыToolStripMenuItem
             // 
             this.протоколыToolStripMenuItem.Name = "протоколыToolStripMenuItem";
             this.протоколыToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
-            this.протоколыToolStripMenuItem.Text = "Заключения";
+            this.протоколыToolStripMenuItem.Text = "Заключение";
             this.протоколыToolStripMenuItem.Click += new System.EventHandler(this.протоколыToolStripMenuItem_Click);
             // 
             // настройкиToolStripMenuItem
@@ -674,8 +656,6 @@
         private System.Windows.Forms.ToolStripMenuItem поискToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem протоколыToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem журналОбъектовPDFToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem экспортPDFToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem экспортExcelToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;

@@ -477,6 +477,7 @@
       <DependentUpon>RegistrationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ServiceChannelManager.cs" />
+    <Compile Include="WordDocumentManager.cs" />
     <EmbeddedResource Include="AddJournalForm.resx">
       <DependentUpon>AddJournalForm.cs</DependentUpon>
     </EmbeddedResource>

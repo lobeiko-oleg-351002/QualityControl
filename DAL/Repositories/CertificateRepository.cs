@@ -18,6 +18,13 @@ namespace DAL.Repositories
             this.context = context;
         }
 
+        public DalCertificate GetCertificateByEmployeeIdAndControlId(int e_id, int c_id)
+        {
+            Mapper.CreateMap<Certificate, DalCertificate>();
+            var ormEntity = context.Certificates.FirstOrDefault(entity => entity.employee_id == e_id && entity.controlName_id == c_id);
+            return Mapper.Map<DalCertificate>(ormEntity);
+        }
+
         public DalCertificate GetCertificateByTitle(string title)
         {
             Mapper.CreateMap<Certificate, DalCertificate>();

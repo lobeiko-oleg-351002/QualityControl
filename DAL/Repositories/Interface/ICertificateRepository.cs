@@ -10,5 +10,6 @@ namespace DAL.Repositories.Interface
     public interface ICertificateRepository : IRepository<DalCertificate>
     {
         DalCertificate GetCertificateByTitle(string title);
+        DalCertificate GetCertificateByEmployeeIdAndControlId(int e_id, int c_id);
     }
 }

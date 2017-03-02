@@ -16,7 +16,6 @@ namespace QualityControl_Client
     {
         List<UilControlName> ControlNames;
         public UilControlName SelectedControlName { get; private set; }
-        public bool isPdfSelected = false;
         public ExportControlResultForm()
         {
             InitializeComponent();
@@ -44,16 +43,6 @@ namespace QualityControl_Client
             Close();
         }
 
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-            if (radioButton1.Checked)
-            {
-                isPdfSelected = true;
-            }
-            else
-            {
-                isPdfSelected = false;
-            }
-        }
+
     }
 }

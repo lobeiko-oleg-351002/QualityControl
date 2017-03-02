@@ -15,12 +15,15 @@ namespace QualityControl_Server
         public DateRangeForm()
         {
             InitializeComponent();
+            CenterToScreen();
         }
 
         public DateTime right {get; private set;}
         public DateTime left  {get; private set;}
+        public bool isCanceled { get; private set; }
         private void button2_Click(object sender, EventArgs e)
         {
+            isCanceled = true;
             Close();
         }
 
@@ -28,6 +31,8 @@ namespace QualityControl_Server
         {
             left = dateTimePicker1.Value;
             right = dateTimePicker2.Value;
+            isCanceled = false;
+            Close();
         }
 
         private void dateTimePicker2_ValueChanged(object sender, EventArgs e)

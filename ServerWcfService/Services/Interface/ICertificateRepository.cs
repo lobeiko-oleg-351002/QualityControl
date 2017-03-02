@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using UIL.Entities;
 using UIL.Entities.Interface;
 
 namespace ServerWcfService.Services.Interface
@@ -13,5 +14,8 @@ namespace ServerWcfService.Services.Interface
     {
         [OperationContract]
         UilCertificate GetCertificateByTitle(string title);
+
+        [OperationContract]
+        UilCertificate GetCertificateByEmployeeAndControlName(UilEmployee employee, UilControlName name);
     }
 }
