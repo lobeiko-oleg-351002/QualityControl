@@ -27,7 +27,7 @@ namespace UIL.Entities
 
         public UilWeldJoint WeldJoint { get; set; }
 
-        public string Welding_type { get; set; }
+        public string WeldingType { get; set; }
 
         public UilControlMethodsLib ControlMethodsLib { get; set; }
 
@@ -41,8 +41,8 @@ namespace UIL.Entities
 
         public UilUser UserOwner { get; set; }
 
-        public string User_Modifier_Login { get; set; }
+        public string UserModifierLogin { get; set; }
 
-        public DateTime? Modified_date { get; set; }
+        public DateTime? ModifiedDate { get; set; }
     }
 }

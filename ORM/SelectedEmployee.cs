@@ -1,13 +1,12 @@
 namespace ORM
 {
-    using Interface;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("SelectedEmployee")]
+    [Table("SeletctedEmployee")]
     public partial class SelectedEmployee : IOrmEntity
     {
         public int id { get; set; }

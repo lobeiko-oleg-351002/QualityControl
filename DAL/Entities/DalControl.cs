@@ -11,7 +11,7 @@ namespace DAL.Entities
     {
         public int Id { get; set; }
 
-        public bool? Is_controlled { get; set; }
+        public bool? IsControlled { get; set; }
 
         public int? Number { get; set; }
 
@@ -19,17 +19,17 @@ namespace DAL.Entities
 
         public string Additionally { get; set; }
 
-        public int? Requirement_documentation_lib_id { get; set; }
+        public int? RequirementDocumentationLib_id { get; set; }
 
-        public int? Control_method_documentation_lib_id { get; set; }
+        public int? ControlMethodDocumentationLib_id { get; set; }
 
-        public int? Image_lib_id { get; set; }
+        public int? ImageLib_id { get; set; }
 
         public int? ResultLib_id { get; set; }
 
         public int? EmployeeLib_id { get; set; }
 
-        public int? Control_name_id { get; set; }
+        public int? ControlName_id { get; set; }
 
         public int? ControlMethodsLib_id { get; set; }
 

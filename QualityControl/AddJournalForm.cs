@@ -2,7 +2,7 @@
 using QualityControl_Client.Forms.MaterialDirectory;
 using QualityControl_Client.Forms.WeldJointDirectory;
 using QualityControl_Server;
-using ServerWcfService.Services.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +12,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+using BLL.Entities;
+using BLL.Services.Interface;
+using BLL.Services;
+using DAL.Repositories.Interface;
 
 namespace QualityControl_Client
 {
@@ -20,15 +23,15 @@ namespace QualityControl_Client
     {
         AutoCompleteStringCollection autoComplete = new AutoCompleteStringCollection();
 
-        List<UilControlName> ControlNames;
+        List<BllControlName> ControlNames;
         List<ControlMethodTabForm> ControlMethodTabForms;
-        List<UilIndustrialObject> IndustrialObjects;
-        List<UilCustomer> Customers;
-        UilUser User = null;
+        List<BllIndustrialObject> IndustrialObjects;
+        List<BllCustomer> Customers;
+        BllUser User = null;
 
-        public UilJournal Journal { get; private set; }
+        public BllJournal Journal { get; private set; }
 
-        public delegate void AddRowToDataGrid(UilJournal journal);
+        public delegate void AddRowToDataGrid(BllJournal journal);
 
         private AddRowToDataGrid AddRowToDataGridDelegate;
 
@@ -37,9 +40,11 @@ namespace QualityControl_Client
             InitializeComponent();
         }
 
-        public AddJournalForm(AddRowToDataGrid AddRowToDataGridDelegate, UilUser user)
+        IUnitOfWork uow;
+        public AddJournalForm(AddRowToDataGrid AddRowToDataGridDelegate, BllUser user, IUnitOfWork uow)
         {
             InitializeComponent();
+            this.uow = uow;
             textBox6.AutoCompleteMode = AutoCompleteMode.Suggest;
             textBox6.AutoCompleteSource = AutoCompleteSource.CustomSource;
             textBox6.AutoCompleteCustomSource = autoComplete;
@@ -49,37 +54,37 @@ namespace QualityControl_Client
             this.AddRowToDataGridDelegate = AddRowToDataGridDelegate;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             CenterToScreen();
-            Journal = new UilJournal
+            Journal = new BllJournal
             {
-                Request_date = DateTime.Now,
-                Control_date = DateTime.Now,
-                Request_number = 0,
+                RequestDate = DateTime.Now,
+                ControlDate = DateTime.Now,
+                RequestNumber = 0,
                 Amount = 0,
 
             };
-            Journal.ControlMethodsLib = new UilControlMethodsLib();
+            Journal.ControlMethodsLib = new BllControlMethodsLib();
 
-            IControlNameRepository controlNameRepository = ServiceChannelManager.Instance.ControlNameRepository;
-            var controlNames = controlNameRepository.GetAll();
-            ControlNames = new List<UilControlName>();
+            IControlNameService controlNameService = new ControlNameService(uow);
+            var controlNames = controlNameService.GetAll();
+            ControlNames = new List<BllControlName>();
             ControlMethodTabForms = new List<ControlMethodTabForm>();
 
             foreach (var controlName in controlNames)
             {
-                var control = new UilControl
+                var control = new BllControl
                 {
-                    ImageLib = new UilImageLib(),
-                    EquipmentLib = new UilEquipmentLib(),
-                    ResultLib = new UilResultLib(),
-                    ControlMethodDocumentationLib = new UilControlMethodDocumentationLib(),
-                    RequirementDocumentationLib = new UilRequirementDocumentationLib(),
-                    EmployeeLib = new UilEmployeeLib()
+                    ImageLib = new BllImageLib(),
+                    EquipmentLib = new BllEquipmentLib(),
+                    ResultLib = new BllResultLib(),
+                    ControlMethodDocumentationLib = new BllControlMethodDocumentationLib(),
+                    RequirementDocumentationLib = new BllRequirementDocumentationLib(),
+                    EmployeeLib = new BllEmployeeLib()
                 };
                 control.ControlName = controlName;
                 
                 Journal.ControlMethodsLib.Control.Add(control);
 
-                var tabForm = new ControlMethodTabForm(controlName.Name);
+                var tabForm = new ControlMethodTabForm(controlName.Name, uow);
                 tabForm.EnableValidateCheckBox();
                 ControlMethodTabForms.Add(tabForm);
 
@@ -94,9 +99,9 @@ namespace QualityControl_Client
                 ControlMethodTabForms[i].AddEmployee(user.Employee);
             }
 
-            IndustrialObjects = new List<UilIndustrialObject>();
-            IIndustrialObjectRepository industrialObjectRepository = ServiceChannelManager.Instance.IndustrialObjectRepository;
-            var industrialObjects = industrialObjectRepository.GetAll();
+            IndustrialObjects = new List<BllIndustrialObject>();
+            IIndustrialObjectService industrialObjectService = new IndustrialObjectService(uow);
+            var industrialObjects = industrialObjectService.GetAll();
             foreach (var element in industrialObjects)
             {
                 IndustrialObjects.Add(element);
@@ -107,9 +112,9 @@ namespace QualityControl_Client
                 comboBox1.SelectedValue = comboBox1.Items[0];
             }
 
-            Customers = new List<UilCustomer>();
-            ICustomerRepository CustomerRepository = ServiceChannelManager.Instance.CustomerRepository;
-            var customers = CustomerRepository.GetAll();
+            Customers = new List<BllCustomer>();
+            ICustomerService CustomerService = new CustomerService(uow);
+            var customers = CustomerService.GetAll();
             foreach (var element in customers)
             {
                 Customers.Add(element);
@@ -124,9 +129,9 @@ namespace QualityControl_Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ChooseComponentForm ComponentForm = new ChooseComponentForm();
+            ChooseComponentForm ComponentForm = new ChooseComponentForm(uow);
             ComponentForm.ShowDialog(this);
-            UilComponent Component = ComponentForm.GetChosenComponent();
+            BllComponent Component = ComponentForm.GetChosenComponent();
             if (Component != null)
             {
                 Journal.Component = Component;
@@ -136,9 +141,9 @@ namespace QualityControl_Client
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ChooseMaterialForm MaterialForm = new ChooseMaterialForm();
+            ChooseMaterialForm MaterialForm = new ChooseMaterialForm(uow);
             MaterialForm.ShowDialog(this);
-            UilMaterial Material = MaterialForm.GetChosenMaterial();
+            BllMaterial Material = MaterialForm.GetChosenMaterial();
             if (Material != null)
             {
                 Journal.Material = Material;
@@ -148,9 +153,9 @@ namespace QualityControl_Client
 
         private void button3_Click(object sender, EventArgs e)
         {
-            ChooseWeldJointForm WeldJointForm = new ChooseWeldJointForm();
+            ChooseWeldJointForm WeldJointForm = new ChooseWeldJointForm(uow);
             WeldJointForm.ShowDialog(this);
-            UilWeldJoint WeldJoint = WeldJointForm.GetChosenWeldJoint();
+            BllWeldJoint WeldJoint = WeldJointForm.GetChosenWeldJoint();
             if (WeldJoint != null)
             {
                 Journal.WeldJoint = WeldJoint;
@@ -174,9 +179,9 @@ namespace QualityControl_Client
         }
 
 
-        private List<UilControl> Clone(List<UilControl> source)
+        private List<BllControl> Clone(List<BllControl> source)
         {
-            List<UilControl> temp = new List<UilControl>();
+            List<BllControl> temp = new List<BllControl>();
             foreach(var elem in source)
             {
                 temp.Add(CloneControl(elem));
@@ -184,47 +189,47 @@ namespace QualityControl_Client
             return temp;
         }
 
-        private UilControl CloneControl(UilControl source)
+        private BllControl CloneControl(BllControl source)
         {
-            UilControl target = new UilControl();
+            BllControl target = new BllControl();
             target.Additionally = source.Additionally;
             target.ControlName = source.ControlName;
             target.Id = source.Id;
-            target.Is_сontrolled = source.Is_сontrolled;
+            target.IsControlled = source.IsControlled;
             target.Light = source.Light;
             target.Number = source.Number;
             target.ProtocolNumber = source.ProtocolNumber;
-            target.ControlMethodDocumentationLib = new UilControlMethodDocumentationLib();
+            target.ControlMethodDocumentationLib = new BllControlMethodDocumentationLib();
             foreach (var doc in source.ControlMethodDocumentationLib.SelectedControlMethodDocumentation)
             {
                 target.ControlMethodDocumentationLib.SelectedControlMethodDocumentation.Add(doc);
             }
 
-            target.EmployeeLib = new UilEmployeeLib();
+            target.EmployeeLib = new BllEmployeeLib();
             foreach (var employee in source.EmployeeLib.SelectedEmployee)
             {
                 target.EmployeeLib.SelectedEmployee.Add(employee);
             }
 
-            target.EquipmentLib = new UilEquipmentLib();
+            target.EquipmentLib = new BllEquipmentLib();
             foreach (var Equipment in source.EquipmentLib.SelectedEquipment)
             {
                 target.EquipmentLib.SelectedEquipment.Add(Equipment);
             }
 
-            target.RequirementDocumentationLib = new UilRequirementDocumentationLib();
+            target.RequirementDocumentationLib = new BllRequirementDocumentationLib();
             foreach (var RequirementDocumentation in source.RequirementDocumentationLib.SelectedRequirementDocumentation)
             {
                 target.RequirementDocumentationLib.SelectedRequirementDocumentation.Add(RequirementDocumentation);
             }
 
-            target.ResultLib = new UilResultLib();
+            target.ResultLib = new BllResultLib();
             foreach (var Result in source.ResultLib.Result)
             {
                 target.ResultLib.Result.Add(Result);
             }
 
-            target.ImageLib = new UilImageLib();
+            target.ImageLib = new BllImageLib();
             foreach (var Image in source.ImageLib.Image)
             {
                 target.ImageLib.Image.Add(Image);
@@ -234,24 +239,24 @@ namespace QualityControl_Client
 
         }
 
-        private UilJournal CloneJournal(UilJournal source)
+        private BllJournal CloneJournal(BllJournal source)
         {
-            UilJournal target = new UilJournal();
+            BllJournal target = new BllJournal();
             target.Amount = source.Amount;
             target.Component = source.Component;
             target.Contract = source.Contract;
-            target.Control_date = source.Control_date;
+            target.ControlDate = source.ControlDate;
             target.Customer = source.Customer;
             target.Description = source.Description;
             target.Id = source.Id;
             target.IndustrialObject = source.IndustrialObject;
             target.Material = source.Material;
-            target.Request_date = source.Request_date;
-            target.Request_number = source.Request_number;
+            target.RequestDate = source.RequestDate;
+            target.RequestNumber = source.RequestNumber;
             target.Size = source.Size;
-            target.Welding_type = source.Welding_type;
+            target.WeldingType = source.WeldingType;
             target.WeldJoint = source.WeldJoint;
-            target.ControlMethodsLib = new UilControlMethodsLib();
+            target.ControlMethodsLib = new BllControlMethodsLib();
             return target;
         }
 
@@ -275,7 +280,7 @@ namespace QualityControl_Client
             {
                 unfilledInfo += "\n Тип сварного соединения";
             }
-            if (Journal.Welding_type == "")
+            if (Journal.WeldingType == "")
             {
                 unfilledInfo += "\n Способ сварки";
             }
@@ -307,13 +312,13 @@ namespace QualityControl_Client
             InitializeJournalViaFormControls();
             if (DealWithUnfilledInfo())
             {
-                IJournalRepository repository = ServiceChannelManager.Instance.JournalRepository;
+                IJournalService Service = new JournalService(uow);
                 
-                List<UilControl> temp = Clone(Journal.ControlMethodsLib.Control); //оставляю для следующих добавляемых объектов в этом окне
+                List<BllControl> temp = Clone(Journal.ControlMethodsLib.Control); //оставляю для следующих добавляемых объектов в этом окне
                 RemoveUncontrolledMethods();
 
 
-                Journal = repository.Create(Journal);
+                Journal = Service.Create(Journal);
                 MessageBox.Show("Информация добавлена.", "Оповещение");
                 AddRowToDataGridDelegate(Journal);
 
@@ -349,12 +354,12 @@ namespace QualityControl_Client
 
         private void InitializeJournalViaFormControls()
         {
-            Journal.Request_date = dateTimePicker1.Value;
-            Journal.Control_date = dateTimePicker2.Value;
-            Journal.Request_number = (int)numericUpDown2.Value;
+            Journal.RequestDate = dateTimePicker1.Value;
+            Journal.ControlDate = dateTimePicker2.Value;
+            Journal.RequestNumber = (int)numericUpDown2.Value;
             Journal.Amount = (int)numericUpDown1.Value;
             Journal.Size = textBox3.Text;
-            Journal.Welding_type = textBox6.Text;
+            Journal.WeldingType = textBox6.Text;
             Journal.Contract = textBox9.Text;
             Journal.Description = richTextBox2.Text;
             Journal.Customer = comboBox2.SelectedIndex != -1 ? Customers[comboBox2.SelectedIndex] : null;

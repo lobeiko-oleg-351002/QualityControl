@@ -21,7 +21,7 @@ namespace DAL.Repositories
         public IEnumerable<DalSelectedComponent> GetComponentsByLibId(int id)
         {
             Mapper.CreateMap<SelectedComponent, DalSelectedComponent>();
-            var elements = context.Set<SelectedComponent>().Where(entity => entity.component_lib_id == id);
+            var elements = context.Set<SelectedComponent>().Where(entity => entity.componentLib_id == id);
             var retElemets = new List<DalSelectedComponent>();
             foreach (var element in elements)
             {

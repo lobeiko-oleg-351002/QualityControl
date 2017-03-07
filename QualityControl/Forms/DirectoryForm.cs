@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BLL.Entities.Interface;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -42,7 +43,7 @@ namespace QualityControl_Client.Forms
 
         }
 
-        public virtual void SelectRow(IUilEntity entity)
+        public virtual void SelectRow(IBllEntity entity)
         {
 
         }

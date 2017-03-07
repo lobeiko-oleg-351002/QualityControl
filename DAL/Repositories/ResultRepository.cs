@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class ResultRepository : Repository<DalResult, Results>, IResultRepository
+    public class ResultRepository : Repository<DalResult, Result>, IResultRepository
     {
         private readonly ServiceDB context;
         public ResultRepository(ServiceDB context) : base(context)
@@ -20,27 +20,27 @@ namespace DAL.Repositories
 
         public DalResult GetResultByNumber(int number)
         {
-            Mapper.CreateMap<Results, DalResult>();
+            Mapper.CreateMap<Result, DalResult>();
             var ormEntity = context.Results.FirstOrDefault(entity => entity.number == number);
             return Mapper.Map<DalResult>(ormEntity);
         }
 
-        public new Results Create(DalResult entity)
+        public new Result Create(DalResult entity)
         {
-            Mapper.CreateMap<DalResult, Results>();
-            var ormEntity = Mapper.Map<Results>(entity);
+            Mapper.CreateMap<DalResult, Result>();
+            var ormEntity = Mapper.Map<Result>(entity);
             ormEntity.ResultLib = context.ResultLibs.FirstOrDefault(e => e.id == ormEntity.resultLib_id);
             //ormEntity.ResultLib.Result.Add(ormEntity);
-            return context.Set<Results>().Add(Mapper.Map<Results>(entity));
+            return context.Set<Result>().Add(Mapper.Map<Result>(entity));
         }
         public IEnumerable<DalResult> GetResultsByLibId(int id)
         {
-            Mapper.CreateMap<Results, DalResult>();
-            var elements = context.Set<Results>().Where(entity => entity.resultLib_id == id);
+            Mapper.CreateMap<Result, DalResult>();
+            var elements = context.Set<Result>().Where(entity => entity.resultLib_id == id);
             var retElemets = new List<DalResult>();
             foreach (var element in elements)
             {
-                Mapper.CreateMap<Results, DalResult>();
+                Mapper.CreateMap<Result, DalResult>();
                 retElemets.Add(Mapper.Map<DalResult>(element));
             }
             return retElemets;

@@ -74,7 +74,7 @@ namespace BLL.Services
             });
 
             DalIndustrialObject dalEntity = Mapper.Map<DalIndustrialObject>(entity);
-            dalEntity.Component_lib_id = entity.ComponentLib != null ? entity.ComponentLib.Id : (int?)null;
+            dalEntity.ComponentLib_id = entity.ComponentLib != null ? entity.ComponentLib.Id : (int?)null;
             return dalEntity;
         }
 
@@ -86,7 +86,7 @@ namespace BLL.Services
             });
             BllIndustrialObject bllIndustrialObject = Mapper.Map<BllIndustrialObject>(entity);
             ComponentLibService ComponentLibService = new ComponentLibService(uow);
-            bllIndustrialObject.ComponentLib = entity.Component_lib_id != null ? ComponentLibService.Get((int)entity.Component_lib_id) : null;
+            bllIndustrialObject.ComponentLib = entity.ComponentLib_id != null ? ComponentLibService.Get((int)entity.ComponentLib_id) : null;
             return bllIndustrialObject;
         }
     }

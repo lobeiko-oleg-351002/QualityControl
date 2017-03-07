@@ -1,4 +1,8 @@
-﻿using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,26 +12,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
 
 namespace QualityControl_Client.Forms.RequirementDocumentationDirectory
 {
     public partial class RequirementDocumentationDirectoryForm : DirectoryForm
     {
-        List<UilRequirementDocumentation> RequirementDocumentations;
-        public RequirementDocumentationDirectoryForm() : base()
+        List<BllRequirementDocumentation> RequirementDocumentations;
+        IUnitOfWork uow;
+        public RequirementDocumentationDirectoryForm(IUnitOfWork uow) : base()
         {
             InitializeComponent();
+            this.uow = uow;
             RefreshData();
             saveFileDialog1.Filter = "PDF file (*.pdf)|*.pdf";
             saveFileDialog2.Filter = "Excel files (*.xls)|*.xls";
+        }
+        public RequirementDocumentationDirectoryForm() : base()
+        {
+            InitializeComponent();
         }
 
         public override void RefreshData()
         {
             dataGridView1.Rows.Clear();
-            IRequirementDocumentationRepository repository = ServiceChannelManager.Instance.RequirementDocumentationRepository;
-            RequirementDocumentations = repository.GetAll().ToList();
+            IRequirementDocumentationService Service = new RequirementDocumentationService(uow);
+            RequirementDocumentations = Service.GetAll().ToList();
             foreach (var RequirementDocumentation in RequirementDocumentations)
             {
                 DataGridViewRow row = new DataGridViewRow();
@@ -41,24 +50,24 @@ namespace QualityControl_Client.Forms.RequirementDocumentationDirectory
 
         override protected void button1_Click(object sender, EventArgs e)
         {
-            AddRequirementDocumentationForm AddRequirementDocumentationForm = new AddRequirementDocumentationForm(this);
+            AddRequirementDocumentationForm AddRequirementDocumentationForm = new AddRequirementDocumentationForm(this, uow);
             AddRequirementDocumentationForm.ShowDialog(this);
         }
 
         protected override void button2_Click(object sender, EventArgs e)
         {
-            IRequirementDocumentationRepository repository = ServiceChannelManager.Instance.RequirementDocumentationRepository;
+            IRequirementDocumentationService Service = new RequirementDocumentationService(uow);
             var rows = dataGridView1.SelectedRows;
             foreach (DataGridViewRow row in rows)
             {
-                repository.Delete(RequirementDocumentations[row.Index]);
+                Service.Delete(RequirementDocumentations[row.Index]);
             }
             RefreshData();
         }
 
         protected override void button3_Click(object sender, EventArgs e)
         {
-            IRequirementDocumentationRepository repository = ServiceChannelManager.Instance.RequirementDocumentationRepository;
+            IRequirementDocumentationService Service = new RequirementDocumentationService(uow);
             var rows = dataGridView1.SelectedRows;
             List<DataGridViewRow> rowsList = new List<DataGridViewRow>();
             foreach (DataGridViewRow row in rows)
@@ -67,7 +76,7 @@ namespace QualityControl_Client.Forms.RequirementDocumentationDirectory
             }
             for (int i = rowsList.Count - 1; i >= 0; i--)
             {
-                ChangeRequirementDocumentationForm changeRequirementDocumentationForm = new ChangeRequirementDocumentationForm(this, RequirementDocumentations[rowsList[i].Index], rowsList[i]);
+                ChangeRequirementDocumentationForm changeRequirementDocumentationForm = new ChangeRequirementDocumentationForm(this, RequirementDocumentations[rowsList[i].Index], uow);
                 changeRequirementDocumentationForm.ShowDialog(this);
             }
             RefreshData();

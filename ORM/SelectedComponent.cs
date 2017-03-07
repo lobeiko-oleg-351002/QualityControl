@@ -1,6 +1,5 @@
 namespace ORM
 {
-    using Interface;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -14,7 +13,7 @@ namespace ORM
 
         public int? component_id { get; set; }
 
-        public int? component_lib_id { get; set; }
+        public int? componentLib_id { get; set; }
 
         public virtual Component Component { get; set; }
 

@@ -1,4 +1,8 @@
-﻿using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,19 +13,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
 
 namespace QualityControl_Client.Forms.WeldJointDirectory
 {
     public partial class AddWeldJointForm : AddForm
     {
+        IUnitOfWork uow;
         public AddWeldJointForm() : base()
         {
             InitializeComponent();
         }
-        public AddWeldJointForm(DirectoryForm parent) : base(parent)
+        public AddWeldJointForm(DirectoryForm parent, IUnitOfWork uow) : base(parent)
         {
             InitializeComponent();
+            this.uow = uow;
             openFileDialog1.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
         }
 
@@ -33,14 +38,14 @@ namespace QualityControl_Client.Forms.WeldJointDirectory
             }
             else
             {
-                UilWeldJoint WeldJoint = new UilWeldJoint
+                BllWeldJoint WeldJoint = new BllWeldJoint
                 {
                     Name = textBox1.Text,
                     Description = richTextBox1.Text,
                     Image = pictureBox1.Image != null ? imageToByteArray(Image.FromFile(openFileDialog1.FileName)) : null,
                 };
-                IWeldJointRepository repository = ServiceChannelManager.Instance.WeldJointRepository;
-                repository.Create(WeldJoint);
+                IWeldJointService Service = new WeldJointService(uow);
+                Service.Create(WeldJoint);
                 base.button2_Click(sender, e);
             }
         }

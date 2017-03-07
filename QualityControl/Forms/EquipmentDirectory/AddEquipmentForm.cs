@@ -1,4 +1,8 @@
-﻿using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +12,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
 
 namespace QualityControl_Client.Forms.EquipmentDirectory
 {
@@ -18,9 +21,11 @@ namespace QualityControl_Client.Forms.EquipmentDirectory
         {
             InitializeComponent();
         }
-        public AddEquipmentForm(DirectoryForm parent) : base(parent)
+        IUnitOfWork uow;
+        public AddEquipmentForm(DirectoryForm parent, IUnitOfWork uow) : base(parent)
         {
             InitializeComponent();
+            this.uow = uow;
         }
 
         protected override void button2_Click(object sender, EventArgs e)
@@ -31,20 +36,20 @@ namespace QualityControl_Client.Forms.EquipmentDirectory
             }
             else
             {
-                UilEquipment Equipment = new UilEquipment
+                BllEquipment Equipment = new BllEquipment
                 {
                     Name = textBox1.Text,
                     Type = textBox2.Text,
-                    FactoryNumber = (int)numericUpDown1.Value,                    
-                    IsChecked = new byte[] { Convert.ToByte(checkBox1.Checked) },
+                    FactoryNumber = (int)numericUpDown1.Value,
+                    IsChecked = checkBox1.Checked,
                     CheckDate = dateTimePicker1.Value,
                     TechnicalCheckDate = dateTimePicker2.Value,
                     NextTechnicalCheckDate = dateTimePicker3.Value,
                     Pressmark = textBox4.Text,
                     NumberOfTechnicalCheck = textBox3.Text,
                 };
-                IEquipmentRepository repository = ServiceChannelManager.Instance.EquipmentRepository;
-                repository.Create(Equipment);
+                IEquipmentService Service = new EquipmentService(uow);
+                Service.Create(Equipment);
                 base.button2_Click(sender, e);
             }
         }

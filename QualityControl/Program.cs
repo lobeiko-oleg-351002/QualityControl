@@ -23,7 +23,7 @@ namespace QualityControl_Server
             //    MessageBox.Show("Программа уже запущена", "Оповещение");
             //    return;
             //}
-                          
+
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

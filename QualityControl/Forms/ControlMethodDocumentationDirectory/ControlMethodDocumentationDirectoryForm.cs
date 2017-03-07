@@ -1,4 +1,7 @@
-﻿using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,16 +11,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
 
 namespace QualityControl_Client.Forms.ControlMethodDocumentationDirectory
 {
     public partial class ControlMethodDocumentationDirectoryForm : DirectoryForm
     {
-        List<UilControlMethodDocumentation> controlMethodDocumentations;
-        public ControlMethodDocumentationDirectoryForm() : base()
+        List<BllControlMethodDocumentation> controlMethodDocumentations;
+        IUnitOfWork uow;
+        public ControlMethodDocumentationDirectoryForm(IUnitOfWork uow) : base()
         {
             InitializeComponent();
+            this.uow = uow;
             RefreshData();
             saveFileDialog1.Filter = "PDF file (*.pdf)|*.pdf";
             saveFileDialog2.Filter = "Excel files (*.xls)|*.xls";
@@ -27,8 +31,8 @@ namespace QualityControl_Client.Forms.ControlMethodDocumentationDirectory
         public override void RefreshData()
         {
             dataGridView1.Rows.Clear();
-            IControlMethodDocumentationRepository repository = ServiceChannelManager.Instance.ControlMethodDocumentationRepository;
-            controlMethodDocumentations = repository.GetAll().ToList();
+            IControlMethodDocumentationService Service = new ControlMethodDocumentationService(uow);
+            controlMethodDocumentations = Service.GetAll().ToList();
             foreach (var controlMethodDocumentation in controlMethodDocumentations)
             {
                 DataGridViewRow row = new DataGridViewRow();
@@ -42,24 +46,24 @@ namespace QualityControl_Client.Forms.ControlMethodDocumentationDirectory
 
         override protected void button1_Click(object sender, EventArgs e)
         {
-            AddControlMethodDocumentationForm addControlMethodDocumentationForm = new AddControlMethodDocumentationForm(this);
+            AddControlMethodDocumentationForm addControlMethodDocumentationForm = new AddControlMethodDocumentationForm(this, uow);
             addControlMethodDocumentationForm.ShowDialog(this);
         }
 
         protected override void button2_Click(object sender, EventArgs e)
         {
-            IControlMethodDocumentationRepository repository = ServiceChannelManager.Instance.ControlMethodDocumentationRepository;
+            IControlMethodDocumentationService Service = new ControlMethodDocumentationService(uow);
             var rows = dataGridView1.SelectedRows;
             foreach (DataGridViewRow row in rows)
             {
-                repository.Delete(controlMethodDocumentations[row.Index]);
+                Service.Delete(controlMethodDocumentations[row.Index]);
             }
             RefreshData();
         }
 
         protected override void button3_Click(object sender, EventArgs e)
         {
-            IControlMethodDocumentationRepository repository = ServiceChannelManager.Instance.ControlMethodDocumentationRepository;
+            IControlMethodDocumentationService Service = new ControlMethodDocumentationService(uow);
             var rows = dataGridView1.SelectedRows;
             List<DataGridViewRow> rowsList = new List<DataGridViewRow>();
             foreach (DataGridViewRow row in rows)
@@ -68,7 +72,7 @@ namespace QualityControl_Client.Forms.ControlMethodDocumentationDirectory
             }
             for (int i = rowsList.Count - 1; i >= 0; i--)
             {
-                ChangeControlMethodDocumentationForm changeControlMethodDocumentationForm = new ChangeControlMethodDocumentationForm(this, controlMethodDocumentations[rowsList[i].Index], rowsList[i]);
+                ChangeControlMethodDocumentationForm changeControlMethodDocumentationForm = new ChangeControlMethodDocumentationForm(this, controlMethodDocumentations[rowsList[i].Index], uow);
                 changeControlMethodDocumentationForm.ShowDialog(this);
             }
             RefreshData();

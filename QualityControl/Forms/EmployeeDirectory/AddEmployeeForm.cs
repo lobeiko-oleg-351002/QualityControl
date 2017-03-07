@@ -1,5 +1,5 @@
 ﻿using QualityControl_Client.Forms.SertificateDirectory;
-using ServerWcfService.Services.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,37 +9,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
-using UIL.Entities.Interface;
+using BLL.Entities;
+using DAL.Repositories.Interface;
+using BLL.Services.Interface;
+using BLL.Services;
 
 namespace QualityControl_Client.Forms.EmployeeDirectory
 {
     public partial class AddEmployeeForm : AddForm
     {
-        UilCertificateLib certificateLib;
-        List<UilCertificate> certificates = new List<UilCertificate>();
+        BllCertificateLib certificateLib;
+        List<BllCertificate> certificates = new List<BllCertificate>();
         public AddEmployeeForm() : base()
         {
             InitializeComponent();
         }
-        public AddEmployeeForm(DirectoryForm parent) : base(parent)
+        IUnitOfWork uow;
+        public AddEmployeeForm(DirectoryForm parent, IUnitOfWork uow) : base(parent)
         {
             InitializeComponent();
-            certificateLib = new UilCertificateLib();
+            this.uow = uow;
+            certificateLib = new BllCertificateLib();
         }
 
         protected override void button2_Click(object sender, EventArgs e)
         {
-            List<UilSelectedCertificate> selectedCertificates = new List<UilSelectedCertificate>();
+            List<BllSelectedCertificate> selectedCertificates = new List<BllSelectedCertificate>();
             foreach (var element in certificates)
             {
-                selectedCertificates.Add(new UilSelectedCertificate
+                selectedCertificates.Add(new BllSelectedCertificate
                 {
                     Certificate = element
                 });
             }
             certificateLib.SelectedCertificate = selectedCertificates;
-            UilEmployee Employee = new UilEmployee
+            BllEmployee Employee = new BllEmployee
             {
                 Name = textBox1.Text,
                 Sirname = textBox2.Text,
@@ -48,7 +52,7 @@ namespace QualityControl_Client.Forms.EmployeeDirectory
                 MedicalCheckDate = dateTimePicker1.Value,
                 KnowledgeCheckDate = dateTimePicker2.Value
             };
-            IEmployeeRepository repository = ServiceChannelManager.Instance.EmployeeRepository;
+            IEmployeeService Service = new EmployeeService(uow);
 
             string errorMessage = "Неверно указаны данные";
             bool isError = false;
@@ -66,7 +70,7 @@ namespace QualityControl_Client.Forms.EmployeeDirectory
             //}
             if (isError == false)
             {
-                repository.Create(Employee);
+                Service.Create(Employee);
                 base.button2_Click(sender, e);
             }
             else
@@ -78,14 +82,14 @@ namespace QualityControl_Client.Forms.EmployeeDirectory
         private void button3_Click(object sender, EventArgs e)
         {
             //ChooseCertificateForm certificateForm = new ChooseCertificateForm(
-            //    new UilEmployee
+            //    new BllEmployee
             //{
             //    Name = textBox1.Text,
             //    Sirname = textBox2.Text,
             //    Fathername = textBox3.Text,
             //});
             //certificateForm.ShowDialog(this);
-            //UilCertificate certificate = certificateForm.GetChosenCertificate();
+            //BllCertificate certificate = certificateForm.GetChosenCertificate();
             //if (certificate != null)
             //{
             //    certificates.Add(certificate);

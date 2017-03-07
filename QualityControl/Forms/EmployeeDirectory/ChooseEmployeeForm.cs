@@ -1,4 +1,4 @@
-﻿using ServerWcfService.Services.Interface;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,27 +8,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+using BLL.Entities;
+using BLL.Services.Interface;
+using BLL.Services;
+using DAL.Repositories.Interface;
 
 namespace QualityControl_Client.Forms.EmployeeDirectory
 {
     public partial class ChooseEmployeeForm : DirectoryForm
     {
-        List<UilEmployee> Employees;
-        UilEmployee employee;
-        public ChooseEmployeeForm() : base()
+        List<BllEmployee> Employees;
+        BllEmployee employee;
+        IUnitOfWork uow;
+        public ChooseEmployeeForm(IUnitOfWork uow) : base()
         {
             InitializeComponent();
+            this.uow = uow;
             RefreshData();
             dataGridView1.Columns[4].DefaultCellStyle.Format = "dd.MM.yyyy";
             dataGridView1.Columns[5].DefaultCellStyle.Format = "dd.MM.yyyy";
         }
 
+        public ChooseEmployeeForm() : base()
+        {
+            InitializeComponent();
+        }
         public override void RefreshData()
         {
             dataGridView1.Rows.Clear();
-            IEmployeeRepository repository = ServiceChannelManager.Instance.EmployeeRepository;
-            Employees = repository.GetAll().ToList();
+            IEmployeeService Service = new EmployeeService(uow);
+            Employees = Service.GetAll().ToList();
             foreach (var Employee in Employees)
             {
                 DataGridViewRow row = new DataGridViewRow();
@@ -57,24 +66,24 @@ namespace QualityControl_Client.Forms.EmployeeDirectory
 
         override protected void button1_Click(object sender, EventArgs e)
         {
-            AddEmployeeForm AddEmployeeForm = new AddEmployeeForm(this);
+            AddEmployeeForm AddEmployeeForm = new AddEmployeeForm(this, uow);
             AddEmployeeForm.ShowDialog(this);
         }
 
         protected override void button2_Click(object sender, EventArgs e)
         {
-            IEmployeeRepository repository = ServiceChannelManager.Instance.EmployeeRepository;
+            IEmployeeService Service = new EmployeeService(uow);
             var rows = dataGridView1.SelectedRows;
             foreach (DataGridViewRow row in rows)
             {
-                repository.Delete(Employees[row.Index]);
+                Service.Delete(Employees[row.Index]);
             }
             RefreshData();
         }
 
         protected override void button3_Click(object sender, EventArgs e)
         {
-            IEmployeeRepository repository = ServiceChannelManager.Instance.EmployeeRepository;
+            IEmployeeService Service = new EmployeeService(uow);
             var rows = dataGridView1.SelectedRows;
             List<DataGridViewRow> rowsList = new List<DataGridViewRow>();
             foreach (DataGridViewRow row in rows)
@@ -83,7 +92,7 @@ namespace QualityControl_Client.Forms.EmployeeDirectory
             }
             for (int i = rowsList.Count - 1; i >= 0; i--)
             {
-                ChangeEmployeeForm changeEmployeeForm = new ChangeEmployeeForm(this, Employees[rowsList[i].Index], rowsList[i]);
+                ChangeEmployeeForm changeEmployeeForm = new ChangeEmployeeForm(this, Employees[rowsList[i].Index], uow);
                 changeEmployeeForm.ShowDialog(this);
             }
             RefreshData();
@@ -103,7 +112,7 @@ namespace QualityControl_Client.Forms.EmployeeDirectory
             }
         }
 
-        public UilEmployee GetChosenEmployee()
+        public BllEmployee GetChosenEmployee()
         {
             return employee;
         }

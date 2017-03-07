@@ -1,4 +1,7 @@
-﻿using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,31 +11,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
 
 namespace QualityControl_Client.Forms.ControlMethodDocumentationDirectory
 {
     public partial class ChangeControlMethodDocumentationForm : ChangeForm
     {
-        UilControlMethodDocumentation oldControlMethodDocumentation;
-        IEnumerable<UilControlName> controlNames;
+        BllControlMethodDocumentation oldControlMethodDocumentation;
+        IEnumerable<BllControlName> controlNames;
+        IUnitOfWork uow;
         public ChangeControlMethodDocumentationForm() : base()
         {
             InitializeComponent();
 
         }
-        public ChangeControlMethodDocumentationForm(DirectoryForm parent, UilControlMethodDocumentation oldControlMethodDocumentation, DataGridViewRow currentRow) : base(parent)
+        public ChangeControlMethodDocumentationForm(DirectoryForm parent, BllControlMethodDocumentation oldControlMethodDocumentation, IUnitOfWork uow) : base(parent)
         {
             InitializeComponent();
-            IControlNameRepository controlNameRepository = ServiceChannelManager.Instance.ControlNameRepository;
-            controlNames = controlNameRepository.GetAll();
+            IControlNameService controlNameService = new ControlNameService(uow);
+            controlNames = controlNameService.GetAll();
             foreach (var name in controlNames)
             {
                 comboBox1.Items.Add(name.Name);
             }
             this.oldControlMethodDocumentation = oldControlMethodDocumentation;
-            textBox1.Text = (string)currentRow.Cells[0].Value;
-            textBox2.Text = (string)currentRow.Cells[1].Value;
+            textBox1.Text = oldControlMethodDocumentation.Name;
+            textBox2.Text = oldControlMethodDocumentation.Pressmark;
             comboBox1.SelectedItem = oldControlMethodDocumentation.ControlName.Name;
         }
 
@@ -47,8 +50,8 @@ namespace QualityControl_Client.Forms.ControlMethodDocumentationDirectory
                 oldControlMethodDocumentation.Name = textBox1.Text;
                 oldControlMethodDocumentation.Pressmark = textBox2.Text;
                 oldControlMethodDocumentation.ControlName = controlNames.ElementAt(comboBox1.SelectedIndex);
-                IControlMethodDocumentationRepository repository = ServiceChannelManager.Instance.ControlMethodDocumentationRepository;
-                repository.Update(oldControlMethodDocumentation);
+                IControlMethodDocumentationService Service = new ControlMethodDocumentationService(uow);
+                Service.Update(oldControlMethodDocumentation);
                 base.button2_Click(sender, e);
             }
         }

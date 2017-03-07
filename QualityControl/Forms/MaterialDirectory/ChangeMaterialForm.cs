@@ -1,4 +1,8 @@
-﻿using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,24 +12,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
 
 namespace QualityControl_Client.Forms.MaterialDirectory
 {
     public partial class ChangeMaterialForm : ChangeForm
     {
-        UilMaterial oldMaterial;
+        BllMaterial oldMaterial;
         public ChangeMaterialForm() : base()
         {
             InitializeComponent();
         }
 
-        public ChangeMaterialForm(DirectoryForm parent, UilMaterial oldMaterial, DataGridViewRow currentRow) : base(parent)
+        IUnitOfWork uow;
+
+        public ChangeMaterialForm(DirectoryForm parent, BllMaterial oldMaterial, IUnitOfWork uow) : base(parent)
         {
             InitializeComponent();
+            this.uow = uow;
             this.oldMaterial = oldMaterial;
-            textBox1.Text = (string)currentRow.Cells[0].Value;
-            richTextBox1.Text = (string)currentRow.Cells[1].Value;
+            textBox1.Text = oldMaterial.Name;
+            richTextBox1.Text = oldMaterial.Description;
 
         }
 
@@ -39,8 +45,8 @@ namespace QualityControl_Client.Forms.MaterialDirectory
             {
                 oldMaterial.Name = textBox1.Text;
                 oldMaterial.Description = richTextBox1.Text;
-                IMaterialRepository repository = ServiceChannelManager.Instance.MaterialRepository;
-                repository.Update(oldMaterial);
+                IMaterialService Service = new MaterialService(uow);
+                Service.Update(oldMaterial);
                 base.button2_Click(sender, e);
             }
         }

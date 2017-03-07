@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+using BLL.Entities;
 
 namespace QualityControl_Client.Forms.ResultDirectory
 {
@@ -18,9 +18,9 @@ namespace QualityControl_Client.Forms.ResultDirectory
             InitializeComponent();
         }
 
-        UilResultLib resultLib;
+        BllResultLib resultLib;
 
-        public ResultDirectoryForm(UilResultLib lib)
+        public ResultDirectoryForm(BllResultLib lib)
         {
             InitializeComponent();
             resultLib = lib;
@@ -30,7 +30,7 @@ namespace QualityControl_Client.Forms.ResultDirectory
             }
         }
 
-        private void AddResultRowToDataGrid(UilResult result)
+        private void AddResultRowToDataGrid(BllResult result)
         {
             DataGridViewRow row = new DataGridViewRow();
             row.CreateCells(dataGridView1);
@@ -38,7 +38,7 @@ namespace QualityControl_Client.Forms.ResultDirectory
             row.Cells[0].Value = result.Number;
             row.Cells[1].Value = result.Welder;
             row.Cells[2].Value = result.Mark;
-            row.Cells[3].Value = result.Defect_description;
+            row.Cells[3].Value = result.DefectDescription;
             row.Cells[4].Value = result.Norm;
             row.Cells[5].Value = result.Quality;
             dataGridView1.Rows.Add(row);
@@ -46,7 +46,7 @@ namespace QualityControl_Client.Forms.ResultDirectory
 
         protected override void button1_Click(object sender, EventArgs e)
         {
-            resultLib.Result.Add(new UilResult());
+            resultLib.Result.Add(new BllResult());
             dataGridView1.Rows.Add(new DataGridViewRow());
             base.button1_Click(sender, e);
         }
@@ -73,7 +73,7 @@ namespace QualityControl_Client.Forms.ResultDirectory
                 results[i].Number = isInt ? number : 0;
                 results[i].Welder = (string)rows[i].Cells[1].Value;
                 results[i].Mark = (string)rows[i].Cells[2].Value;
-                results[i].Defect_description = (string)rows[i].Cells[3].Value;
+                results[i].DefectDescription = (string)rows[i].Cells[3].Value;
                 results[i].Norm = (string)rows[i].Cells[4].Value;
                 results[i].Quality = (string)rows[i].Cells[5].Value;
             }
@@ -91,7 +91,7 @@ namespace QualityControl_Client.Forms.ResultDirectory
                     temp.Cells[i].Value = row.Cells[i].Value;
                 }
                 dataGridView1.Rows.Add(temp);
-                resultLib.Result.Add(new UilResult());
+                resultLib.Result.Add(new BllResult());
             }
         }
     }

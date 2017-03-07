@@ -96,11 +96,11 @@ namespace BLL.Services
             ControlNameLibService controlNameLibService = new ControlNameLibService(uow);
             RequirementDocumentationLibService requirementDocumentationLibService = new RequirementDocumentationLibService(uow);
             bllEntity.Material = dalEntity.Material_id != null ? materialService.Get((int)dalEntity.Material_id) : null;
-            bllEntity.WeldJoint = dalEntity.Weld_Joint_id != null ? weldJointService.Get((int)dalEntity.Weld_Joint_id) : null;
-            bllEntity.EquipmentLib = dalEntity.Equipment_lib_id != null ? equipmentLibService.Get((int)dalEntity.Equipment_lib_id) : null;
-            bllEntity.ImageLib = dalEntity.Image_lib_id != null ? imageLibService.Get((int)dalEntity.Image_lib_id) : null;
-            bllEntity.ControlNameLib = dalEntity.Control_name_lib_id != null ? controlNameLibService.Get((int)dalEntity.Control_name_lib_id) : null;
-            bllEntity.RequirementDocumentationLib = dalEntity.RequirementDocumentation_lib_id != null ? requirementDocumentationLibService.Get((int)dalEntity.RequirementDocumentation_lib_id) : null;
+            bllEntity.WeldJoint = dalEntity.WeldJoint_id != null ? weldJointService.Get((int)dalEntity.WeldJoint_id) : null;
+            bllEntity.EquipmentLib = dalEntity.EquipmentLib_id != null ? equipmentLibService.Get((int)dalEntity.EquipmentLib_id) : null;
+            bllEntity.ImageLib = dalEntity.ImageLib_id != null ? imageLibService.Get((int)dalEntity.ImageLib_id) : null;
+            bllEntity.ControlNameLib = dalEntity.ControlNameLib_id != null ? controlNameLibService.Get((int)dalEntity.ControlNameLib_id) : null;
+            bllEntity.RequirementDocumentationLib = dalEntity.RequirementDocumentationLib_id != null ? requirementDocumentationLibService.Get((int)dalEntity.RequirementDocumentationLib_id) : null;
             return bllEntity;
         }
 
@@ -109,11 +109,11 @@ namespace BLL.Services
             Mapper.CreateMap<BllTemplate, DalTemplate>();
             DalTemplate dalEntity = Mapper.Map<DalTemplate>(entity);
             dalEntity.Material_id = entity.Material != null ? entity.Material.Id : (int?)null;
-            dalEntity.Weld_Joint_id = entity.WeldJoint != null ? entity.WeldJoint.Id : (int?)null;
-            dalEntity.Equipment_lib_id = entity.EquipmentLib != null ? entity.EquipmentLib.Id : (int?)null;
-            dalEntity.Image_lib_id = entity.ImageLib != null ? entity.ImageLib.Id : (int?)null;
-            dalEntity.Control_name_lib_id = entity.ControlNameLib != null ? entity.ControlNameLib.Id : (int?)null;
-            dalEntity.RequirementDocumentation_lib_id = entity.RequirementDocumentationLib != null ? entity.RequirementDocumentationLib.Id : (int?)null;
+            dalEntity.WeldJoint_id = entity.WeldJoint != null ? entity.WeldJoint.Id : (int?)null;
+            dalEntity.EquipmentLib_id = entity.EquipmentLib != null ? entity.EquipmentLib.Id : (int?)null;
+            dalEntity.ImageLib_id = entity.ImageLib != null ? entity.ImageLib.Id : (int?)null;
+            dalEntity.ControlNameLib_id = entity.ControlNameLib != null ? entity.ControlNameLib.Id : (int?)null;
+            dalEntity.RequirementDocumentationLib_id = entity.RequirementDocumentationLib != null ? entity.RequirementDocumentationLib.Id : (int?)null;
             return dalEntity;
         }
     }

@@ -14,8 +14,6 @@ using QualityControl_Client.Forms.TemplateDirectory;
 using QualityControl_Client.Forms.UserDirectory;
 using QualityControl_Client.Forms.WeldJointDirectory;
 using QualityControl_Server;
-using ServerWcfService.Services;
-using ServerWcfService.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,24 +27,31 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+using BLL.Entities;
+using BLL.Services.Interface;
+using BLL.Services;
+using DAL.Repositories.Interface;
+using DAL.Repositories;
 
 namespace QualityControl
 {
     public partial class MainForm : Form
     {
-        List<UilJournal> Journals;
-        List<UilControlName> ControlNames;
+        List<BllJournal> Journals;
+        List<BllControlName> ControlNames;
         List<ControlMethodTabForm> ControlMethodTabForms;
         //DebugForm debugForm;
 
-        UilUser User = null;
+        BllUser User = null;
 
-        Func<UilJournal, bool> filtration = (UilJournal journal) => { return true; };
+        Func<BllJournal, bool> filtration = (BllJournal journal) => { return true; };
 
         bool isActivatedLicense = false;
         bool isConnectedToServer = false;
         bool isFirstStart = true;
+
+        ServiceDB serviceDB;
+        IUnitOfWork uow;
         public MainForm()
         {
             InitializeComponent();
@@ -54,7 +59,8 @@ namespace QualityControl
             //CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
             AppDomain.CurrentDomain.SetData("DataDirectory", System.IO.Directory.GetCurrentDirectory());
 
-            UiUnitOfWork.Instance.Init(new ServiceDB());
+            serviceDB = new ServiceDB();
+            uow = new UnitOfWork(serviceDB);
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             CenterToScreen();
             tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
@@ -64,7 +70,7 @@ namespace QualityControl
             if (isConnectedToServer)
             {
                 Authorization();
-                EventForm eventForm = new EventForm();
+                EventForm eventForm = new EventForm(uow);
                 eventForm.Show();
             }
             isFirstStart = false;
@@ -75,22 +81,24 @@ namespace QualityControl
                 c.HeaderCell.Style = style;
             }
             PutScrollBarDown();
-            if (User.Employee != null)
+            if (User != null)
             {
-                toolStripTextBox1.Text = "Исполнитель: " + User.Employee.Sirname + " " + User.Employee.Name[0] + "." + User.Employee.Fathername[0] + ".";
-            }
-            else
-            {
-                if (User.Role.Name == "Гость")
+                if (User.Employee != null)
                 {
-                    toolStripTextBox1.Text = "Гостевой допуск";
+                    toolStripTextBox1.Text = "Исполнитель: " + User.Employee.Sirname + " " + User.Employee.Name[0] + "." + User.Employee.Fathername[0] + ".";
                 }
                 else
                 {
-                    toolStripTextBox1.Text = "Исполнитель: <не указан>";
+                    if (User.Role.Name == "Гость")
+                    {
+                        toolStripTextBox1.Text = "Гостевой допуск";
+                    }
+                    else
+                    {
+                        toolStripTextBox1.Text = "Исполнитель: <не указан>";
+                    }
                 }
             }
-
             //debugForm = new DebugForm();
             //debugForm.Show();
         }
@@ -119,7 +127,7 @@ namespace QualityControl
 
         private void Authorization()
         {
-            LogInForm loginForm = new LogInForm();
+            LogInForm loginForm = new LogInForm(uow);
             loginForm.ShowDialog();
             User = loginForm.User;
             if (User != null)
@@ -136,6 +144,10 @@ namespace QualityControl
                     }
                 }
             }
+            else
+            {
+                Close();
+            }
         }
 
         private void ShowLicenseActivationForm()
@@ -147,38 +159,38 @@ namespace QualityControl
 
         private void InitAdminAndRoles()
         {
-            IUserRepository repository = ServiceChannelManager.Instance.UserRepository;
-            var users = repository.GetAll();
+            IUserService Service = new UserService(uow);
+            var users = Service.GetAll();
             if (users.Count() == 0)
             {
-                IRoleRepository roleRepository = ServiceChannelManager.Instance.RoleRepository;
-                var roles = roleRepository.GetAll();
+                IRoleService roleService = new RoleService(uow);
+                var roles = roleService.GetAll();
                 if (roles.Count() < 3)
                 {
-                    UilRole adminRole = new UilRole
+                    BllRole adminRole = new BllRole
                     {
                         Name = "Администратор"
                     };
-                    roleRepository.Create(adminRole);
-                    UilRole workerRole = new UilRole
+                    roleService.Create(adminRole);
+                    BllRole workerRole = new BllRole
                     {
                         Name = "Работник"
                     };
-                    roleRepository.Create(workerRole);
-                    UilRole guestRole = new UilRole
+                    roleService.Create(workerRole);
+                    BllRole guestRole = new BllRole
                     {
                         Name = "Гость"
                     };
-                    roleRepository.Create(guestRole);
+                    roleService.Create(guestRole);
                 }
-                var role = roleRepository.GetRoleByName("Администратор");
-                UilUser admin = new UilUser
+                var role = roleService.GetRoleByName("Администратор");
+                BllUser admin = new BllUser
                 {
                     Login = "admin",
                     Password = "admin",
                     Role = role,
                 };
-                repository.Create(admin);
+                Service.Create(admin);
             }
         }
 
@@ -188,12 +200,12 @@ namespace QualityControl
             {
                 if (!isConnectedToServer)
                 {
-                    IControlNameRepository controlNameRepository = ServiceChannelManager.Instance.ControlNameRepository;
-                    var controlNames = controlNameRepository.GetAll();
+                    IControlNameService controlNameService = new ControlNameService(uow);
+                    var controlNames = controlNameService.GetAll();
                     if (controlNames.Count() == 0)
                     {
-                        controlNameRepository.Create(new UilControlName { Name = "ВИК" });
-                        controlNames = controlNameRepository.GetAll();
+                        controlNameService.Create(new BllControlName { Name = "ВИК" });
+                        controlNames = controlNameService.GetAll();
                     }
                     if (controlNames.Count() < 4)
                     {
@@ -204,20 +216,20 @@ namespace QualityControl
 
                         if (isActivatedLicense)
                         {
-                            controlNameRepository.Create(new UilControlName { Name = "УЗК" });
-                            controlNameRepository.Create(new UilControlName { Name = "ПВК" });
-                            controlNameRepository.Create(new UilControlName { Name = "РГК" });
-                            controlNames = controlNameRepository.GetAll();
+                            controlNameService.Create(new BllControlName { Name = "УЗК" });
+                            controlNameService.Create(new BllControlName { Name = "ПВК" });
+                            controlNameService.Create(new BllControlName { Name = "РГК" });
+                            controlNames = controlNameService.GetAll();
                         }
                     }
 
                     InitAdminAndRoles();
 
-                    ControlNames = new List<UilControlName>();
+                    ControlNames = new List<BllControlName>();
                     ControlMethodTabForms = new List<ControlMethodTabForm>();
                     foreach (var controlName in controlNames)
                     {
-                        var tabForm = new ControlMethodTabForm(controlName.Name);
+                        var tabForm = new ControlMethodTabForm(controlName.Name, uow);
                         tabForm.DisableFormControls();
                         ControlMethodTabForms.Add(tabForm);
                         tabControl1.TabPages.Add(new ControlMethodTab(tabForm, controlName));
@@ -237,24 +249,24 @@ namespace QualityControl
 
         }
 
-        private void SetCurrentControlsInControlMethodTabs(UilControlMethodsLib lib, UilJournal currentJournal)
+        private void SetCurrentControlsInControlMethodTabs(BllControlMethodsLib lib, BllJournal currentJournal)
         {
-            // IJournalRepository repository = ServiceChannelManager.Instance.JournalRepository;
+            // IJournalService Service = Snew JournalService;
             for (int i = 0; i < ControlNames.Count; i++)
             {
                 //if (i+1 > lib.Control.Count)
                 //{
-                //    lib.Control.Add(new UilControl
+                //    lib.Control.Add(new BllControl
                 //    {
-                //        ImageLib = new UilImageLib(),
-                //        EquipmentLib = new UilEquipmentLib(),
-                //        ResultLib = new UilResultLib(),
-                //        ControlMethodDocumentationLib = new UilControlMethodDocumentationLib(),
-                //        RequirementDocumentationLib = new UilRequirementDocumentationLib(),
-                //        EmployeeLib = new UilEmployeeLib(),
+                //        ImageLib = new BllImageLib(),
+                //        EquipmentLib = new BllEquipmentLib(),
+                //        ResultLib = new BllResultLib(),
+                //        ControlMethodDocumentationLib = new BllControlMethodDocumentationLib(),
+                //        RequirementDocumentationLib = new BllRequirementDocumentationLib(),
+                //        EmployeeLib = new BllEmployeeLib(),
                 //        ControlName = ControlNames[i]
                 //    });
-                //    repository.Update(currentJournal);
+                //    Service.Update(currentJournal);
                 //}
                 foreach (var control in lib.Control)
                 {
@@ -293,7 +305,7 @@ namespace QualityControl
             sw.Reset();
         }
 
-        private void FillRowUsingJournal(DataGridViewRow row, UilJournal journal)
+        private void FillRowUsingJournal(DataGridViewRow row, BllJournal journal)
         {
             if (dataGridView1.Rows.IndexOf(row) == -1)
             {
@@ -301,15 +313,15 @@ namespace QualityControl
                 row.Cells[0].Value = dataGridView1.Rows.Count + 1;
             }
             
-            row.Cells[1].Value = journal.Request_date;
-            row.Cells[2].Value = journal.Control_date;
-            row.Cells[3].Value = journal.Request_number;
+            row.Cells[1].Value = journal.RequestDate;
+            row.Cells[2].Value = journal.ControlDate;
+            row.Cells[3].Value = journal.RequestNumber;
             row.Cells[4].Value = journal.Component != null ? journal.Component.Name : null;
             row.Cells[5].Value = journal.Amount;
             row.Cells[6].Value = journal.Size;
             row.Cells[7].Value = journal.Material != null ? journal.Material.Name : null;
             row.Cells[8].Value = journal.WeldJoint != null ? journal.WeldJoint.Name : null;
-            row.Cells[9].Value = journal.Welding_type;
+            row.Cells[9].Value = journal.WeldingType;
             const int controlsCount = 4;
             for(int i = 10; i <= 9 + controlsCount; i++)
             {
@@ -323,7 +335,7 @@ namespace QualityControl
 
         }
 
-        public void AddRowToDataGrid(UilJournal journal)
+        public void AddRowToDataGrid(BllJournal journal)
         {
             DataGridViewRow row = new DataGridViewRow();
             FillRowUsingJournal(row, journal);
@@ -331,13 +343,13 @@ namespace QualityControl
             PutScrollBarDown();
         }
 
-        public void AddNewJournal(UilJournal journal)
+        public void AddNewJournal(BllJournal journal)
         {
             Journals.Add(journal);
             AddRowToDataGrid(journal);
         }
 
-        public void UpdateRowInDataGrid(UilJournal journal, int rowNumber)
+        public void UpdateRowInDataGrid(BllJournal journal, int rowNumber)
         {
             Journals[rowNumber] = journal;
             DataGridViewRow row = dataGridView1.Rows[rowNumber];
@@ -348,9 +360,9 @@ namespace QualityControl
         {
            // StartDiagnostics();
 
-            IJournalRepository journalRepository = ServiceChannelManager.Instance.JournalRepository;
-            var journals = journalRepository.GetAll().ToList();
-            Journals = new List<UilJournal>();
+            IJournalService journalService = new JournalService(uow);
+            var journals = journalService.GetAll().ToList();
+            Journals = new List<BllJournal>();
 
            // FinishDiagnostics("Get all journals");
 
@@ -395,77 +407,77 @@ namespace QualityControl
         
         private void сертификатыToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SertificateDirectoryForm sertificateForm = new SertificateDirectoryForm();
+            SertificateDirectoryForm sertificateForm = new SertificateDirectoryForm(uow);
             sertificateForm.ShowDialog(this);
             //RefreshData();
         }
 
         private void документацияМетодовКонтроляToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ControlMethodDocumentationDirectoryForm controlMethodDocumentationForm = new ControlMethodDocumentationDirectoryForm();
+            ControlMethodDocumentationDirectoryForm controlMethodDocumentationForm = new ControlMethodDocumentationDirectoryForm(uow);
             controlMethodDocumentationForm.ShowDialog(this);
             //RefreshData();
         }
 
         private void заказчикиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CustomerDirectoryForm customerForm = new CustomerDirectoryForm();
+            CustomerDirectoryForm customerForm = new CustomerDirectoryForm(uow);
             customerForm.ShowDialog(this);
            // RefreshData();
         }
 
         private void оборудованиеToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            EquipmentDirectoryForm equipmentForm = new EquipmentDirectoryForm();
+            EquipmentDirectoryForm equipmentForm = new EquipmentDirectoryForm(uow);
             equipmentForm.ShowDialog(this);
             //RefreshData();
         }
 
         private void материалыToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MaterialDirectoryForm materialForm = new MaterialDirectoryForm();
+            MaterialDirectoryForm materialForm = new MaterialDirectoryForm(uow);
             materialForm.ShowDialog(this);
             //RefreshData();
         }
 
         private void документацияТребованийToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RequirementDocumentationDirectoryForm requirementDocuemntationForm = new RequirementDocumentationDirectoryForm();
+            RequirementDocumentationDirectoryForm requirementDocuemntationForm = new RequirementDocumentationDirectoryForm(uow);
             requirementDocuemntationForm.ShowDialog(this);
             //RefreshData();
         }
 
         private void сварочныеСоединенияToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            WeldJointDirectoryForm weldJointForm = new WeldJointDirectoryForm();
+            WeldJointDirectoryForm weldJointForm = new WeldJointDirectoryForm(uow);
             weldJointForm.ShowDialog(this);
             //RefreshData();
         }
 
         private void шаблоныИМетодыКонтроляToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TemplateDirectoryForm templateForm = new TemplateDirectoryForm();
+            TemplateDirectoryForm templateForm = new TemplateDirectoryForm(uow);
             templateForm.ShowDialog(this);
            // RefreshData();
         }
 
         private void деталиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ComponentDirectoryForm directoryForm = new ComponentDirectoryForm();
+            ComponentDirectoryForm directoryForm = new ComponentDirectoryForm(uow);
             directoryForm.ShowDialog(this);
             //RefreshData();
         }
 
         private void сотрудникиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            EmployeeDirectoryForm employeeForm = new EmployeeDirectoryForm();
+            EmployeeDirectoryForm employeeForm = new EmployeeDirectoryForm(uow);
             employeeForm.ShowDialog(this);
             //RefreshData();
         }
 
         private void промышленныеОбъектыToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IndustrialObjectDirectoryForm industrialObjectForm = new IndustrialObjectDirectoryForm();
+            IndustrialObjectDirectoryForm industrialObjectForm = new IndustrialObjectDirectoryForm(uow);
             industrialObjectForm.ShowDialog(this);
             //RefreshData();
         }
@@ -520,11 +532,11 @@ namespace QualityControl
                 label2.Text = "-";
             }
 
-            if (currentJournal.User_Modifier_Login != null)
+            if (currentJournal.UserModifierLogin != null)
             {
                 label3.Visible = true;
                 label4.Visible = true;
-                label3.Text = currentJournal.User_Modifier_Login + " " + currentJournal.Modified_date.Value.Date.ToString("dd.MM.yyyy");
+                label3.Text = currentJournal.UserModifierLogin + " " + currentJournal.ModifiedDate.Value.Date.ToString("dd.MM.yyyy");
             }
             else
             {
@@ -563,7 +575,7 @@ namespace QualityControl
 
         }
 
-        delegate void ExportMethod(UilControlName controlName, List<UilJournal> journals, string folderPath);
+        delegate void ExportMethod(BllControlName controlName, List<BllJournal> journals, string folderPath);
 
 
 
@@ -580,7 +592,7 @@ namespace QualityControl
 
         private void настройкиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            EventForm eventForm = new EventForm();
+            EventForm eventForm = new EventForm(uow);
             eventForm.Show();
             eventForm.Focus();
         }
@@ -643,7 +655,7 @@ namespace QualityControl
                 {
                     if (User.Role.Name == "Администратор")
                     {
-                        UserDirectoryForm form = new UserDirectoryForm();
+                        UserDirectoryForm form = new UserDirectoryForm(uow);
                         form.ShowDialog();
                     }
                 }
@@ -747,7 +759,7 @@ namespace QualityControl
 
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AddJournalForm addJournalForm = new AddJournalForm(AddNewJournal, User);
+            AddJournalForm addJournalForm = new AddJournalForm(AddNewJournal, User, uow);
             addJournalForm.Show();
             
         }
@@ -759,7 +771,7 @@ namespace QualityControl
             {
                 if (Journals[row.Index].UserOwner == null || Journals[row.Index].UserOwner.Id == User.Id || User.Role.Name == "Администратор")
                 {
-                    ChangeJournalForm changeJournalForm = new ChangeJournalForm(Journals[row.Index], User);
+                    ChangeJournalForm changeJournalForm = new ChangeJournalForm(Journals[row.Index], User, uow);
                     changeJournalForm.ShowDialog(this);
                     UpdateRowInDataGrid(changeJournalForm.Journal, row.Index);
                 }
@@ -777,15 +789,15 @@ namespace QualityControl
             form.ShowDialog();
             if (form.IsContinue)
             {
-                IJournalRepository repository = ServiceChannelManager.Instance.JournalRepository;
+                IJournalService Service = new JournalService(uow);
                 var rows = dataGridView1.SelectedRows;
-                List<UilJournal> journalsForRemoving = new List<UilJournal>();
+                List<BllJournal> journalsForRemoving = new List<BllJournal>();
                 foreach (DataGridViewRow row in rows)
                 {
                     if (Journals[row.Index].UserOwner == null || Journals[row.Index].UserOwner.Id == User.Id)
                     {
                         journalsForRemoving.Add(Journals[row.Index]);
-                        repository.Delete(Journals[row.Index]);
+                        Service.Delete(Journals[row.Index]);
                         dataGridView1.Rows.Remove(row);
                     }
                     else
@@ -814,9 +826,9 @@ namespace QualityControl
 
         private void протоколыToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ExportControlResultForm chooseControlNameForm = new ExportControlResultForm();
+            ExportControlResultForm chooseControlNameForm = new ExportControlResultForm(uow);
             chooseControlNameForm.ShowDialog(this);
-            List<UilJournal> SelectedJournals = new List<UilJournal>();
+            List<BllJournal> SelectedJournals = new List<BllJournal>();
 
 
             if (chooseControlNameForm.SelectedControlName != null)
@@ -861,7 +873,7 @@ namespace QualityControl
                 if (DialogResult.OK == saveFileDialog1.ShowDialog())
                 {
                     //exportMethod(chooseControlNameForm.SelectedControlName, SelectedJournals, saveFileDialog1.FileName);
-                    WordDocumentManager wdm = new WordDocumentManager();
+                    WordDocumentManager wdm = new WordDocumentManager(uow);
                     try
                     {
                         wdm.CreateWordDocument(saveFileDialog1.FileName, SelectedJournals);
@@ -887,12 +899,12 @@ namespace QualityControl
             form.ShowDialog();
             if (!form.isCanceled)
             {
-                List<UilJournal> selectedJournal = new List<UilJournal>();
+                List<BllJournal> selectedJournal = new List<BllJournal>();
                 var left = form.left.Date;
                 var right = form.right.Date;
                 foreach (var journal in Journals)
                 {
-                    if (journal.Control_date.Value.Date.CompareTo(left) >= 0 && journal.Control_date.Value.Date.CompareTo(right) <= 0)
+                    if (journal.ControlDate.Value.Date.CompareTo(left) >= 0 && journal.ControlDate.Value.Date.CompareTo(right) <= 0)
                     {
                         selectedJournal.Add(journal);
                     }

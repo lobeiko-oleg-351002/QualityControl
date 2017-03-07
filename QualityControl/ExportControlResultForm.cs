@@ -1,4 +1,4 @@
-﻿using ServerWcfService.Services.Interface;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,20 +8,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+using BLL.Entities;
+using BLL.Services.Interface;
+using BLL.Services;
+using DAL.Repositories.Interface;
 
 namespace QualityControl_Client
 {
     public partial class ExportControlResultForm : Form
     {
-        List<UilControlName> ControlNames;
-        public UilControlName SelectedControlName { get; private set; }
-        public ExportControlResultForm()
+        List<BllControlName> ControlNames;
+        public BllControlName SelectedControlName { get; private set; }
+        public ExportControlResultForm(IUnitOfWork uow)
         {
             InitializeComponent();
-            ControlNames = new List<UilControlName>();
-            IControlNameRepository controlNameRepository = ServiceChannelManager.Instance.ControlNameRepository;
-            var controlNames = controlNameRepository.GetAll();
+            ControlNames = new List<BllControlName>();
+            IControlNameService controlNameService = new ControlNameService(uow);
+            var controlNames = controlNameService.GetAll();
             foreach (var controlName in controlNames)
             {
                 ControlNames.Add(controlName);

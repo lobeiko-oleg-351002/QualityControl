@@ -21,7 +21,7 @@ namespace DAL.Repositories
         public IEnumerable<DalEquipment> GetCheckedEquipment()
         {
             Mapper.CreateMap<Equipment, DalEquipment>();
-            var elements = context.Equipments.Select(entity => entity.isChecked[0] == 1);
+            var elements = context.Equipments.Select(entity => entity.isChecked);
             var retElemets = new List<DalEquipment>();
             foreach (var element in elements)
             {
@@ -64,7 +64,7 @@ namespace DAL.Repositories
         public IEnumerable<DalEquipment> GetUncheckedEquipment()
         {
             Mapper.CreateMap<Equipment, DalEquipment>();
-            var elements = context.Equipments.Select(entity => entity.isChecked[0] == 0);
+            var elements = context.Equipments.Select(entity => entity.isChecked);
             var retElemets = new List<DalEquipment>();
             foreach (var element in elements)
             {

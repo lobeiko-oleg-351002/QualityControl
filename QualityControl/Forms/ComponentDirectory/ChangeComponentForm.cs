@@ -1,5 +1,4 @@
 ﻿using QualityControl_Client.Forms.TemplateDirectory;
-using ServerWcfService.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,24 +8,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using BLL.Entities;
+using DAL.Repositories.Interface;
 
 namespace QualityControl_Client.Forms.ComponentDirectory
 {
     public partial class ChangeComponentForm : ChangeForm
     {
-        UilComponent oldComponent;
-        UilTemplate template;
+        BllComponent oldComponent;
+        BllTemplate template;
         public ChangeComponentForm() : base()
         {
             InitializeComponent();
         }
-
-        public ChangeComponentForm(DirectoryForm parent, UilComponent oldComponent, DataGridViewRow currentRow) : base(parent)
+        IUnitOfWork uow;
+        public ChangeComponentForm(DirectoryForm parent, BllComponent oldComponent, IUnitOfWork uow) : base(parent)
         {
             InitializeComponent();
+            this.uow = uow;
             this.oldComponent = oldComponent;
-            textBox1.Text = (string)currentRow.Cells[0].Value;
+            textBox1.Text = oldComponent.Name;
             textBox2.Text = oldComponent.Pressmark;
             maskedTextBox1.Text = oldComponent.Template != null ? oldComponent.Template.Name : "<отсутствует>";
         }
@@ -42,15 +45,15 @@ namespace QualityControl_Client.Forms.ComponentDirectory
                 oldComponent.Name = textBox1.Text;
                 oldComponent.Template = template;
                 oldComponent.Pressmark = textBox2.Text;
-                IComponentRepository repository = ServiceChannelManager.Instance.ComponentRepository;
-                repository.Update(oldComponent);
+                IComponentService Service = new ComponentService(uow);
+                Service.Update(oldComponent);
                 base.button2_Click(sender, e);
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            ChooseTemplateForm templateForm = new ChooseTemplateForm();
+            ChooseTemplateForm templateForm = new ChooseTemplateForm(uow);
             templateForm.ShowDialog(this);
             template = templateForm.GetChosenTemplate();
             if (template != null)

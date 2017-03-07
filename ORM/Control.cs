@@ -1,6 +1,5 @@
 namespace ORM
 {
-    using Interface;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -12,7 +11,7 @@ namespace ORM
     {
         public int id { get; set; }
 
-        public bool? is_controlled { get; set; }
+        public bool? isControlled { get; set; }
 
         public int? number { get; set; }
 
@@ -21,17 +20,17 @@ namespace ORM
         [StringLength(200)]
         public string additionally { get; set; }
 
-        public int? requirement_documentation_lib_id { get; set; }
+        public int? requirementDocumentationLib_id { get; set; }
 
-        public int? control_method_documentation_lib_id { get; set; }
+        public int? controlMethodDocumentationLib_id { get; set; }
 
-        public int? image_lib_id { get; set; }
+        public int? imageLib_id { get; set; }
 
         public int? employeeLib_id { get; set; }
 
         public int? equipmentLib_id { get; set; }
 
-        public int? control_name_id { get; set; }
+        public int? controlName_id { get; set; }
 
         public int? controlMethodsLib_id { get; set; }
 

@@ -11,7 +11,7 @@ namespace BLL.Entities
     {
         public int Id { get; set; }
 
-        public bool? Is_сontrolled { get; set; }
+        public bool? IsControlled { get; set; }
 
         public int? Number { get; set; }
 

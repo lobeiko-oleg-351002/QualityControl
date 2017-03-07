@@ -1,4 +1,4 @@
-﻿using ServerWcfService.Services.Interface;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,26 +8,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+using BLL.Entities;
+using BLL.Services.Interface;
+using BLL.Services;
+using DAL.Repositories.Interface;
 
 namespace QualityControl_Client.Forms.UserDirectory
 {
     public partial class UserDirectoryForm : DirectoryForm
     {
+        IUnitOfWork uow;
+        List<BllUser> Users;
+        public UserDirectoryForm(IUnitOfWork uow) : base()
+        {
+            InitializeComponent();
+            this.uow = uow;
+            RefreshData();
+        }
 
-        List<UilUser> Users;
         public UserDirectoryForm() : base()
         {
             InitializeComponent();
-            RefreshData();
-
         }
 
         public override void RefreshData()
         {
             dataGridView1.Rows.Clear();
-            IUserRepository repository = ServiceChannelManager.Instance.UserRepository;
-            Users = repository.GetAll().ToList();
+            IUserService Service = new UserService(uow);
+            Users = Service.GetAll().ToList();
             foreach (var User in Users)
             {
                 DataGridViewRow row = new DataGridViewRow();
@@ -37,26 +45,26 @@ namespace QualityControl_Client.Forms.UserDirectory
                 row.Cells[2].Value = User.Login;
                 row.Cells[3].Value = User.Password;
                 row.Cells[4].Value = User.Role != null ? User.Role.Name : "";
-                row.Cells[5].Value = User.Modified_date != null ? "Отредактировано " + User.Modified_date.Value.Date.ToString("dd.MM.yyyy") : "";
+                row.Cells[5].Value = User.ModifiedDate != null ? "Отредактировано " + User.ModifiedDate.Value.Date.ToString("dd.MM.yyyy") : "";
                 dataGridView1.Rows.Add(row);
             }
         }
 
         protected override void button1_Click(object sender, EventArgs e)
         {
-            UserAddForm UserAddForm = new UserAddForm(this);
+            UserAddForm UserAddForm = new UserAddForm(this, uow);
             UserAddForm.ShowDialog(this);
         }
 
         protected override void button2_Click(object sender, EventArgs e)
         {
-            IUserRepository repository = ServiceChannelManager.Instance.UserRepository;
+            IUserService Service = new UserService(uow);
             var rows = dataGridView1.SelectedRows;
             foreach (DataGridViewRow row in rows)
             {
                 if (Users[row.Index].Role.Name != "Администратор")
                 {
-                    repository.Delete(Users[row.Index]);
+                    Service.Delete(Users[row.Index]);
                 }
                 else
                 {
@@ -68,7 +76,7 @@ namespace QualityControl_Client.Forms.UserDirectory
 
         protected override void button3_Click(object sender, EventArgs e)
         {
-            IUserRepository repository = ServiceChannelManager.Instance.UserRepository;
+            IUserService Service = new UserService(uow);
             var rows = dataGridView1.SelectedRows;
             List<DataGridViewRow> rowsList = new List<DataGridViewRow>();
             foreach (DataGridViewRow row in rows)
@@ -77,7 +85,7 @@ namespace QualityControl_Client.Forms.UserDirectory
             }
             for (int i = rowsList.Count - 1; i >= 0; i--)
             {
-                ChangeUserForm changeUserForm = new ChangeUserForm(this, Users[rowsList[i].Index], rowsList[i]);
+                ChangeUserForm changeUserForm = new ChangeUserForm(this, Users[rowsList[i].Index], uow);
                 changeUserForm.ShowDialog(this);
             }
             RefreshData();

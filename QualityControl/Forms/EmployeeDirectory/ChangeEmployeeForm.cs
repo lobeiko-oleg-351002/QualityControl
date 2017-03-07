@@ -1,5 +1,5 @@
 ﻿using QualityControl_Client.Forms.SertificateDirectory;
-using ServerWcfService.Services.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,29 +9,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
-using UIL.Entities.Interface;
+using BLL.Entities;
+using DAL.Repositories.Interface;
+using BLL.Services.Interface;
+using BLL.Services;
 
 namespace QualityControl_Client.Forms.EmployeeDirectory
 {
     public partial class ChangeEmployeeForm : ChangeForm
     {
-        UilEmployee oldEmployee;
+        BllEmployee oldEmployee;
         public ChangeEmployeeForm() : base()
         {
             InitializeComponent();
         }
-        //UilCertificateLib certificateLib;
-        List<UilSelectedCertificate> certificates = new List<UilSelectedCertificate>();
-        public ChangeEmployeeForm(DirectoryForm parent, UilEmployee oldEmployee, DataGridViewRow currentRow) : base(parent)
+        //BllCertificateLib certificateLib;
+        List<BllSelectedCertificate> certificates = new List<BllSelectedCertificate>();
+        IUnitOfWork uow;
+        public ChangeEmployeeForm(DirectoryForm parent, BllEmployee oldEmployee, IUnitOfWork uow) : base(parent)
         {
             InitializeComponent();
+            this.uow = uow;
             this.oldEmployee = oldEmployee;
             //certificateLib = oldEmployee.CertificateLib;
-            textBox1.Text = (string)currentRow.Cells[0].Value;
-            textBox2.Text = (string)currentRow.Cells[1].Value;
-            textBox3.Text = (string)currentRow.Cells[2].Value;
-            textBox4.Text = (string)currentRow.Cells[3].Value;
+            textBox1.Text = oldEmployee.Name;
+            textBox2.Text = oldEmployee.Fathername;
+            textBox3.Text = oldEmployee.Sirname;
+            textBox4.Text = oldEmployee.Function;
             //if (oldEmployee.CertificateLib != null)
             //{
             //    foreach (var certificate in oldEmployee.CertificateLib.SelectedCertificate)
@@ -58,7 +62,7 @@ namespace QualityControl_Client.Forms.EmployeeDirectory
             oldEmployee.MedicalCheckDate = dateTimePicker1.Value;
             oldEmployee.KnowledgeCheckDate = dateTimePicker2.Value;
 
-            IEmployeeRepository repository = ServiceChannelManager.Instance.EmployeeRepository;
+            IEmployeeService Service = new EmployeeService(uow);
             string errorMessage = "Неверно указаны данные";
             bool isError = false;
             if (oldEmployee.Name == "" || oldEmployee.Sirname == "" || oldEmployee.Fathername == "" || oldEmployee.Function == "")
@@ -76,7 +80,7 @@ namespace QualityControl_Client.Forms.EmployeeDirectory
             //}
             if (isError == false)
             {
-                repository.Update(oldEmployee);
+                Service.Update(oldEmployee);
                 base.button2_Click(sender, e);
             }
             else
@@ -88,17 +92,17 @@ namespace QualityControl_Client.Forms.EmployeeDirectory
         private void button3_Click(object sender, EventArgs e)
         {
             //ChooseCertificateForm certificateForm = new ChooseCertificateForm(
-            //    new UilEmployee
+            //    new BllEmployee
             //{
             //    Name = textBox1.Text,
             //    Sirname = textBox2.Text,
             //    Fathername = textBox3.Text,
             //});
             //certificateForm.ShowDialog(this);
-            //UilCertificate certificate = certificateForm.GetChosenCertificate();
+            //BllCertificate certificate = certificateForm.GetChosenCertificate();
             //if (certificate != null)
             //{
-            //    certificates.Add(new UilSelectedCertificate {
+            //    certificates.Add(new BllSelectedCertificate {
             //        Certificate =  certificate
             //    });
             //    comboBox1.Items.Add(certificate.Title);

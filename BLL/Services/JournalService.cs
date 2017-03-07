@@ -95,10 +95,10 @@ namespace BLL.Services
             dalEntity.ControlMethodsLib_id = entity.ControlMethodsLib != null ? entity.ControlMethodsLib.Id : (int?)null;
             dalEntity.Component_id = entity.Component != null ? entity.Component.Id : (int?)null;
             dalEntity.Customer_id = entity.Customer != null ? entity.Customer.Id : (int?)null;
-            dalEntity.Industrial_object_id = entity.IndustrialObject != null ? entity.IndustrialObject.Id : (int?)null;
+            dalEntity.IndustrialObject_id = entity.IndustrialObject != null ? entity.IndustrialObject.Id : (int?)null;
             dalEntity.Material_id = entity.Material != null ? entity.Material.Id : (int?)null;
-            dalEntity.Weld_joint_id = entity.WeldJoint != null ? entity.WeldJoint.Id : (int?)null;
-            dalEntity.User_Owner_id = entity.UserOwner != null ?  entity.UserOwner.Id : (int?)null;
+            dalEntity.WeldJoint_id = entity.WeldJoint != null ? entity.WeldJoint.Id : (int?)null;
+            dalEntity.UserOwner_id = entity.UserOwner != null ?  entity.UserOwner.Id : (int?)null;
             return dalEntity;
         }
 
@@ -112,11 +112,11 @@ namespace BLL.Services
             BllJournal bllJournal = Mapper.Map<BllJournal>(entity);
             bllJournal.Component = entity.Component_id != null ? ComponentService.Get((int)entity.Component_id) : null;
             bllJournal.Customer = entity.Customer_id != null ? customerService.Get((int)entity.Customer_id) : null;
-            bllJournal.IndustrialObject = entity.Industrial_object_id != null ? industrialObjectService.Get((int)entity.Industrial_object_id) : null;
+            bllJournal.IndustrialObject = entity.IndustrialObject_id != null ? industrialObjectService.Get((int)entity.IndustrialObject_id) : null;
             bllJournal.Material = entity.Material_id != null ? materialService.Get((int)entity.Material_id) : null;
-            bllJournal.WeldJoint = entity.Weld_joint_id != null ? weldJointService.Get((int)entity.Weld_joint_id) : null;
+            bllJournal.WeldJoint = entity.WeldJoint_id != null ? weldJointService.Get((int)entity.WeldJoint_id) : null;
             bllJournal.ControlMethodsLib = entity.ControlMethodsLib_id != null ? controlMethodsLibService.Get((int)entity.ControlMethodsLib_id) : null;
-            bllJournal.UserOwner = entity.User_Owner_id != null ? userService.Get((int)entity.User_Owner_id) : null;
+            bllJournal.UserOwner = entity.UserOwner_id != null ? userService.Get((int)entity.UserOwner_id) : null;
             return bllJournal;
         }
     }

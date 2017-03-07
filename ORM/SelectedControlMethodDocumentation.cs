@@ -1,6 +1,5 @@
 namespace ORM
 {
-    using Interface;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;

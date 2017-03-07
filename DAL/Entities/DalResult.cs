@@ -17,7 +17,7 @@ namespace DAL.Entities
 
         public string Mark { get; set; }
 
-        public string Defect_description { get; set; }
+        public string DefectDescription { get; set; }
 
         public string Norm { get; set; }
 

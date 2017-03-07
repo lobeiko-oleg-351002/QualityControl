@@ -1,6 +1,5 @@
 namespace ORM
 {
-    using Interface;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -25,8 +24,6 @@ namespace ORM
         [Column(TypeName = "date")]
         public DateTime checkDate { get; set; }
 
-        public int? creator_id { get; set; }
-
         public int? controlName_id { get; set; }
 
         public int? duration { get; set; }
@@ -34,8 +31,6 @@ namespace ORM
         public int? employee_id { get; set; }
 
         public virtual Employee Employee { get; set; }
-
-        public virtual User User { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SelectedCertificate> SelectedCertificate { get; set; }

@@ -117,15 +117,15 @@ namespace BLL.Services
             });
 
             DalControl dalEntity = Mapper.Map<DalControl>(entity);
-            dalEntity.Control_method_documentation_lib_id = entity.ControlMethodDocumentationLib != null ? entity.ControlMethodDocumentationLib.Id : (int?)null;
+            dalEntity.ControlMethodDocumentationLib_id = entity.ControlMethodDocumentationLib != null ? entity.ControlMethodDocumentationLib.Id : (int?)null;
            // dalEntity.ControlMethodsLib_id = entity.ControlMethodsLib != null ? entity.ControlMethodsLib.Id : (int?)null;
-            dalEntity.Control_name_id = entity.ControlName != null ? entity.ControlName.Id : (int?)null;
+            dalEntity.ControlName_id = entity.ControlName != null ? entity.ControlName.Id : (int?)null;
             dalEntity.EmployeeLib_id = entity.EmployeeLib != null ? entity.EmployeeLib.Id : (int?)null;
             dalEntity.EquipmentLib_id = entity.EquipmentLib != null ? entity.EquipmentLib.Id : (int?)null;
-            dalEntity.Image_lib_id = entity.ImageLib != null ? entity.ImageLib.Id : (int?)null;
-            dalEntity.Requirement_documentation_lib_id = entity.RequirementDocumentationLib != null ? entity.RequirementDocumentationLib.Id : (int?)null;
+            dalEntity.ImageLib_id = entity.ImageLib != null ? entity.ImageLib.Id : (int?)null;
+            dalEntity.RequirementDocumentationLib_id = entity.RequirementDocumentationLib != null ? entity.RequirementDocumentationLib.Id : (int?)null;
             dalEntity.ResultLib_id = entity.ResultLib != null ? entity.ResultLib.Id : (int?)null;
-            dalEntity.Is_controlled = entity.Is_сontrolled;
+            dalEntity.IsControlled = entity.IsControlled;
             return dalEntity;
         }
 
@@ -144,15 +144,15 @@ namespace BLL.Services
             ImageLibService imageLibService = new ImageLibService(uow);
             RequirementDocumentationLibService requirementDocumentationLibService = new RequirementDocumentationLibService(uow);
             ResultLibService resultLibService = new ResultLibService(uow);
-            bllControl.ControlMethodDocumentationLib = entity.Control_method_documentation_lib_id != null ? controlMethodDocumentationLibService.Get((int)entity.Control_method_documentation_lib_id) : null;
+            bllControl.ControlMethodDocumentationLib = entity.ControlMethodDocumentationLib_id != null ? controlMethodDocumentationLibService.Get((int)entity.ControlMethodDocumentationLib_id) : null;
             //bllControl.ControlMethodsLib = entity.ControlMethodsLib_id != null ? controlMethodsLibService.Get((int)entity.ControlMethodsLib_id) : null;
-            bllControl.ControlName = entity.Control_name_id != null ? controlNameService.Get((int)entity.Control_name_id) : null;
+            bllControl.ControlName = entity.ControlName_id != null ? controlNameService.Get((int)entity.ControlName_id) : null;
             bllControl.EmployeeLib = entity.EmployeeLib_id != null ? employeeLibService.Get((int)entity.EmployeeLib_id) : null;
             bllControl.EquipmentLib = entity.EquipmentLib_id != null ? equipmentService.Get((int)entity.EquipmentLib_id) : null;
-            bllControl.ImageLib = entity.Image_lib_id != null ? imageLibService.Get((int)entity.Image_lib_id) : null;
-            bllControl.RequirementDocumentationLib = entity.Requirement_documentation_lib_id != null ? requirementDocumentationLibService.Get((int)entity.Requirement_documentation_lib_id) : null;
+            bllControl.ImageLib = entity.ImageLib_id != null ? imageLibService.Get((int)entity.ImageLib_id) : null;
+            bllControl.RequirementDocumentationLib = entity.RequirementDocumentationLib_id != null ? requirementDocumentationLibService.Get((int)entity.RequirementDocumentationLib_id) : null;
             bllControl.ResultLib = entity.ResultLib_id != null ? resultLibService.Get((int)entity.ResultLib_id) : null;
-            bllControl.Is_сontrolled = entity.Is_controlled;
+            bllControl.IsControlled = entity.IsControlled;
             return bllControl;
         }
     }

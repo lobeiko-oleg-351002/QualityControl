@@ -1,5 +1,8 @@
-﻿using QualityControl_Client.Forms.ComponentDirectory;
-using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+using QualityControl_Client.Forms.ComponentDirectory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,25 +12,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
 
 namespace QualityControl_Client.Forms.IndustrialObjectDirectory
 {
     public partial class ChangeIndustrialObjectForm : ChangeForm
     {
-        UilIndustrialObject oldIndustrialObject;
+        BllIndustrialObject oldIndustrialObject;
+        IUnitOfWork uow;
         public ChangeIndustrialObjectForm() : base()
         {
             InitializeComponent();
         }
-        //UilComponentLib ComponentLib;
-        List<UilSelectedComponent> Components = new List<UilSelectedComponent>();
-        public ChangeIndustrialObjectForm(DirectoryForm parent, UilIndustrialObject oldIndustrialObject, DataGridViewRow currentRow) : base(parent)
+        //BllComponentLib ComponentLib;
+        List<BllSelectedComponent> Components = new List<BllSelectedComponent>();
+        public ChangeIndustrialObjectForm(DirectoryForm parent, BllIndustrialObject oldIndustrialObject, IUnitOfWork uow) : base(parent)
         {
             InitializeComponent();
             this.oldIndustrialObject = oldIndustrialObject;
+            this.uow = uow;
             //ComponentLib = oldIndustrialObject.ComponentLib;
-            textBox1.Text = (string)currentRow.Cells[0].Value;
+            textBox1.Text = oldIndustrialObject.Name;
             if (oldIndustrialObject.ComponentLib != null)
             {
                 foreach (var Component in oldIndustrialObject.ComponentLib.SelectedComponent)
@@ -50,21 +54,21 @@ namespace QualityControl_Client.Forms.IndustrialObjectDirectory
                 oldIndustrialObject.Name = textBox1.Text;
                 oldIndustrialObject.ComponentLib.SelectedComponent = Components;
 
-                IIndustrialObjectRepository repository = ServiceChannelManager.Instance.IndustrialObjectRepository;
-                repository.Update(oldIndustrialObject);
+                IIndustrialObjectService Service = new IndustrialObjectService(uow);
+                Service.Update(oldIndustrialObject);
                 base.button2_Click(sender, e);
             }
         }
 
-        UilComponent Component;
+        BllComponent Component;
         private void button3_Click(object sender, EventArgs e)
         {
-            ChooseComponentForm ComponentForm = new ChooseComponentForm();
+            ChooseComponentForm ComponentForm = new ChooseComponentForm(uow);
             ComponentForm.ShowDialog(this);
-            UilComponent Component = ComponentForm.GetChosenComponent();
+            BllComponent Component = ComponentForm.GetChosenComponent();
             if (Component != null)
             {
-                Components.Add(new UilSelectedComponent
+                Components.Add(new BllSelectedComponent
                 {
                     Component = Component
                 });

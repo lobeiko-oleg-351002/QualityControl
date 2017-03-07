@@ -1,5 +1,9 @@
-﻿using QualityControl_Client.Forms.ComponentDirectory;
-using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+using QualityControl_Client.Forms.ComponentDirectory;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,22 +13,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
 
 namespace QualityControl_Client.Forms.IndustrialObjectDirectory
 {
     public partial class AddIndustrialObjectForm : AddForm
     {
-        UilComponentLib ComponentLib;
-        List<UilComponent> Components = new List<UilComponent>();
+        BllComponentLib ComponentLib;
+        List<BllComponent> Components = new List<BllComponent>();
         public AddIndustrialObjectForm() : base()
         {
             InitializeComponent();
         }
-        public AddIndustrialObjectForm(DirectoryForm parent) : base(parent)
+        IUnitOfWork uow;
+        public AddIndustrialObjectForm(DirectoryForm parent, IUnitOfWork uow) : base(parent)
         {
             InitializeComponent();
-            ComponentLib = new UilComponentLib();
+            this.uow = uow;
+            ComponentLib = new BllComponentLib();
         }
 
         protected override void button2_Click(object sender, EventArgs e)
@@ -35,31 +40,31 @@ namespace QualityControl_Client.Forms.IndustrialObjectDirectory
             }
             else
             {
-                List<UilSelectedComponent> selectedComponents = new List<UilSelectedComponent>();
+                List<BllSelectedComponent> selectedComponents = new List<BllSelectedComponent>();
                 foreach (var element in Components)
                 {
-                    selectedComponents.Add(new UilSelectedComponent
+                    selectedComponents.Add(new BllSelectedComponent
                     {
                         Component = element
                     });
                 }
                 ComponentLib.SelectedComponent = selectedComponents;
-                UilIndustrialObject IndustrialObject = new UilIndustrialObject
+                BllIndustrialObject IndustrialObject = new BllIndustrialObject
                 {
                     Name = textBox1.Text,
                     ComponentLib = ComponentLib
                 };
-                IIndustrialObjectRepository repository = ServiceChannelManager.Instance.IndustrialObjectRepository;
-                repository.Create(IndustrialObject);
+                IIndustrialObjectService Service = new IndustrialObjectService(uow);
+                Service.Create(IndustrialObject);
                 base.button2_Click(sender, e);
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            ChooseComponentForm ComponentForm = new ChooseComponentForm();
+            ChooseComponentForm ComponentForm = new ChooseComponentForm(uow);
             ComponentForm.ShowDialog(this);
-            UilComponent Component = ComponentForm.GetChosenComponent();
+            BllComponent Component = ComponentForm.GetChosenComponent();
             if (Component != null)
             {
                 Components.Add(Component);

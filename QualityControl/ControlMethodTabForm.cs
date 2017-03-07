@@ -3,7 +3,7 @@ using QualityControl_Client.Forms.EmployeeDirectory;
 using QualityControl_Client.Forms.EquipmentDirectory;
 using QualityControl_Client.Forms.RequirementDocumentationDirectory;
 using QualityControl_Client.Forms.ResultDirectory;
-using ServerWcfService.Services.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,15 +14,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+using DAL.Repositories.Interface;
+using BLL.Entities;
+using DAL.Repositories;
+using BLL.Services.Interface;
+using BLL.Services;
 
 namespace QualityControl_Client
 {
     public partial class ControlMethodTabForm : Form
     {
         public Panel panel;
-        public UilControl currentControl { get; private set; }
-        private UilJournal currentJournal;
+        public BllControl currentControl { get; private set; }
+        private BllJournal currentJournal;
         public bool isControlled = false; // проведено ли
         public bool? isRejected = null;
         public ControlMethodTabForm()
@@ -31,32 +35,36 @@ namespace QualityControl_Client
 
         }
 
-        public ControlMethodTabForm(string controlName)
+        public ControlMethodTabForm(string controlName, IUnitOfWork uow)
         {
             InitializeComponent();
+            this.uow = uow;
             panel = panel1;
             label1.Text = controlName;
             DisableFormControls();
             
         }
 
-        public ControlMethodTabForm(UilControl control, UilJournal journal)
+        IUnitOfWork uow;
+
+        public ControlMethodTabForm(BllControl control, BllJournal journal, IUnitOfWork uow)
         {
             InitializeComponent();
+            this.uow = uow;
             panel = panel1;
             SetCurrentControl(control, journal);
             DisableFormControls();
         }
 
 
-        public void SetCurrentControl(UilControl control, UilJournal journal)
+        public void SetCurrentControl(BllControl control, BllJournal journal)
         {
             currentControl = control;
             currentJournal = journal;
             label1.Text = control.ControlName.Name;
             label11.Text = control.ProtocolNumber.ToString();
             imagesForPicturebox.Clear();
-            if (control.Is_сontrolled != null)
+            if (control.IsControlled != null)
             {
                 isControlled = true;
             }
@@ -77,10 +85,10 @@ namespace QualityControl_Client
 
         public void FillComponents()
         {
-            if (currentControl.Is_сontrolled != null)
+            if (currentControl.IsControlled != null)
             {
                 checkBox1.Checked = true;
-                SetControlCheck(currentControl.Is_сontrolled.Value);
+                SetControlCheck(currentControl.IsControlled.Value);
             }
             if (currentControl.ControlMethodDocumentationLib != null)
             {
@@ -108,19 +116,19 @@ namespace QualityControl_Client
             
             if (isControlled)
             {
-                currentControl.Is_сontrolled = true;
+                currentControl.IsControlled = true;
                 radioButton2.Checked = true;
                 isRejected = false;                
             }
             else
             {
-                currentControl.Is_сontrolled = false;
+                currentControl.IsControlled = false;
                 radioButton1.Checked = true;
                 isRejected = true;
             }
         }
 
-        public void SetControlMethodDocumentation(UilControlMethodDocumentationLib documentationLib)
+        public void SetControlMethodDocumentation(BllControlMethodDocumentationLib documentationLib)
         {
             currentControl.ControlMethodDocumentationLib = documentationLib;
             if (documentationLib != null)
@@ -132,7 +140,7 @@ namespace QualityControl_Client
             }
         }
 
-        public void SetRequirementDocumentation(UilRequirementDocumentationLib documentationLib)
+        public void SetRequirementDocumentation(BllRequirementDocumentationLib documentationLib)
         {
             currentControl.RequirementDocumentationLib = documentationLib;
             listBox3.Items.Clear();
@@ -145,12 +153,12 @@ namespace QualityControl_Client
             }
         }
 
-        public void CopyNewRequirementDocumentationFromLib(UilRequirementDocumentationLib documentationLib)
+        public void CopyNewRequirementDocumentationFromLib(BllRequirementDocumentationLib documentationLib)
         {
             currentControl.RequirementDocumentationLib.SelectedRequirementDocumentation.Clear();
             foreach (var doc in documentationLib.SelectedRequirementDocumentation)
             {
-                currentControl.RequirementDocumentationLib.SelectedRequirementDocumentation.Add(new UilSelectedRequirementDocumentation { RequirementDocumentation = doc.RequirementDocumentation });
+                currentControl.RequirementDocumentationLib.SelectedRequirementDocumentation.Add(new BllSelectedRequirementDocumentation { RequirementDocumentation = doc.RequirementDocumentation });
             }
             SetRequirementDocumentation(currentControl.RequirementDocumentationLib);
         }
@@ -165,7 +173,7 @@ namespace QualityControl_Client
             textBox4.Text = additionally;
         }
 
-        public void SetEquipment(UilEquipmentLib equipmentLib)
+        public void SetEquipment(BllEquipmentLib equipmentLib)
         {
             currentControl.EquipmentLib = equipmentLib;
             listBox1.Items.Clear();
@@ -176,17 +184,17 @@ namespace QualityControl_Client
 
         }
 
-        public void CopyNewEquipmentFromLib(UilEquipmentLib equipmentLib)
+        public void CopyNewEquipmentFromLib(BllEquipmentLib equipmentLib)
         {
             currentControl.EquipmentLib.SelectedEquipment.Clear();
             foreach (var eq in equipmentLib.SelectedEquipment)
             {
-                currentControl.EquipmentLib.SelectedEquipment.Add(new UilSelectedEquipment { Equipment = eq.Equipment });
+                currentControl.EquipmentLib.SelectedEquipment.Add(new BllSelectedEquipment { Equipment = eq.Equipment });
             }
             SetEquipment(currentControl.EquipmentLib);
         }
 
-        public void SetImages(UilImageLib lib)
+        public void SetImages(BllImageLib lib)
         {
             currentControl.ImageLib = lib;
             imagesForPicturebox.Clear();
@@ -201,24 +209,24 @@ namespace QualityControl_Client
             currentPositionInImages = 0;
         }
 
-        public void CopyNewImagesFromLib(UilImageLib lib)
+        public void CopyNewImagesFromLib(BllImageLib lib)
         {
             currentControl.ImageLib.Image.Clear();
             foreach (var img in lib.Image)
             {
-                currentControl.ImageLib.Image.Add(new UilImage { Image = img.Image });
+                currentControl.ImageLib.Image.Add(new BllImage { Image = img.Image });
             }
             SetImages(currentControl.ImageLib);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ChooseControlMethodDocumentationForm ControlMethodDocumentationForm = new ChooseControlMethodDocumentationForm();
+            ChooseControlMethodDocumentationForm ControlMethodDocumentationForm = new ChooseControlMethodDocumentationForm(uow);
             ControlMethodDocumentationForm.ShowDialog(this);
-            UilControlMethodDocumentation controlMethodDocumentation = ControlMethodDocumentationForm.GetChosenControlMethodDocumentation();
+            BllControlMethodDocumentation controlMethodDocumentation = ControlMethodDocumentationForm.GetChosenControlMethodDocumentation();
             if (controlMethodDocumentation != null)
             {
-                currentControl.ControlMethodDocumentationLib.SelectedControlMethodDocumentation.Add(new UilSelectedControlMethodDocumentation { ControlMethodDocumentation = controlMethodDocumentation });
+                currentControl.ControlMethodDocumentationLib.SelectedControlMethodDocumentation.Add(new BllSelectedControlMethodDocumentation { ControlMethodDocumentation = controlMethodDocumentation });
                 listBox2.Items.Add(controlMethodDocumentation.Pressmark + " " + controlMethodDocumentation.Name);
             }
         }
@@ -226,38 +234,38 @@ namespace QualityControl_Client
 
         private void button4_Click(object sender, EventArgs e)
         {
-            ChooseRequirementDocumentationForm RequirementDocumentationForm = new ChooseRequirementDocumentationForm();
+            ChooseRequirementDocumentationForm RequirementDocumentationForm = new ChooseRequirementDocumentationForm(uow);
             RequirementDocumentationForm.ShowDialog(this);
-            UilRequirementDocumentation requirementDocumentation = RequirementDocumentationForm.GetChosenRequirementDocumentation();
+            BllRequirementDocumentation requirementDocumentation = RequirementDocumentationForm.GetChosenRequirementDocumentation();
             if (requirementDocumentation != null)
             {
-                currentControl.RequirementDocumentationLib.SelectedRequirementDocumentation.Add(new UilSelectedRequirementDocumentation { RequirementDocumentation = requirementDocumentation });
+                currentControl.RequirementDocumentationLib.SelectedRequirementDocumentation.Add(new BllSelectedRequirementDocumentation { RequirementDocumentation = requirementDocumentation });
                 listBox3.Items.Add(requirementDocumentation.Pressmark + " " + requirementDocumentation.Name);
             }
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            ChooseEquipmentForm EquipmentForm = new ChooseEquipmentForm();
+            ChooseEquipmentForm EquipmentForm = new ChooseEquipmentForm(uow);
             EquipmentForm.ShowDialog(this);
-            UilEquipment equipment = EquipmentForm.GetChosenEquipment();
+            BllEquipment equipment = EquipmentForm.GetChosenEquipment();
             if (equipment != null)
             {
-                currentControl.EquipmentLib.SelectedEquipment.Add(new UilSelectedEquipment {Equipment = equipment} );
+                currentControl.EquipmentLib.SelectedEquipment.Add(new BllSelectedEquipment {Equipment = equipment} );
                 listBox1.Items.Add(equipment.Name);
             }
         }
 
-        public void AddEmployee(UilEmployee employee)
+        public void AddEmployee(BllEmployee employee)
         {
             if (employee != null)
             {
-                currentControl.EmployeeLib.SelectedEmployee.Add(new UilSelectedEmployee { Employee = employee });
+                currentControl.EmployeeLib.SelectedEmployee.Add(new BllSelectedEmployee { Employee = employee });
                 listBox4.Items.Add(employee.Sirname + " " + employee.Name + " " + employee.Fathername);
             }
         }
 
-        public void SetEmployee(UilEmployeeLib employeeLib)
+        public void SetEmployee(BllEmployeeLib employeeLib)
         {
             currentControl.EmployeeLib = employeeLib;
             listBox4.Items.Clear();
@@ -270,39 +278,39 @@ namespace QualityControl_Client
             }
         }
 
-        public void CopyNewEmployeeFromLib(UilEmployeeLib EmployeeLib)
+        public void CopyNewEmployeeFromLib(BllEmployeeLib EmployeeLib)
         {
             currentControl.EmployeeLib.SelectedEmployee.Clear();
             foreach (var eq in EmployeeLib.SelectedEmployee)
             {
-                currentControl.EmployeeLib.SelectedEmployee.Add(new UilSelectedEmployee { Employee = eq.Employee });
+                currentControl.EmployeeLib.SelectedEmployee.Add(new BllSelectedEmployee { Employee = eq.Employee });
             }
             SetEmployee(currentControl.EmployeeLib);
         }
 
-        public void SetResult(UilResultLib ResultLib)
+        public void SetResult(BllResultLib ResultLib)
         {
             currentControl.ResultLib = ResultLib;
         }
 
-        public void CopyNewResultFromLib(UilResultLib ResultLib)
+        public void CopyNewResultFromLib(BllResultLib ResultLib)
         {
             currentControl.ResultLib.Result.Clear();
             foreach (var res in ResultLib.Result)
             {
-                currentControl.ResultLib.Result.Add(new UilResult { Welder = res.Welder, Mark = res.Mark});
+                currentControl.ResultLib.Result.Add(new BllResult { Welder = res.Welder, Mark = res.Mark});
             }
             SetResult(currentControl.ResultLib);
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
-            ChooseEmployeeForm EmployeeForm = new ChooseEmployeeForm();
+            ChooseEmployeeForm EmployeeForm = new ChooseEmployeeForm(uow);
             EmployeeForm.ShowDialog(this);
-            UilEmployee employee = EmployeeForm.GetChosenEmployee();
+            BllEmployee employee = EmployeeForm.GetChosenEmployee();
             if (employee != null)
             {
-                currentControl.EmployeeLib.SelectedEmployee.Add(new UilSelectedEmployee { Employee = employee });
+                currentControl.EmployeeLib.SelectedEmployee.Add(new BllSelectedEmployee { Employee = employee });
                 listBox4.Items.Add(employee.Sirname + " " + employee.Name + " " + employee.Fathername);
             }
         }
@@ -314,7 +322,7 @@ namespace QualityControl_Client
         {
             if (DialogResult.OK == openFileDialog1.ShowDialog())
             {
-                var image = new UilImage
+                var image = new BllImage
                 {
                     Image = imageToByteArray(Image.FromFile(openFileDialog1.FileName))
                 };
@@ -367,10 +375,10 @@ namespace QualityControl_Client
         {
             if (imagesForPicturebox.Count > 0)
             {
-                IImageRepository imageRepository = ServiceChannelManager.Instance.ImageRepository;
+                IImageService imageService = new ImageService(uow);
                 if (currentControl.ImageLib.Image[currentPositionInImages].Id != 0)
                 {
-                    imageRepository.Delete(currentControl.ImageLib.Image[currentPositionInImages]);
+                    imageService.Delete(currentControl.ImageLib.Image[currentPositionInImages]);
                 }
                 imagesForPicturebox.RemoveAt(currentPositionInImages);
                 currentControl.ImageLib.Image.RemoveAt(currentPositionInImages);
@@ -396,7 +404,7 @@ namespace QualityControl_Client
             {
                 if (radioButton.Checked)
                 {
-                    currentControl.Is_сontrolled = false;
+                    currentControl.IsControlled = false;
                 }
             }
             
@@ -409,7 +417,7 @@ namespace QualityControl_Client
             {
                 if (radioButton.Checked)
                 {
-                    currentControl.Is_сontrolled = true;
+                    currentControl.IsControlled = true;
                 }
             }
         }
@@ -593,13 +601,13 @@ namespace QualityControl_Client
                 EnableFormControls();
                 isControlled = true;
                 radioButton2.Checked = true;
-                currentControl.Is_сontrolled = true;
+                currentControl.IsControlled = true;
             }
             else
             {
                 DisableFormControls();
                 isControlled = false;
-                currentControl.Is_сontrolled = null;
+                currentControl.IsControlled = null;
                 radioButton1.Checked = false;
                 radioButton1.Checked = false;
             }

@@ -1,4 +1,8 @@
-﻿using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,31 +12,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
 
 namespace QualityControl_Client.Forms.EquipmentDirectory
 {
     public partial class ChangeEquipmentForm : ChangeForm
     {
-        UilEquipment oldEquipment;
+        BllEquipment oldEquipment;
         public ChangeEquipmentForm() : base()
         {
             InitializeComponent();
         }
-
-        public ChangeEquipmentForm(DirectoryForm parent, UilEquipment oldEquipment, DataGridViewRow currentRow) : base(parent)
+        IUnitOfWork uow;
+        public ChangeEquipmentForm(DirectoryForm parent, BllEquipment oldEquipment, IUnitOfWork uow) : base(parent)
         {
             InitializeComponent();
+            this.uow = uow;
             this.oldEquipment = oldEquipment;
-            textBox1.Text = (string)currentRow.Cells[0].Value;
-            textBox2.Text = (string)currentRow.Cells[1].Value;
+            textBox1.Text = oldEquipment.Name;
+            textBox2.Text = oldEquipment.Type;
             textBox4.Text = oldEquipment.Pressmark;
             numericUpDown1.Value = Convert.ToDecimal(oldEquipment.FactoryNumber);
-            checkBox1.Checked = currentRow.Cells[4].Value.ToString() == "Да" ? true : false;
+            checkBox1.Checked = oldEquipment.IsChecked.Value;
             textBox3.Text = oldEquipment.NumberOfTechnicalCheck;
-            dateTimePicker1.Value = (DateTime)currentRow.Cells[6].Value;
-            dateTimePicker2.Value = (DateTime)currentRow.Cells[7].Value;
-            dateTimePicker3.Value = (DateTime)currentRow.Cells[8].Value;
+            dateTimePicker1.Value = oldEquipment.CheckDate.Value;
+            dateTimePicker2.Value = oldEquipment.TechnicalCheckDate.Value;
+            dateTimePicker3.Value = oldEquipment.NextTechnicalCheckDate.Value;
 
         }
 
@@ -48,15 +52,15 @@ namespace QualityControl_Client.Forms.EquipmentDirectory
                 oldEquipment.Type = textBox2.Text;
                 oldEquipment.Pressmark = textBox4.Text;
                 oldEquipment.FactoryNumber = (int)numericUpDown1.Value;
-                oldEquipment.IsChecked[0] = Convert.ToByte(checkBox1.Checked);
+                oldEquipment.IsChecked = checkBox1.Checked;
                 oldEquipment.NumberOfTechnicalCheck = textBox3.Text;
                 oldEquipment.CheckDate = dateTimePicker1.Value;
                 oldEquipment.TechnicalCheckDate = dateTimePicker2.Value;
                 oldEquipment.NextTechnicalCheckDate = dateTimePicker3.Value;
 
 
-                IEquipmentRepository repository = ServiceChannelManager.Instance.EquipmentRepository;
-                repository.Update(oldEquipment);
+                IEquipmentService Service = new EquipmentService(uow);
+                Service.Update(oldEquipment);
                 base.button2_Click(sender, e);
             }
         }

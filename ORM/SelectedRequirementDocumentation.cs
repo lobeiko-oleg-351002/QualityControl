@@ -1,6 +1,5 @@
 namespace ORM
 {
-    using Interface;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -10,6 +9,7 @@ namespace ORM
     [Table("SelectedRequirementDocumentation")]
     public partial class SelectedRequirementDocumentation : IOrmEntity
     {
+
         public int id { get; set; }
 
         public int? requirementDocumentation_id { get; set; }

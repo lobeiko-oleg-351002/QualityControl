@@ -1,6 +1,5 @@
 namespace ORM
 {
-    using Interface;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -14,7 +13,6 @@ namespace ORM
         public Equipment()
         {
             SelectedEquipment = new HashSet<SelectedEquipment>();
-            //Template = new HashSet<Template>();
         }
 
         public int id { get; set; }
@@ -31,8 +29,7 @@ namespace ORM
         [Column(TypeName = "date")]
         public DateTime? checkDate { get; set; }
 
-        [MaxLength(10)]
-        public byte[] isChecked { get; set; }
+        public bool? isChecked { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime? technicalCheckDate { get; set; }
@@ -40,20 +37,13 @@ namespace ORM
         [Column(TypeName = "date")]
         public DateTime? nextTechnicalCheckDate { get; set; }
 
-        public int? creator_id { get; set; }
-
         [StringLength(50)]
         public string pressmark { get; set; }
 
         [StringLength(50)]
         public string numberOfTechnicalCheck { get; set; }
 
-        public virtual User User { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SelectedEquipment> SelectedEquipment { get; set; }
-
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        //public virtual ICollection<Template> Template { get; set; }
     }
 }

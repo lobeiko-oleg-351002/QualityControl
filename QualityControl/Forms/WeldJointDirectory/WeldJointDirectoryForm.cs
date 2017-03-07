@@ -1,4 +1,8 @@
-﻿using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,25 +13,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
 
 namespace QualityControl_Client.Forms.WeldJointDirectory
 {
     public partial class WeldJointDirectoryForm : DirectoryForm
     {
-        List<UilWeldJoint> WeldJoints;
+        List<BllWeldJoint> WeldJoints;
+        IUnitOfWork uow;
+        public WeldJointDirectoryForm(IUnitOfWork uow) : base()
+        {
+            InitializeComponent();
+            this.uow = uow;
+            RefreshData();
+
+        }
         public WeldJointDirectoryForm() : base()
         {
             InitializeComponent();
-            RefreshData();
-
         }
 
         public override void RefreshData()
         {
             dataGridView1.Rows.Clear();
-            IWeldJointRepository repository = ServiceChannelManager.Instance.WeldJointRepository;
-            WeldJoints = repository.GetAll().ToList();
+            IWeldJointService Service = new WeldJointService(uow);
+            WeldJoints = Service.GetAll().ToList();
             foreach (var WeldJoint in WeldJoints)
             {
                 DataGridViewRow row = new DataGridViewRow();
@@ -43,24 +52,24 @@ namespace QualityControl_Client.Forms.WeldJointDirectory
 
         override protected void button1_Click(object sender, EventArgs e)
         {
-            AddWeldJointForm AddWeldJointForm = new AddWeldJointForm(this);
+            AddWeldJointForm AddWeldJointForm = new AddWeldJointForm(this, uow);
             AddWeldJointForm.ShowDialog(this);
         }
 
         protected override void button2_Click(object sender, EventArgs e)
         {
-            IWeldJointRepository repository = ServiceChannelManager.Instance.WeldJointRepository;
+            IWeldJointService Service = new WeldJointService(uow);
             var rows = dataGridView1.SelectedRows;
             foreach (DataGridViewRow row in rows)
             {
-                repository.Delete(WeldJoints[row.Index]);
+                Service.Delete(WeldJoints[row.Index]);
             }
             RefreshData();
         }
 
         protected override void button3_Click(object sender, EventArgs e)
         {
-            IWeldJointRepository repository = ServiceChannelManager.Instance.WeldJointRepository;
+            IWeldJointService Service = new WeldJointService(uow);
             var rows = dataGridView1.SelectedRows;
             List<DataGridViewRow> rowsList = new List<DataGridViewRow>();
             foreach (DataGridViewRow row in rows)

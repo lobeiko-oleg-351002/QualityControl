@@ -1,8 +1,11 @@
-﻿using QualityControl_Client.Forms.EquipmentDirectory;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+using QualityControl_Client.Forms.EquipmentDirectory;
 using QualityControl_Client.Forms.MaterialDirectory;
 using QualityControl_Client.Forms.RequirementDocumentationDirectory;
 using QualityControl_Client.Forms.WeldJointDirectory;
-using ServerWcfService.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,31 +16,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+
 
 namespace QualityControl_Client.Forms.TemplateDirectory
 {
     public partial class AddTemplateForm : AddForm
     {
         List<Image> imagesForPicturebox = new List<Image>();
-        UilEquipmentLib equipmentLib = new UilEquipmentLib();
-        UilMaterial material;
-        UilWeldJoint weldJoint = null;
-        UilImageLib imageLib = new UilImageLib();
-        IEnumerable<UilControlName> controlNames;
-        UilRequirementDocumentationLib requirementDocumentationLib = new UilRequirementDocumentationLib();
+        BllEquipmentLib equipmentLib = new BllEquipmentLib();
+        BllMaterial material;
+        BllWeldJoint weldJoint = null;
+        BllImageLib imageLib = new BllImageLib();
+        IEnumerable<BllControlName> controlNames;
+        BllRequirementDocumentationLib requirementDocumentationLib = new BllRequirementDocumentationLib();
+        IUnitOfWork uow;
         int currentPositionInImages = 0;
 
         public AddTemplateForm() : base()
         {
             InitializeComponent();
         }
-        public AddTemplateForm(DirectoryForm parent) : base(parent)
+        public AddTemplateForm(DirectoryForm parent, IUnitOfWork uow) : base(parent)
         {
             InitializeComponent();
+            this.uow = uow;
             openFileDialog1.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
-            IControlNameRepository controlNameRepository = ServiceChannelManager.Instance.ControlNameRepository;
-            controlNames = controlNameRepository.GetAll();
+            IControlNameService controlNameService = new ControlNameService(uow);
+            controlNames = controlNameService.GetAll();
             foreach (var name in controlNames)
             {
                 checkedListBox1.Items.Add(name.Name);
@@ -53,14 +58,14 @@ namespace QualityControl_Client.Forms.TemplateDirectory
             }
             else
             {
-                UilControlNameLib controlNameLib = new UilControlNameLib();
+                BllControlNameLib controlNameLib = new BllControlNameLib();
                 var checkedIndexes = checkedListBox1.CheckedIndices.Cast<int>().ToArray();
                 foreach (var index in checkedIndexes)
                 {
-                    controlNameLib.SelectedControlName.Add(new UilSelectedControlName { ControlName = controlNames.ElementAt(index) });
+                    controlNameLib.SelectedControlName.Add(new BllSelectedControlName { ControlName = controlNames.ElementAt(index) });
                 }
 
-                UilTemplate Template = new UilTemplate
+                BllTemplate Template = new BllTemplate
                 {
                     Name = textBox1.Text,
                     Description = richTextBox1.Text,
@@ -71,15 +76,15 @@ namespace QualityControl_Client.Forms.TemplateDirectory
                     ControlNameLib = controlNameLib,
                     RequirementDocumentationLib = requirementDocumentationLib
                 };
-                ITemplateRepository repository = ServiceChannelManager.Instance.TemplateRepository;
-                repository.Create(Template);
+                ITemplateService Service = new TemplateService(uow);
+                Service.Create(Template);
                 base.button2_Click(sender, e);
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {            
-            ChooseMaterialForm chooseMaterialForm = new ChooseMaterialForm();
+            ChooseMaterialForm chooseMaterialForm = new ChooseMaterialForm(uow);
             chooseMaterialForm.ShowDialog(this);
             material = chooseMaterialForm.GetChosenMaterial();
             if (material != null)
@@ -91,7 +96,7 @@ namespace QualityControl_Client.Forms.TemplateDirectory
 
         private void button4_Click(object sender, EventArgs e)
         {           
-            ChooseWeldJointForm chooseWeldJointForm = new ChooseWeldJointForm();
+            ChooseWeldJointForm chooseWeldJointForm = new ChooseWeldJointForm(uow);
             chooseWeldJointForm.ShowDialog(this);
             weldJoint = chooseWeldJointForm.GetChosenWeldJoint();
             if (weldJoint != null)
@@ -105,7 +110,7 @@ namespace QualityControl_Client.Forms.TemplateDirectory
             if (DialogResult.OK == openFileDialog1.ShowDialog())
             {
                 imageLib.Image.Add(
-                    new UilImage
+                    new BllImage
                     {
                         Image = imageToByteArray(Image.FromFile(openFileDialog1.FileName))
                     });
@@ -166,12 +171,12 @@ namespace QualityControl_Client.Forms.TemplateDirectory
 
         private void button11_Click(object sender, EventArgs e)
         {
-            ChooseRequirementDocumentationForm RequirementDocumentationForm = new ChooseRequirementDocumentationForm();
+            ChooseRequirementDocumentationForm RequirementDocumentationForm = new ChooseRequirementDocumentationForm(uow);
             RequirementDocumentationForm.ShowDialog(this);
-            UilRequirementDocumentation requirementDocumentation = RequirementDocumentationForm.GetChosenRequirementDocumentation();
+            BllRequirementDocumentation requirementDocumentation = RequirementDocumentationForm.GetChosenRequirementDocumentation();
             if (requirementDocumentation != null)
             {
-                requirementDocumentationLib.SelectedRequirementDocumentation.Add(new UilSelectedRequirementDocumentation { RequirementDocumentation = requirementDocumentation });
+                requirementDocumentationLib.SelectedRequirementDocumentation.Add(new BllSelectedRequirementDocumentation { RequirementDocumentation = requirementDocumentation });
                 listBox1.Items.Add(requirementDocumentation.Name);
             }
         }
@@ -184,12 +189,12 @@ namespace QualityControl_Client.Forms.TemplateDirectory
 
         private void button12_Click(object sender, EventArgs e)
         {
-            ChooseEquipmentForm EquipmentForm = new ChooseEquipmentForm();
+            ChooseEquipmentForm EquipmentForm = new ChooseEquipmentForm(uow);
             EquipmentForm.ShowDialog(this);
-            UilEquipment Equipment = EquipmentForm.GetChosenEquipment();
+            BllEquipment Equipment = EquipmentForm.GetChosenEquipment();
             if (Equipment != null)
             {
-                equipmentLib.SelectedEquipment.Add(new UilSelectedEquipment { Equipment = Equipment });
+                equipmentLib.SelectedEquipment.Add(new BllSelectedEquipment { Equipment = Equipment });
                 listBox2.Items.Add(Equipment.Name);
             }
         }

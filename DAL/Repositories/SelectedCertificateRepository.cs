@@ -21,7 +21,7 @@ namespace DAL.Repositories
         public IEnumerable<DalSelectedCertificate> GetCertificatesByLibId(int id)
         {
             Mapper.CreateMap<SelectedCertificate, DalSelectedCertificate>();
-            var elements = context.Set<SelectedCertificate>().Where(entity => entity.certificate_lib_id == id);
+            var elements = context.Set<SelectedCertificate>().Where(entity => entity.certificateLib_id == id);
             var retElemets = new List<DalSelectedCertificate>();
             foreach (var element in elements)
             {

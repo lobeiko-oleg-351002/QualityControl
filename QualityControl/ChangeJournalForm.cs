@@ -1,7 +1,6 @@
 ﻿using QualityControl_Client.Forms.ComponentDirectory;
 using QualityControl_Client.Forms.MaterialDirectory;
 using QualityControl_Client.Forms.WeldJointDirectory;
-using ServerWcfService.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,35 +10,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+
+using BLL.Entities;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+using BLL.Services;
 
 namespace QualityControl_Client
 {
     public partial class ChangeJournalForm : Form
     {
         List<ControlMethodTabForm> ControlMethodTabForms;
-        List<UilIndustrialObject> IndustrialObjects;
-        List<UilCustomer> Customers;
-        UilUser User;
+        List<BllIndustrialObject> IndustrialObjects;
+        List<BllCustomer> Customers;
+        BllUser User;
 
-        public UilJournal Journal { get; private set; }
+        public BllJournal Journal { get; private set; }
 
         public ChangeJournalForm()
         {
             InitializeComponent();
         }
-
-        public ChangeJournalForm(UilJournal oldJournal, UilUser user)
+        IUnitOfWork uow;
+        public ChangeJournalForm(BllJournal oldJournal, BllUser user, IUnitOfWork uow)
         {
             InitializeComponent();
+            this.uow = uow;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             CenterToScreen();
             Journal = oldJournal;
             User = user;
-            IControlNameRepository controlNameRepository = ServiceChannelManager.Instance.ControlNameRepository;
-            var controlNames = controlNameRepository.GetAll();
+            IControlNameService controlNameService = new ControlNameService(uow);
+            var controlNames = controlNameService.GetAll();
             ControlMethodTabForms = new List<ControlMethodTabForm>();
-            UilControl control = null;
+            BllControl control = null;
             foreach (var controlName in controlNames)
             {
                 bool isExistControl = false;
@@ -56,22 +60,22 @@ namespace QualityControl_Client
                 }
                 if (isExistControl == false)
                 {
-                    control = new UilControl
+                    control = new BllControl
                     {
-                        ImageLib = new UilImageLib(),
-                        EquipmentLib = new UilEquipmentLib(),
-                        ResultLib = new UilResultLib(),
-                        ControlMethodDocumentationLib = new UilControlMethodDocumentationLib(),
-                        RequirementDocumentationLib = new UilRequirementDocumentationLib(),
-                        EmployeeLib = new UilEmployeeLib()
+                        ImageLib = new BllImageLib(),
+                        EquipmentLib = new BllEquipmentLib(),
+                        ResultLib = new BllResultLib(),
+                        ControlMethodDocumentationLib = new BllControlMethodDocumentationLib(),
+                        RequirementDocumentationLib = new BllRequirementDocumentationLib(),
+                        EmployeeLib = new BllEmployeeLib()
                     };
                     control.ControlName = controlName;
                     Journal.ControlMethodsLib.Control.Add(control);
                 }
 
 
-                var tabForm = new ControlMethodTabForm(control, oldJournal);
-                if (control.Is_сontrolled != null)
+                var tabForm = new ControlMethodTabForm(control, oldJournal, uow);
+                if (control.IsControlled != null)
                 {
                     tabForm.EnableFormControls();
                 }
@@ -82,9 +86,9 @@ namespace QualityControl_Client
                 tabControl1.TabPages.Add(new ControlMethodTab(tabForm, controlName));
             }
 
-            IndustrialObjects = new List<UilIndustrialObject>();
-            IIndustrialObjectRepository industrialObjectRepository = ServiceChannelManager.Instance.IndustrialObjectRepository;
-            var industrialObjects = industrialObjectRepository.GetAll();
+            IndustrialObjects = new List<BllIndustrialObject>();
+            IIndustrialObjectService industrialObjectService = new IndustrialObjectService(uow);
+            var industrialObjects = industrialObjectService.GetAll();
             foreach (var element in industrialObjects)
             {
                 IndustrialObjects.Add(element);
@@ -95,9 +99,9 @@ namespace QualityControl_Client
                 comboBox1.SelectedItem = Journal.IndustrialObject != null ? Journal.IndustrialObject.Name : "";
             }
 
-            Customers = new List<UilCustomer>();
-            ICustomerRepository CustomerRepository = ServiceChannelManager.Instance.CustomerRepository;
-            var customers = CustomerRepository.GetAll();
+            Customers = new List<BllCustomer>();
+            ICustomerService CustomerService = new CustomerService(uow);
+            var customers = CustomerService.GetAll();
             foreach (var element in customers)
             {
                 Customers.Add(element);
@@ -109,23 +113,23 @@ namespace QualityControl_Client
                 comboBox2.SelectedItem = Journal.Customer != null ? Journal.Customer.Organization + " " + Journal.Customer.Address + " " + Journal.Customer.Phone : "";
             }
 
-            dateTimePicker1.Value = Journal.Request_date.Value;
-            dateTimePicker2.Value = Journal.Control_date.Value;
-            numericUpDown2.Value = Journal.Request_number.Value;
+            dateTimePicker1.Value = Journal.RequestDate.Value;
+            dateTimePicker2.Value = Journal.ControlDate.Value;
+            numericUpDown2.Value = Journal.RequestNumber.Value;
             numericUpDown1.Value = Journal.Amount.Value;
             textBox3.Text = Journal.Size;
             textBox2.Text = Journal.Component != null ? Journal.Component.Name : "";
             textBox4.Text = Journal.Material != null ? Journal.Material.Name : "";
             textBox5.Text = Journal.WeldJoint != null ? Journal.WeldJoint.Name : "";
-            textBox6.Text = Journal.Welding_type;
+            textBox6.Text = Journal.WeldingType;
             richTextBox2.Text = Journal.Description;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ChooseComponentForm ComponentForm = new ChooseComponentForm();
+            ChooseComponentForm ComponentForm = new ChooseComponentForm(uow);
             ComponentForm.ShowDialog(this);
-            UilComponent Component = ComponentForm.GetChosenComponent();
+            BllComponent Component = ComponentForm.GetChosenComponent();
             if (Component != null)
             {
                 Journal.Component = Component;
@@ -135,9 +139,9 @@ namespace QualityControl_Client
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ChooseMaterialForm MaterialForm = new ChooseMaterialForm();
+            ChooseMaterialForm MaterialForm = new ChooseMaterialForm(uow);
             MaterialForm.ShowDialog(this);
-            UilMaterial Material = MaterialForm.GetChosenMaterial();
+            BllMaterial Material = MaterialForm.GetChosenMaterial();
             if (Material != null)
             {
                 Journal.Material = Material;
@@ -147,9 +151,9 @@ namespace QualityControl_Client
 
         private void button3_Click(object sender, EventArgs e)
         {
-            ChooseWeldJointForm WeldJointForm = new ChooseWeldJointForm();
+            ChooseWeldJointForm WeldJointForm = new ChooseWeldJointForm(uow);
             WeldJointForm.ShowDialog(this);
-            UilWeldJoint WeldJoint = WeldJointForm.GetChosenWeldJoint();
+            BllWeldJoint WeldJoint = WeldJointForm.GetChosenWeldJoint();
             if (WeldJoint != null)
             {
                 Journal.WeldJoint = WeldJoint;
@@ -161,10 +165,10 @@ namespace QualityControl_Client
         {
             var controls = Journal.ControlMethodsLib.Control;
             int j = 0;
-            List<UilControl> controlsForRemoving = new List<UilControl>();
+            List<BllControl> controlsForRemoving = new List<BllControl>();
             for (int i = 0; i < controls.Count; i++)
             {
-                if (controls[i].Is_сontrolled == null)
+                if (controls[i].IsControlled == null)
                 {
                     controlsForRemoving.Add(controls[i]);
                 }
@@ -177,9 +181,9 @@ namespace QualityControl_Client
             }
         }
 
-        private List<UilControl> Clone(List<UilControl> source)
+        private List<BllControl> Clone(List<BllControl> source)
         {
-            List<UilControl> temp = new List<UilControl>();
+            List<BllControl> temp = new List<BllControl>();
             foreach (var elem in source)
             {
                 temp.Add(elem);
@@ -189,14 +193,14 @@ namespace QualityControl_Client
 
         private void button4_Click(object sender, EventArgs e)
         {
-            IJournalRepository repository = ServiceChannelManager.Instance.JournalRepository;
+            IJournalService Service = new JournalService(uow);
             InitializeJournalViaFormControls();
-            //List<UilControl> temp = Clone(Journal.ControlMethodsLib.Control);
+            //List<BllControl> temp = Clone(Journal.ControlMethodsLib.Control);
             RemoveUncontrolledMethods();
-            Journal.Modified_date = DateTime.Now;
-            Journal.User_Modifier_Login = User != null ? User.Login : "";
+            Journal.ModifiedDate = DateTime.Now;
+            Journal.UserModifierLogin = User != null ? User.Login : "";
 
-            Journal = repository.Update(Journal);
+            Journal = Service.Update(Journal);
 
             isClosed = false;
             MessageBox.Show("Информация обновлена", "Оповещение");
@@ -207,19 +211,19 @@ namespace QualityControl_Client
         private void button5_Click(object sender, EventArgs e)
         {
             isClosed = true;
-            IJournalRepository repository = ServiceChannelManager.Instance.JournalRepository;
-            Journal = repository.Get(Journal.Id);
+            IJournalService Service = new JournalService(uow);
+            Journal = Service.Get(Journal.Id);
             Close();
         }
 
         private void InitializeJournalViaFormControls()
         {
-            Journal.Request_date = dateTimePicker1.Value;
-            Journal.Control_date = dateTimePicker2.Value;
-            Journal.Request_number = (int)numericUpDown2.Value;
+            Journal.RequestDate = dateTimePicker1.Value;
+            Journal.ControlDate = dateTimePicker2.Value;
+            Journal.RequestNumber = (int)numericUpDown2.Value;
             Journal.Amount = (int)numericUpDown1.Value;
             Journal.Size = textBox3.Text;
-            Journal.Welding_type = textBox6.Text;
+            Journal.WeldingType = textBox6.Text;
             Journal.Contract = textBox9.Text;
             Journal.Description = richTextBox2.Text;
             Journal.Customer = comboBox2.SelectedIndex != -1 ? Customers[comboBox2.SelectedIndex] : null;

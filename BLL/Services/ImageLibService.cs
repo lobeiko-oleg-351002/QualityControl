@@ -37,7 +37,7 @@ namespace BLL.Services
             {
                 Mapper.CreateMap<BllImage, DalImage>();   
                 var dalImage = Mapper.Map<DalImage>(image);
-                dalImage.Image_lib_id = entity.Id;
+                dalImage.ImageLib_id = entity.Id;
                 var ormImage =  uow.Images.Create(dalImage);
                 uow.Commit();
                 image.Id = ormImage.id;
@@ -74,7 +74,7 @@ namespace BLL.Services
                 if (image.Id == 0)
                 {
                     var dalImage = Mapper.Map<DalImage>(image);
-                    dalImage.Image_lib_id = entity.Id;
+                    dalImage.ImageLib_id = entity.Id;
                     var ormImage = uow.Images.Create(dalImage);
                     uow.Commit();
                     image.Id = ormImage.id;

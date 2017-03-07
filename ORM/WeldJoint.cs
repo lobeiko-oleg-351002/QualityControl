@@ -1,6 +1,5 @@
 namespace ORM
 {
-    using Interface;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -19,22 +18,20 @@ namespace ORM
 
         public int id { get; set; }
 
+        [Required]
         [StringLength(50)]
         public string name { get; set; }
 
+        [StringLength(200)]
         public string description { get; set; }
 
         [Column(TypeName = "image")]
         public byte[] image { get; set; }
-
-        public int? creator_id { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Journal> Journal { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Template> Template { get; set; }
-
-        public virtual User User { get; set; }
     }
 }

@@ -13,6 +13,6 @@ namespace DAL.Entities
 
         public int? Certificate_id { get; set; }
 
-        public int? Certificate_lib_id { get; set; }
+        public int? CertificateLib_id { get; set; }
     }
 }

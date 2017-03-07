@@ -1,5 +1,5 @@
 ﻿using QualityControl_Client.Forms;
-using ServerWcfService.Services.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,23 +9,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities.Interface;
 using QualityControl_Client.Forms.SertificateDirectory;
 using QualityControl_Client.Forms.CustomerDirectory;
 using QualityControl_Client.Forms.EquipmentDirectory;
 using QualityControl_Client.Forms.EmployeeDirectory;
+using BLL.Services.Interface;
+using BLL.Services;
+using DAL.Repositories.Interface;
+using BLL.Entities.Interface;
 
 namespace QualityControl_Client
 {
     public partial class EventForm : Form
     {
-        public EventForm()
+        public EventForm(IUnitOfWork uow)
         {
             InitializeComponent();
+            this.uow = uow;
             dataGridView1.Columns[4].DefaultCellStyle.Format = "dd.MM.yyyy";
             RefreshDataGrid();
         }
 
+        IUnitOfWork uow;
         public void RefreshDataGrid()
         {
             dataGridView1.Rows.Clear();
@@ -35,7 +40,7 @@ namespace QualityControl_Client
             AddEventsFromEmployees();
         }
 
-        List<IUilEntity> Entities = new List<IUilEntity>();
+        List<IBllEntity> Entities = new List<IBllEntity>();
         List<string> DirectoryFormClassNames = new List<string>();
 
         private void button1_Click(object sender, EventArgs e)
@@ -50,8 +55,8 @@ namespace QualityControl_Client
             const string messagePrevent = "Срок действия сертификата истекает";
             const int preventDaysCount = 31;
             string formClassName = "SertificateDirectoryForm";
-            ICertificateRepository certificateRepository = ServiceChannelManager.Instance.CertificateRepository;
-            var certificates = certificateRepository.GetAll();
+            ICertificateService certificateService = new CertificateService(uow);
+            var certificates = certificateService.GetAll();
             foreach (var item in certificates)
             {
                 var endOfValidity = item.CheckDate.AddYears(item.Duration.HasValue ? item.Duration.Value : 0);
@@ -78,8 +83,8 @@ namespace QualityControl_Client
             const string messagePrevent = "Срок действия договора истекает";
             const int preventDaysCount = 31;
             const string formClassName = "CustomerDirectoryForm";
-            ICustomerRepository CustomerRepository = ServiceChannelManager.Instance.CustomerRepository;
-            var Customers = CustomerRepository.GetAll();
+            ICustomerService CustomerService = new CustomerService(uow);
+            var Customers = CustomerService.GetAll();
             foreach (var item in Customers)
             {
                 if (item.ContractEndDate.Value.CompareTo(DateTime.Now) < 0)
@@ -104,9 +109,9 @@ namespace QualityControl_Client
             const string messageFinal = "Необходимо провести техническую поверку";
             const string messagePrevent = "Срок действия технической поверки истекает";
             const string formClassName = "EquipmentDirectoryForm";
-            IEquipmentRepository EquipmentRepository = ServiceChannelManager.Instance.EquipmentRepository;
+            IEquipmentService EquipmentService = new EquipmentService(uow);
             const int preventDaysCount = 31;
-            var Equipments = EquipmentRepository.GetAll();
+            var Equipments = EquipmentService.GetAll();
             foreach (var item in Equipments)
             {
                 if (item.NextTechnicalCheckDate.Value.CompareTo(DateTime.Now) <= 0)
@@ -133,9 +138,9 @@ namespace QualityControl_Client
            // const string messagePreventTech = "Срок действия квалификации сотрудника истекает";
             //const string messagePreventMed = "Срок действия результатов мед. обследования сотрудника истекает";
             string formClassName = "EmployeeDirectoryForm";
-            IEmployeeRepository EmployeeRepository = ServiceChannelManager.Instance.EmployeeRepository;
+            IEmployeeService EmployeeService = new EmployeeService(uow);
             const int preventDaysCount = 31;
-            var Employees = EmployeeRepository.GetAll();
+            var Employees = EmployeeService.GetAll();
             foreach (var item in Employees)
             {
                 var endOfTechValidity = item.KnowledgeCheckDate.Value.AddYears(1);
@@ -192,16 +197,16 @@ namespace QualityControl_Client
             switch(DirectoryFormClassNames[id])
             {
                 case "SertificateDirectoryForm":
-                    form = new SertificateDirectoryForm();
+                    form = new SertificateDirectoryForm(uow);
                     break;
                 case "EmployeeDirectoryForm":
-                    form = new EmployeeDirectoryForm();
+                    form = new EmployeeDirectoryForm(uow);
                     break;
                 case "EquipmentDirectoryForm":
-                    form = new EquipmentDirectoryForm();
+                    form = new EquipmentDirectoryForm(uow);
                     break;
                 case "CustomerDirectoryForm":
-                    form = new SertificateDirectoryForm();
+                    form = new SertificateDirectoryForm(uow);
                     break;
 
             }

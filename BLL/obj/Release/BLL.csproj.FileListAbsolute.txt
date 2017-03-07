@@ -1,0 +1,13 @@
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Release\BLL.dll
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Release\BLL.pdb
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Release\AutoMapper.dll
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Release\DAL.dll
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Release\ORM.dll
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Release\EntityFramework.dll
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Release\DAL.pdb
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Release\ORM.pdb
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Release\AutoMapper.xml
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Release\EntityFramework.xml
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\obj\Release\BLL.csprojResolveAssemblyReference.cache
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\obj\Release\BLL.dll
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\obj\Release\BLL.pdb

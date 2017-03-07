@@ -1,4 +1,4 @@
-﻿using ServerWcfService.Services.Interface;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,27 +8,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+using DAL.Repositories.Interface;
+using BLL.Entities;
+using BLL.Services.Interface;
+using BLL.Services;
 
 namespace QualityControl_Client.Forms.CustomerDirectory
 {
     public partial class ChooseCustomerForm : DirectoryForm
     {
-        List<UilCustomer> Customers;
-        UilCustomer customer;
-        public ChooseCustomerForm() : base()
+        List<BllCustomer> Customers;
+        BllCustomer customer;
+        IUnitOfWork uow;
+        public ChooseCustomerForm(IUnitOfWork uow) : base()
         {
             InitializeComponent();
+            this.uow = uow;
             RefreshData();
             dataGridView1.Columns[5].DefaultCellStyle.Format = "dd.MM.yyyy";
             dataGridView1.Columns[6].DefaultCellStyle.Format = "dd.MM.yyyy";
         }
 
+        public ChooseCustomerForm() : base()
+        {
+            InitializeComponent();
+        }
+
         public override void RefreshData()
         {
             dataGridView1.Rows.Clear();
-            ICustomerRepository repository = ServiceChannelManager.Instance.CustomerRepository;
-            Customers = repository.GetAll().ToList();
+            ICustomerService Service = new CustomerService(uow);
+            Customers = Service.GetAll().ToList();
             int num = 0;
             foreach (var Customer in Customers)
             {
@@ -48,24 +58,24 @@ namespace QualityControl_Client.Forms.CustomerDirectory
 
         override protected void button1_Click(object sender, EventArgs e)
         {
-            AddCustomerForm AddCustomerForm = new AddCustomerForm(this);
+            AddCustomerForm AddCustomerForm = new AddCustomerForm(this, uow);
             AddCustomerForm.ShowDialog(this);
         }
 
         protected override void button2_Click(object sender, EventArgs e)
         {
-            ICustomerRepository repository = ServiceChannelManager.Instance.CustomerRepository;
+            ICustomerService Service = new CustomerService(uow);
             var rows = dataGridView1.SelectedRows;
             foreach (DataGridViewRow row in rows)
             {
-                repository.Delete(Customers[row.Index]);
+                Service.Delete(Customers[row.Index]);
             }
             RefreshData();
         }
 
         protected override void button3_Click(object sender, EventArgs e)
         {
-            ICustomerRepository repository = ServiceChannelManager.Instance.CustomerRepository;
+            ICustomerService Service = new CustomerService(uow);
             var rows = dataGridView1.SelectedRows;
             List<DataGridViewRow> rowsList = new List<DataGridViewRow>();
             foreach (DataGridViewRow row in rows)
@@ -74,7 +84,7 @@ namespace QualityControl_Client.Forms.CustomerDirectory
             }
             for (int i = rowsList.Count - 1; i >= 0; i--)
             {
-                ChangeCustomerForm changeCustomerForm = new ChangeCustomerForm(this, Customers[rowsList[i].Index], rowsList[i]);
+                ChangeCustomerForm changeCustomerForm = new ChangeCustomerForm(this, Customers[rowsList[i].Index], uow);
                 changeCustomerForm.ShowDialog(this);
             }
             RefreshData();
@@ -94,7 +104,7 @@ namespace QualityControl_Client.Forms.CustomerDirectory
             }
         }
 
-        public UilCustomer GetChosenCustomer()
+        public BllCustomer GetChosenCustomer()
         {
             return customer;
         }

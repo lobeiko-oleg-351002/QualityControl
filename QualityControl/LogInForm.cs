@@ -1,4 +1,4 @@
-﻿using ServerWcfService.Services.Interface;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,30 +8,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+
+using BLL.Entities;
+using DAL.Repositories.Interface;
+using BLL.Services.Interface;
+using BLL.Services;
 
 namespace QualityControl_Client
 {
     public partial class LogInForm : Form
     {
-        public LogInForm()
+        public LogInForm(IUnitOfWork uow)
         {
             InitializeComponent();
             CenterToScreen();
+            this.uow = uow;
         }
 
-        public UilUser User { get; private set; }
-
+        public BllUser User { get; private set; }
+        IUnitOfWork uow;
         private void button1_Click(object sender, EventArgs e)
         {
-            RegistrationForm form = new RegistrationForm();
+            RegistrationForm form = new RegistrationForm(uow);
             form.ShowDialog(this);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            IUserRepository repository = ServiceChannelManager.Instance.UserRepository;
-            User =  repository.Authorize(textBox1.Text, textBox2.Text);
+            IUserService Service = new UserService(uow);
+            User =  Service.Authorize(textBox1.Text, textBox2.Text);
             if (User != null)
             {
                 MessageBox.Show("Авторизация прошла успешно", "Оповещение");
@@ -51,11 +56,11 @@ namespace QualityControl_Client
 
         private void button4_Click(object sender, EventArgs e)
         {
-            IRoleRepository repository = ServiceChannelManager.Instance.RoleRepository;
+            IRoleService Service = new RoleService(uow);
 
-            User = new UilUser
+            User = new BllUser
             {
-                Role = repository.GetRoleByName("Гость")
+                Role = Service.GetRoleByName("Гость")
             };
             Close();
         }

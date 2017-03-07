@@ -98,7 +98,7 @@
             this.Controls.Add(this.dataGridView1);
             this.Location = new System.Drawing.Point(0, 0);
             this.Name = "ChooseControlMethodDocumentationForm";
-            this.Text = "Изменить документацию метода контроля";
+            this.Text = "Выбрать документацию метода контроля";
             this.Controls.SetChildIndex(this.button1, 0);
             this.Controls.SetChildIndex(this.button2, 0);
             this.Controls.SetChildIndex(this.button3, 0);

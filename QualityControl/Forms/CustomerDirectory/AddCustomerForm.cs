@@ -1,5 +1,4 @@
-﻿using ServerWcfService.Services.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,7 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+using DAL.Repositories.Interface;
+using BLL.Entities;
+using BLL.Services.Interface;
+using BLL.Services;
 
 namespace QualityControl_Client.Forms.CustomerDirectory
 {
@@ -18,8 +20,10 @@ namespace QualityControl_Client.Forms.CustomerDirectory
         {
             InitializeComponent();
         }
-        public AddCustomerForm(DirectoryForm parent) : base(parent)
+        IUnitOfWork uow;
+        public AddCustomerForm(DirectoryForm parent, IUnitOfWork uow) : base(parent)
         {
+            this.uow = uow;
             InitializeComponent();
         }
 
@@ -31,7 +35,7 @@ namespace QualityControl_Client.Forms.CustomerDirectory
             }
             else
             {
-                UilCustomer customer = new UilCustomer
+                BllCustomer customer = new BllCustomer
                 {
                     Organization = textBox1.Text,
                     Address = textBox2.Text,
@@ -40,8 +44,8 @@ namespace QualityControl_Client.Forms.CustomerDirectory
                     ContractBeginDate = dateTimePicker1.Value,
                     ContractEndDate = dateTimePicker2.Value
                 };
-                ICustomerRepository repository = ServiceChannelManager.Instance.CustomerRepository;
-                repository.Create(customer);
+                ICustomerService Service = new CustomerService(uow);
+                Service.Create(customer);
                 base.button2_Click(sender, e);
             }
         }

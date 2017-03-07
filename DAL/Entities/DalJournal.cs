@@ -11,13 +11,13 @@ namespace DAL
     {
         public int Id { get; set; }
 
-        public DateTime? Request_date { get; set; }
+        public DateTime? RequestDate { get; set; }
 
-        public DateTime? Control_date { get; set; }
+        public DateTime? ControlDate { get; set; }
 
-        public int? Request_number { get; set; }
+        public int? RequestNumber { get; set; }
 
-        public int? Industrial_object_id { get; set; }
+        public int? IndustrialObject_id { get; set; }
 
         public int? Amount { get; set; }
 
@@ -25,9 +25,9 @@ namespace DAL
 
         public int? Material_id { get; set; }
 
-        public int? Weld_joint_id { get; set; }
+        public int? WeldJoint_id { get; set; }
 
-        public string Welding_type { get; set; }
+        public string WeldingType { get; set; }
 
         public int? ControlMethodsLib_id { get; set; }
 
@@ -39,10 +39,10 @@ namespace DAL
 
         public string Description { get; set; }
 
-        public string User_Modifier_Login { get; set; }
+        public string UserModifierLogin { get; set; }
 
-        public int? User_Owner_id { get; set; }
+        public int? UserOwner_id { get; set; }
 
-        public DateTime? Modified_date { get; set; }
+        public DateTime? ModifiedDate { get; set; }
     }
 }

@@ -76,7 +76,7 @@ namespace BLL.Services
                 dalResult.ResultLib_id = entity.Id;
                 if (Result.Id == 0)
                 {                                        
-                    Results ormEntity = uow.Results.Create(dalResult);
+                    Result ormEntity = uow.Results.Create(dalResult);
                     uow.Commit();
                     Result.Id = ormEntity.id;
                 }

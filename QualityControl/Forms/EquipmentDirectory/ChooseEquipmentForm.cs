@@ -1,4 +1,4 @@
-﻿using ServerWcfService.Services.Interface;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,27 +8,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+using DAL.Repositories.Interface;
+using BLL.Services.Interface;
+using BLL.Services;
+using BLL.Entities;
 
 namespace QualityControl_Client.Forms.EquipmentDirectory
 {
     public partial class ChooseEquipmentForm : DirectoryForm
     {
-        List<UilEquipment> Equipments;
-        UilEquipment equipment;
+        List<BllEquipment> Equipments;
+        BllEquipment equipment;
+
+        IUnitOfWork uow;
+        public ChooseEquipmentForm(IUnitOfWork uow)
+        {
+            InitializeComponent();
+            this.uow = uow;
+            RefreshData();
+        }
 
         public ChooseEquipmentForm()
         {
             InitializeComponent();
-            RefreshData();
         }
 
 
         public override void RefreshData()
         {
             dataGridView1.Rows.Clear();
-            IEquipmentRepository repository = ServiceChannelManager.Instance.EquipmentRepository;
-            Equipments = repository.GetAll().ToList();
+            IEquipmentService Service = new EquipmentService(uow);
+            Equipments = Service.GetAll().ToList();
             foreach (var Equipment in Equipments)
             {
                 DataGridViewRow row = new DataGridViewRow();
@@ -37,7 +47,7 @@ namespace QualityControl_Client.Forms.EquipmentDirectory
                 row.Cells[1].Value = Equipment.Pressmark;
                 row.Cells[2].Value = Equipment.Type;
                 row.Cells[3].Value = Equipment.FactoryNumber;
-                row.Cells[4].Value = Equipment.IsChecked[0] == 1 ? "Да" : "Нет";
+                row.Cells[4].Value = Equipment.IsChecked.Value;
                 row.Cells[5].Value = Equipment.NumberOfTechnicalCheck;
                 row.Cells[6].Value = Equipment.CheckDate;
                 row.Cells[7].Value = Equipment.TechnicalCheckDate;
@@ -48,24 +58,24 @@ namespace QualityControl_Client.Forms.EquipmentDirectory
 
         override protected void button1_Click(object sender, EventArgs e)
         {
-            AddEquipmentForm AddEquipmentForm = new AddEquipmentForm(this);
+            AddEquipmentForm AddEquipmentForm = new AddEquipmentForm(this, uow);
             AddEquipmentForm.ShowDialog(this);
         }
 
         protected override void button2_Click(object sender, EventArgs e)
         {
-            IEquipmentRepository repository = ServiceChannelManager.Instance.EquipmentRepository;
+            IEquipmentService Service = new EquipmentService(uow);
             var rows = dataGridView1.SelectedRows;
             foreach (DataGridViewRow row in rows)
             {
-                repository.Delete(Equipments[row.Index]);
+                Service.Delete(Equipments[row.Index]);
             }
             RefreshData();
         }
 
         protected override void button3_Click(object sender, EventArgs e)
         {
-            IEquipmentRepository repository = ServiceChannelManager.Instance.EquipmentRepository;
+            IEquipmentService Service = new EquipmentService(uow);
             var rows = dataGridView1.SelectedRows;
             List<DataGridViewRow> rowsList = new List<DataGridViewRow>();
             foreach (DataGridViewRow row in rows)
@@ -74,7 +84,7 @@ namespace QualityControl_Client.Forms.EquipmentDirectory
             }
             for (int i = rowsList.Count - 1; i >= 0; i--)
             {
-                ChangeEquipmentForm changeEquipmentForm = new ChangeEquipmentForm(this, Equipments[rowsList[i].Index], rowsList[i]);
+                ChangeEquipmentForm changeEquipmentForm = new ChangeEquipmentForm(this, Equipments[rowsList[i].Index], uow);
                 changeEquipmentForm.ShowDialog(this);
             }
             RefreshData();
@@ -94,7 +104,7 @@ namespace QualityControl_Client.Forms.EquipmentDirectory
             }
         }
 
-        public UilEquipment GetChosenEquipment()
+        public BllEquipment GetChosenEquipment()
         {
             return equipment;
         }

@@ -13,6 +13,6 @@ namespace DAL.Entities
 
         public int? Component_id { get; set; }
 
-        public int? Component_lib_id { get; set; }
+        public int? ComponentLib_id { get; set; }
     }
 }

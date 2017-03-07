@@ -8,25 +8,28 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using UIL.Entities;
-using UIL.Entities.Interface;
+using BLL.Entities;
+using DAL.Repositories.Interface;
+using BLL.Services.Interface;
+using BLL.Services;
 
 namespace QualityControl_Server
 {
     public class WordDocumentManager
     {
-        public void ExportVIK(List<UilJournal> journals)
+        IUnitOfWork uow;
+        public WordDocumentManager(IUnitOfWork uow)
         {
-
+            this.uow = uow;
         }
 
-        private void FillVIKReport(Application wordApp, List<UilJournal> journals)
+        private void FillVIKReport(Application wordApp, List<BllJournal> journals)
         {
             //Find and replace:
             this.FindAndReplace(wordApp, "ProtocolNumber", journals[0].ControlMethodsLib.Control[0].ProtocolNumber.ToString());
-            this.FindAndReplace(wordApp, "ControlDate_Day", journals[0].Control_date.Value.Day.ToString());
+            this.FindAndReplace(wordApp, "ControlDate_Day", journals[0].ControlDate.Value.Day.ToString());
             string month = "";
-            switch(journals[0].Control_date.Value.Month.ToString())
+            switch(journals[0].ControlDate.Value.Month.ToString())
             {
                 case "1":
                     month = "января";
@@ -67,10 +70,10 @@ namespace QualityControl_Server
             }
 
             this.FindAndReplace(wordApp, "ControlDate_Month", month);
-            this.FindAndReplace(wordApp, "ControlDate_Year", journals[0].Control_date.Value.Year.ToString());
-            this.FindAndReplace(wordApp, "RequestNum", journals[0].Request_number.Value.ToString());
-            this.FindAndReplace(wordApp, "RequestDate", journals[0].Request_date.Value.ToString("dd.MM.yyyy"));
-            this.FindAndReplace(wordApp, "RequestNum", journals[0].Request_number.Value.ToString());
+            this.FindAndReplace(wordApp, "ControlDate_Year", journals[0].ControlDate.Value.Year.ToString());
+            this.FindAndReplace(wordApp, "RequestNum", journals[0].RequestNumber.Value.ToString());
+            this.FindAndReplace(wordApp, "RequestDate", journals[0].RequestDate.Value.ToString("dd.MM.yyyy"));
+            this.FindAndReplace(wordApp, "RequestNum", journals[0].RequestNumber.Value.ToString());
             this.FindAndReplace(wordApp, "Customer", journals[0].Customer != null ? journals[0].Customer.Organization : "<не указан>");
             this.FindAndReplace(wordApp, "IndustrialObject", journals[0].IndustrialObject != null ? journals[0].IndustrialObject.Name : "<не указан>");
             this.FindAndReplace(wordApp, "Component", journals[0].Component != null ? journals[0].Component.Name : "<не указан>");
@@ -96,10 +99,11 @@ namespace QualityControl_Server
 
             this.FindAndReplace(wordApp, "Light", journals[0].ControlMethodsLib.Control[0].Light.Value.ToString());
 
-            UilCertificate certificate = null;
+            BllCertificate certificate = null;
             if (journals[0].ControlMethodsLib.Control[0].EmployeeLib.SelectedEmployee.Count != 0)
             {
-                certificate = ServiceChannelManager.Instance.CertificateRepository.GetCertificateByEmployeeAndControlName(
+                ICertificateService service = new CertificateService(uow);
+                certificate =  service.GetCertificateByEmployeeAndControlName(
                     journals[0].ControlMethodsLib.Control[0].EmployeeLib.SelectedEmployee[0].Employee, journals[0].ControlMethodsLib.Control[0].ControlName);
             }
             this.FindAndReplace(wordApp, "Certificate", certificate != null ? certificate.Title : "-");
@@ -140,7 +144,7 @@ namespace QualityControl_Server
 
         string pathImage = null;
 
-        public void CreateWordDocument(object savaAs, List<UilJournal> journals)
+        public void CreateWordDocument(object savaAs, List<BllJournal> journals)
         {
             List<int> processesbeforegen = getRunningProcesses();
             object missing = Missing.Value;
@@ -201,13 +205,13 @@ namespace QualityControl_Server
                     Table tableEquipment = tables[2];
                     Table tableResult = tables[4];
 
-                    List<UilEquipment> usedEq = new List<UilEquipment>();
+                    List<BllEquipment> usedEq = new List<BllEquipment>();
                     int rowsCount = tableEquipment.Rows.Count;
                     int coulmnsCount = tableEquipment.Columns.Count;
 
                     for (int i = 0; i < journals.Count; i++)
                     {
-                        UilControl vik = null;
+                        BllControl vik = null;
                         foreach(var control in journals[i].ControlMethodsLib.Control)
                         {
                             if (control.ControlName.Name == "ВИК")
@@ -248,7 +252,7 @@ namespace QualityControl_Server
                                 row.Cells[2].Range.Text = journals[i].Size + ", " + (journals[i].Material != null ? journals[i].Material.Name : "<не указано>");
                                 row.Cells[3].Range.Text = res.Welder + ", " + res.Mark;
                                 row.Cells[4].Range.Text = res.Number.ToString();
-                                row.Cells[5].Range.Text = res.Defect_description;
+                                row.Cells[5].Range.Text = res.DefectDescription;
                                 row.Cells[6].Range.Text = res.Quality;
                                 // row.Cells[j].WordWrap = true;
                                 // row.Cells[j].Range.Underline = WdUnderline.wdUnderlineNone;

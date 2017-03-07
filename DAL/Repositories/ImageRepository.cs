@@ -22,14 +22,14 @@ namespace DAL.Repositories
         {
             Mapper.CreateMap<DalImage, Image>();
             var ormEntity = Mapper.Map<Image>(entity);
-            ormEntity.ImageLib = context.ImageLibs.FirstOrDefault(e => e.id == ormEntity.image_lib_Id);
+            ormEntity.ImageLib = context.ImageLibs.FirstOrDefault(e => e.id == ormEntity.imageLib_id);
             //ormEntity.ImageLib.Image.Add(ormEntity);
             return context.Set<Image>().Add(Mapper.Map<Image>(entity));
         }
         public IEnumerable<DalImage> GetImagesByLibId(int id)
         {
             Mapper.CreateMap<Image, DalImage>();
-            var elements = context.Set<Image>().Where(entity => entity.image_lib_Id == id);
+            var elements = context.Set<Image>().Where(entity => entity.imageLib_id == id);
             var retElemets = new List<DalImage>(); 
             foreach (var element in elements)
             {

@@ -1,25 +1,3 @@
-E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\ORM\bin\Debug\ORM.dll.config
-E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\ORM\bin\Debug\ORM.dll
-E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\ORM\bin\Debug\ORM.pdb
-E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\ORM\bin\Debug\EntityFramework.dll
-E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\ORM\bin\Debug\EntityFramework.SqlServer.dll
-E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\ORM\bin\Debug\EntityFramework.xml
-E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\ORM\bin\Debug\EntityFramework.SqlServer.xml
-E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\ORM\obj\Debug\ORM.csprojResolveAssemblyReference.cache
-E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\ORM\obj\Debug\ORM.dll
-E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\ORM\obj\Debug\ORM.pdb
-E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\ORM\bin\Debug\ORM.dll.CodeAnalysisLog.xml
-E:\Projects\VisualStudioProjects\16.10.16 QC\QualityControl\ORM\bin\Debug\ORM.dll.lastcodeanalysissucceeded
-E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\ORM\bin\Debug\ORM.dll.config
-E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\ORM\bin\Debug\ORM.dll
-E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\ORM\bin\Debug\ORM.pdb
-E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\ORM\bin\Debug\EntityFramework.dll
-E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\ORM\bin\Debug\EntityFramework.SqlServer.dll
-E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\ORM\bin\Debug\EntityFramework.xml
-E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\ORM\bin\Debug\EntityFramework.SqlServer.xml
-E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\ORM\obj\Debug\ORM.dll
-E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\ORM\obj\Debug\ORM.pdb
-E:\Projects\VisualStudioProjects\31.10.16 QC\QualityControl\ORM\obj\Debug\ORM.csprojResolveAssemblyReference.cache
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\ORM\bin\Debug\ORM.dll.config
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\ORM\bin\Debug\ORM.dll
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\ORM\bin\Debug\ORM.pdb
@@ -29,3 +7,4 @@ E:\Projects\VisualStudioProjects\17.01.17\QualityControl\ORM\bin\Debug\EntityFra
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\ORM\bin\Debug\EntityFramework.SqlServer.xml
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\ORM\obj\Debug\ORM.dll
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\ORM\obj\Debug\ORM.pdb
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\ORM\obj\Debug\ORM.csprojResolveAssemblyReference.cache

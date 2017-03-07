@@ -723,12 +723,8 @@
       <Name>DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\ORM\ORM.csproj">
-      <Project>{a2f70513-65fe-4c6d-9628-dae4dcefe49c}</Project>
+      <Project>{2ba74840-30d2-4fa4-8eb0-4a4d8178be98}</Project>
       <Name>ORM</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServerWcfService\ServerWcfService.csproj">
-      <Project>{3232e89b-36f2-4036-8e81-936fe4f26e09}</Project>
-      <Name>ServerWcfService</Name>
     </ProjectReference>
     <ProjectReference Include="..\UIL\UIL.csproj">
       <Project>{D4A6BFFE-C33F-4455-AE6A-BF30CCECFC2C}</Project>
@@ -736,13 +732,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\ServiceDB.mdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\ServiceDB_log.ldf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <DependentUpon>ServiceDB.mdf</DependentUpon>
-    </Content>
     <None Include="Resources\удаление1.png" />
     <None Include="Resources\стрелка начало.png" />
     <None Include="Resources\стрелка конец.png" />
@@ -802,6 +791,15 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\ServiceDB.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\ServiceDB_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>ServiceDB.mdf</DependentUpon>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

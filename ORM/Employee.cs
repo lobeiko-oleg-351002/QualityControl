@@ -1,6 +1,5 @@
 namespace ORM
 {
-    using Interface;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -14,7 +13,7 @@ namespace ORM
         public Employee()
         {
             Certificate = new HashSet<Certificate>();
-            SelectedEmployee = new HashSet<SelectedEmployee>();
+            SeletctedEmployee = new HashSet<SelectedEmployee>();
         }
 
         public int id { get; set; }
@@ -45,6 +44,6 @@ namespace ORM
         public virtual ICollection<Certificate> Certificate { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SelectedEmployee> SelectedEmployee { get; set; }
+        public virtual ICollection<SelectedEmployee> SeletctedEmployee { get; set; }
     }
 }

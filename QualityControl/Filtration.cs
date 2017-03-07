@@ -12,7 +12,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+using BLL.Entities;
+using DAL.Repositories.Interface;
 
 namespace QualityControl_Client
 {
@@ -21,27 +22,32 @@ namespace QualityControl_Client
         DateTime requestDateLeft = DateTime.Now, requestDateRight = DateTime.Now, controlDateLeft = DateTime.Now, controlDateRight = DateTime.Now;
         int amountLeft, amountRight;
         int requestNumber;
-        UilComponent component;
-        UilMaterial material;
-        UilWeldJoint weldJoint;
-        UilIndustrialObject industrialObject;
-        UilCustomer customer;
+        BllComponent component;
+        BllMaterial material;
+        BllWeldJoint weldJoint;
+        BllIndustrialObject industrialObject;
+        BllCustomer customer;
         string contract;
         string size;
-
-        List<Func<UilJournal, bool>> filters = new List<Func<UilJournal, bool>>();
+        IUnitOfWork uow;
+        List<Func<BllJournal, bool>> filters = new List<Func<BllJournal, bool>>();
 
         bool fit_vik, fit_uzk, fit_pvk, fit_rgk, unfit_vik, unfit_uzk, unfit_pvk, unfit_rgk;
 
-        public Filtration()
+        public Filtration(IUnitOfWork uow)
         {
             InitializeComponent();
             dateTimePicker1.Value = DateTime.Now;
             dateTimePicker2.Value = DateTime.Now;
             dateTimePicker3.Value = DateTime.Now;
             dateTimePicker4.Value = DateTime.Now;
+            this.uow = uow;
         }
 
+        public Filtration()
+        {
+            InitializeComponent();
+        }
 
         Action RefreshDataGrid;
 
@@ -297,7 +303,7 @@ namespace QualityControl_Client
             RefreshDataGrid();
         }
 
-        public bool JournalFiltration(UilJournal journal)
+        public bool JournalFiltration(BllJournal journal)
         {
             bool isFiltered = true;
             foreach (var filter in filters)
@@ -348,7 +354,7 @@ namespace QualityControl_Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ChooseComponentForm form = new ChooseComponentForm();
+            ChooseComponentForm form = new ChooseComponentForm(uow);
             form.ShowDialog();
             component = form.GetChosenComponent();
             if (component != null)
@@ -359,7 +365,7 @@ namespace QualityControl_Client
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ChooseMaterialForm form = new ChooseMaterialForm();
+            ChooseMaterialForm form = new ChooseMaterialForm(uow);
             form.ShowDialog();
             material = form.GetChosenMaterial();
             if (material != null)
@@ -370,7 +376,7 @@ namespace QualityControl_Client
 
         private void button3_Click(object sender, EventArgs e)
         {
-            ChooseWeldJointForm form = new ChooseWeldJointForm();
+            ChooseWeldJointForm form = new ChooseWeldJointForm(uow);
             form.ShowDialog();
             weldJoint = form.GetChosenWeldJoint();
             if (weldJoint != null)
@@ -381,7 +387,7 @@ namespace QualityControl_Client
 
         private void button5_Click(object sender, EventArgs e)
         {
-            ChooseIndustrialObjectForm form = new ChooseIndustrialObjectForm();
+            ChooseIndustrialObjectForm form = new ChooseIndustrialObjectForm(uow);
             form.ShowDialog();
             industrialObject = form.GetChosenIndustrialObject();
             if (industrialObject != null)
@@ -392,7 +398,7 @@ namespace QualityControl_Client
 
         private void button6_Click(object sender, EventArgs e)
         {
-            ChooseCustomerForm form = new ChooseCustomerForm();
+            ChooseCustomerForm form = new ChooseCustomerForm(uow);
             form.ShowDialog();
             customer = form.GetChosenCustomer();
             if (customer != null)
@@ -469,25 +475,25 @@ namespace QualityControl_Client
 
         //FILTRATION____________________________________________
 
-        private bool RequestDateFiltration(UilJournal journal)
+        private bool RequestDateFiltration(BllJournal journal)
         {
-            if (journal.Request_date.Value.Date.CompareTo(requestDateLeft.Date) >= 0 && journal.Request_date.Value.Date.CompareTo(requestDateRight.Date) <= 0)
+            if (journal.RequestDate.Value.Date.CompareTo(requestDateLeft.Date) >= 0 && journal.RequestDate.Value.Date.CompareTo(requestDateRight.Date) <= 0)
             {
                 return true;
             }
             return false;
         }
 
-        private bool ControlDateFiltration(UilJournal journal)
+        private bool ControlDateFiltration(BllJournal journal)
         {
-            if (journal.Control_date.Value.Date.CompareTo(controlDateLeft.Date) >= 0 && journal.Control_date.Value.Date.CompareTo(controlDateRight.Date) <= 0)
+            if (journal.ControlDate.Value.Date.CompareTo(controlDateLeft.Date) >= 0 && journal.ControlDate.Value.Date.CompareTo(controlDateRight.Date) <= 0)
             {
                 return true;
             }
             return false;
         }
 
-        private bool AmountFiltration(UilJournal journal)
+        private bool AmountFiltration(BllJournal journal)
         {
             if (journal.Amount >= amountLeft && journal.Amount <= amountRight)
             {
@@ -496,9 +502,9 @@ namespace QualityControl_Client
             return false;
         }
 
-        private bool RequestNumberFiltration(UilJournal journal)
+        private bool RequestNumberFiltration(BllJournal journal)
         {
-            if (journal.Request_number == requestNumber)
+            if (journal.RequestNumber == requestNumber)
             {
                 return true;
             }
@@ -550,7 +556,7 @@ namespace QualityControl_Client
             contract = textBox7.Text;
         }
 
-        private bool ComponentFiltration(UilJournal journal)
+        private bool ComponentFiltration(BllJournal journal)
         {
             if (journal.Component != null && component != null)
             {
@@ -562,7 +568,7 @@ namespace QualityControl_Client
             return false;
         }
 
-        private bool MaterialFiltration(UilJournal journal)
+        private bool MaterialFiltration(BllJournal journal)
         {
             if (journal.Material != null && material != null)
             {
@@ -574,7 +580,7 @@ namespace QualityControl_Client
             return false;
         }
 
-        private bool WeldJointFiltration(UilJournal journal)
+        private bool WeldJointFiltration(BllJournal journal)
         {
             if (journal.WeldJoint != null && weldJoint != null)
             {
@@ -586,7 +592,7 @@ namespace QualityControl_Client
             return false;
         }
 
-        private bool SizeFiltration(UilJournal journal)
+        private bool SizeFiltration(BllJournal journal)
         {
             if (journal.Size == size)
             {
@@ -595,7 +601,7 @@ namespace QualityControl_Client
             return false;
         }
 
-        private bool IndustrialObjectFiltration(UilJournal journal)
+        private bool IndustrialObjectFiltration(BllJournal journal)
         {
             if (journal.IndustrialObject != null && industrialObject != null)
             {
@@ -607,7 +613,7 @@ namespace QualityControl_Client
             return false;
         }
 
-        private bool CustomerFiltration(UilJournal journal)
+        private bool CustomerFiltration(BllJournal journal)
         {
             if (journal.Customer != null && customer != null)
             {
@@ -619,7 +625,7 @@ namespace QualityControl_Client
             return false;
         }
 
-        private bool ContractFiltration(UilJournal journal)
+        private bool ContractFiltration(BllJournal journal)
         {
             if (journal.Contract == contract)
             {
@@ -628,15 +634,15 @@ namespace QualityControl_Client
             return false;
         }
 
-        private bool VikFiltration(UilJournal journal)
+        private bool VikFiltration(BllJournal journal)
         {
             var controls = journal.ControlMethodsLib.Control;
             foreach(var control in controls)
             {
                 if (control.ControlName.Name == "ВИК")
                 {
-                    if (fit_vik && control.Is_сontrolled.Value) return true;
-                    if (unfit_vik && !control.Is_сontrolled.Value) return true;
+                    if (fit_vik && control.IsControlled.Value) return true;
+                    if (unfit_vik && !control.IsControlled.Value) return true;
                     break;
                 }
             }
@@ -644,15 +650,15 @@ namespace QualityControl_Client
             return false;
         }
 
-        private bool UzkFiltration(UilJournal journal)
+        private bool UzkFiltration(BllJournal journal)
         {
             var controls = journal.ControlMethodsLib.Control;
             foreach (var control in controls)
             {
                 if (control.ControlName.Name == "УЗК")
                 {
-                    if (fit_uzk && control.Is_сontrolled.Value) return true;
-                    if (unfit_uzk && !control.Is_сontrolled.Value) return true;
+                    if (fit_uzk && control.IsControlled.Value) return true;
+                    if (unfit_uzk && !control.IsControlled.Value) return true;
                     break;
                 }
             }
@@ -660,15 +666,15 @@ namespace QualityControl_Client
             return false;
         }
 
-        private bool PvkFiltration(UilJournal journal)
+        private bool PvkFiltration(BllJournal journal)
         {
             var controls = journal.ControlMethodsLib.Control;
             foreach (var control in controls)
             {
                 if (control.ControlName.Name == "ПВК")
                 {
-                    if (fit_pvk && control.Is_сontrolled.Value) return true;
-                    if (unfit_pvk && !control.Is_сontrolled.Value) return true;
+                    if (fit_pvk && control.IsControlled.Value) return true;
+                    if (unfit_pvk && !control.IsControlled.Value) return true;
                     break;
                 }
             }
@@ -676,15 +682,15 @@ namespace QualityControl_Client
             return false;
         }
 
-        private bool RgkFiltration(UilJournal journal)
+        private bool RgkFiltration(BllJournal journal)
         {
             var controls = journal.ControlMethodsLib.Control;
             foreach (var control in controls)
             {
                 if (control.ControlName.Name == "РГК")
                 {
-                    if (fit_rgk && control.Is_сontrolled.Value) return true;
-                    if (unfit_rgk && !control.Is_сontrolled.Value) return true;
+                    if (fit_rgk && control.IsControlled.Value) return true;
+                    if (unfit_rgk && !control.IsControlled.Value) return true;
                     break;
                 }
             }

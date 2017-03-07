@@ -134,7 +134,7 @@
             this.Controls.Add(this.dataGridView1);
             this.Location = new System.Drawing.Point(0, 0);
             this.Name = "ChooseCustomerForm";
-            this.Text = "ChooseCustomerForm";
+            this.Text = "Выбрать заказчика";
             this.Controls.SetChildIndex(this.button1, 0);
             this.Controls.SetChildIndex(this.button2, 0);
             this.Controls.SetChildIndex(this.button3, 0);

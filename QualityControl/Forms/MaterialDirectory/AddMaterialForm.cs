@@ -1,4 +1,8 @@
-﻿using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +12,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
 
 namespace QualityControl_Client.Forms.MaterialDirectory
 {
@@ -18,9 +21,11 @@ namespace QualityControl_Client.Forms.MaterialDirectory
         {
             InitializeComponent();
         }
-        public AddMaterialForm(DirectoryForm parent) : base(parent)
+        IUnitOfWork uow;
+        public AddMaterialForm(DirectoryForm parent, IUnitOfWork uow) : base(parent)
         {
             InitializeComponent();
+            this.uow = uow;
         }
 
         protected override void button2_Click(object sender, EventArgs e)
@@ -31,13 +36,13 @@ namespace QualityControl_Client.Forms.MaterialDirectory
             }
             else
             {
-                UilMaterial Material = new UilMaterial
+                BllMaterial Material = new BllMaterial
                 {
                     Name = textBox1.Text,
                     Description = richTextBox1.Text
                 };
-                IMaterialRepository repository = ServiceChannelManager.Instance.MaterialRepository;
-                repository.Create(Material);
+                IMaterialService Service = new MaterialService(uow);
+                Service.Create(Material);
                 base.button2_Click(sender, e);
             }
         }

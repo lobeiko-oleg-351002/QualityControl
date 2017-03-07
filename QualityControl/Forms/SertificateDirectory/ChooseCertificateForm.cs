@@ -1,4 +1,8 @@
-﻿using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,25 +12,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
-using UIL.Entities.Interface;
 
 namespace QualityControl_Client.Forms.SertificateDirectory
 {
     public partial class ChooseCertificateForm : DirectoryForm
     {
-        List<UilCertificate> certificates;
-        UilCertificate certificate;
-        UilEmployee employee;
-        public ChooseCertificateForm() : base()
+        List<BllCertificate> certificates;
+        BllCertificate certificate;
+        IUnitOfWork uow;
+        BllEmployee employee;
+        public ChooseCertificateForm(IUnitOfWork uow) : base()
         {
             InitializeComponent();
+            this.uow = uow;
             dataGridView1.Columns[1].DefaultCellStyle.Format = "dd.MM.yyyy";
             RefreshData();
 
         }
 
-        public ChooseCertificateForm(UilEmployee employee) : base()
+        public ChooseCertificateForm() : base()
+        {
+
+        }
+
+        public ChooseCertificateForm(BllEmployee employee) : base()
         {
             InitializeComponent();
             this.employee = employee;
@@ -36,8 +45,8 @@ namespace QualityControl_Client.Forms.SertificateDirectory
         public override void RefreshData()
         {
             dataGridView1.Rows.Clear();
-            ICertificateRepository repository = ServiceChannelManager.Instance.CertificateRepository;
-            certificates = repository.GetAll().ToList();
+            ICertificateService Service = new CertificateService(uow);
+            certificates = Service.GetAll().ToList();
             foreach (var certificate in certificates)
             {
                 DataGridViewRow row = new DataGridViewRow();
@@ -53,24 +62,24 @@ namespace QualityControl_Client.Forms.SertificateDirectory
 
         override protected void button1_Click(object sender, EventArgs e)
         {
-            CertificateAddForm certificateAddForm = new CertificateAddForm(this);
+            CertificateAddForm certificateAddForm = new CertificateAddForm(this, uow);
             certificateAddForm.ShowDialog(this);
         }
 
         protected override void button2_Click(object sender, EventArgs e)
         {
-            ICertificateRepository repository = ServiceChannelManager.Instance.CertificateRepository;
+            ICertificateService Service = new CertificateService(uow);
             var rows = dataGridView1.SelectedRows;
             foreach (DataGridViewRow row in rows)
             {
-                repository.Delete(certificates[row.Index]);
+                Service.Delete(certificates[row.Index]);
             }
             RefreshData();
         }
 
         protected override void button3_Click(object sender, EventArgs e)
         {
-            ICertificateRepository repository = ServiceChannelManager.Instance.CertificateRepository;
+            ICertificateService Service = new CertificateService(uow);
             var rows = dataGridView1.SelectedRows;
             List<DataGridViewRow> rowsList = new List<DataGridViewRow>();
             foreach (DataGridViewRow row in rows)
@@ -79,7 +88,7 @@ namespace QualityControl_Client.Forms.SertificateDirectory
             }
             for (int i = rowsList.Count - 1; i >= 0; i--)
             {
-                ChangeCertificateForm changeCertificateForm = new ChangeCertificateForm(this, certificates[rowsList[i].Index], rowsList[i]);
+                ChangeCertificateForm changeCertificateForm = new ChangeCertificateForm(this, certificates[rowsList[i].Index], uow);
                 changeCertificateForm.ShowDialog(this);
             }
             RefreshData();
@@ -99,7 +108,7 @@ namespace QualityControl_Client.Forms.SertificateDirectory
             }
         }
 
-        public UilCertificate GetChosenCertificate()
+        public BllCertificate GetChosenCertificate()
         {
             return certificate;
         }

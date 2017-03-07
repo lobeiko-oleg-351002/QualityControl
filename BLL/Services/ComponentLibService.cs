@@ -37,7 +37,7 @@ namespace BLL.Services
             {
                 Mapper.CreateMap<BllSelectedComponent, DalSelectedComponent>();
                 var dalComponent = Mapper.Map<DalSelectedComponent>(Component);
-                dalComponent.Component_lib_id = dalEntity.Id;
+                dalComponent.ComponentLib_id = dalEntity.Id;
                 uow.SelectedComponents.Create(dalComponent);
             }
             uow.Commit();
@@ -65,7 +65,7 @@ namespace BLL.Services
                 if (Component.Id == 0)
                 {
                     var dalComponent = Mapper.Map<DalSelectedComponent>(Component);
-                    dalComponent.Component_lib_id = entity.Id;
+                    dalComponent.ComponentLib_id = entity.Id;
                     uow.SelectedComponents.Create(dalComponent);
                 }
             }

@@ -1,5 +1,8 @@
-﻿using QualityControl_Client.Forms.TemplateDirectory;
-using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+using QualityControl_Client.Forms.TemplateDirectory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +12,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
 
 namespace QualityControl_Client.Forms.ComponentDirectory
 {
@@ -19,15 +21,17 @@ namespace QualityControl_Client.Forms.ComponentDirectory
         {
             InitializeComponent();
         }
-        public AddComponentForm(DirectoryForm parent) : base(parent)
+        IUnitOfWork uow;
+        public AddComponentForm(DirectoryForm parent, IUnitOfWork uow) : base(parent)
         {
             InitializeComponent();
+            this.uow = uow;
         }
 
-        UilTemplate template;
+        BllTemplate template;
         private void button3_Click(object sender, EventArgs e)
         {
-            ChooseTemplateForm templateForm = new ChooseTemplateForm();
+            ChooseTemplateForm templateForm = new ChooseTemplateForm(uow);
             templateForm.ShowDialog(this);
             template = templateForm.GetChosenTemplate();
             if (template != null)
@@ -44,14 +48,14 @@ namespace QualityControl_Client.Forms.ComponentDirectory
             }
             else
             {
-                UilComponent component = new UilComponent
+                BllComponent component = new BllComponent
                 {
                     Name = textBox1.Text,
                     Template = template,
                     Pressmark = textBox2.Text
                 };
-                IComponentRepository repository = ServiceChannelManager.Instance.ComponentRepository;
-                repository.Create(component);
+                IComponentService Service = new ComponentService(uow);
+                Service.Create(component);
                 base.button2_Click(sender, e);
             }
         }

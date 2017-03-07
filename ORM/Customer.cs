@@ -1,6 +1,5 @@
 namespace ORM
 {
-    using Interface;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -22,7 +21,7 @@ namespace ORM
         [StringLength(50)]
         public string organization { get; set; }
 
-        [StringLength(50)]
+        [StringLength(255)]
         public string address { get; set; }
 
         [StringLength(50)]
@@ -31,15 +30,11 @@ namespace ORM
         [StringLength(50)]
         public string contract { get; set; }
 
-        public int? creator_id { get; set; }
-
         [Column(TypeName = "date")]
         public DateTime? contractBeginDate { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime? contractEndDate { get; set; }
-
-        public virtual User User { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Journal> Journal { get; set; }

@@ -1,4 +1,4 @@
-﻿using ServerWcfService.Services.Interface;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,20 +9,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+using BLL.Entities;
+using DAL.Repositories.Interface;
+using BLL.Services.Interface;
+using BLL.Services;
 
 namespace QualityControl_Client.Forms.WeldJointDirectory
 {
     public partial class ChangeWeldJointForm : ChangeForm
     {
-        UilWeldJoint oldWeldJoint;
-        public ChangeWeldJointForm() : base()
+        BllWeldJoint oldWeldJoint;
+        IUnitOfWork uow;
+        public ChangeWeldJointForm(IUnitOfWork uow) : base()
         {
             InitializeComponent();
+            this.uow = uow;
             openFileDialog1.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
         }
 
-        public ChangeWeldJointForm(DirectoryForm parent, UilWeldJoint oldWeldJoint, DataGridViewRow currentRow) : base(parent)
+        public ChangeWeldJointForm() : base()
+        {
+            InitializeComponent();
+        }
+
+        public ChangeWeldJointForm(DirectoryForm parent, BllWeldJoint oldWeldJoint, DataGridViewRow currentRow) : base(parent)
         {
             InitializeComponent();
             this.oldWeldJoint = oldWeldJoint;
@@ -44,8 +54,8 @@ namespace QualityControl_Client.Forms.WeldJointDirectory
                 oldWeldJoint.Description = richTextBox1.Text;
                 oldWeldJoint.Image = openFileDialog1.FileName != "" ? imageToByteArray(Image.FromFile(openFileDialog1.FileName)) : oldWeldJoint.Image;
 
-                IWeldJointRepository repository = ServiceChannelManager.Instance.WeldJointRepository;
-                repository.Update(oldWeldJoint);
+                IWeldJointService Service = new WeldJointService(uow);
+                Service.Update(oldWeldJoint);
                 base.button2_Click(sender, e);
             }
         }

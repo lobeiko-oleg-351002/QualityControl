@@ -1,4 +1,8 @@
-﻿using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,26 +13,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+
 
 namespace QualityControl_Client.Forms.TemplateDirectory
 {
     public partial class ChooseTemplateForm : DirectoryForm
     {
-        List<UilTemplate> Templates;
-        UilTemplate template;
-
-        public ChooseTemplateForm()
+        List<BllTemplate> Templates;
+        BllTemplate template;
+        IUnitOfWork uow;
+        public ChooseTemplateForm(IUnitOfWork uow)
         {
             InitializeComponent();
+            this.uow = uow;
             RefreshData();
+        }
+        public ChooseTemplateForm() : base()
+        {
+            InitializeComponent();
         }
 
         public override void RefreshData()
         {
             dataGridView1.Rows.Clear();
-            ITemplateRepository repository = ServiceChannelManager.Instance.TemplateRepository;
-            Templates = repository.GetAll().ToList();
+            ITemplateService Service = new TemplateService(uow);
+            Templates = Service.GetAll().ToList();
             foreach (var Template in Templates)
             {
                 DataGridViewRow row = new DataGridViewRow();
@@ -39,7 +48,7 @@ namespace QualityControl_Client.Forms.TemplateDirectory
                 DataGridViewComboBoxCell comboBoxCell = (DataGridViewComboBoxCell)row.Cells[3];
                 if (Template.EquipmentLib != null)
                 {
-                    foreach (UilSelectedEquipment eq in Template.EquipmentLib.SelectedEquipment)
+                    foreach (BllSelectedEquipment eq in Template.EquipmentLib.SelectedEquipment)
                     {
                         comboBoxCell.Items.Add(eq.Equipment.Name);
                     }
@@ -53,7 +62,7 @@ namespace QualityControl_Client.Forms.TemplateDirectory
                 comboBoxCell = (DataGridViewComboBoxCell)row.Cells[4];
                 if (Template.ControlNameLib != null)
                 {
-                    foreach (UilSelectedControlName name in Template.ControlNameLib.SelectedControlName)
+                    foreach (BllSelectedControlName name in Template.ControlNameLib.SelectedControlName)
                     {
                         comboBoxCell.Items.Add(name.ControlName.Name);
                     }
@@ -69,7 +78,7 @@ namespace QualityControl_Client.Forms.TemplateDirectory
                 comboBoxCell = (DataGridViewComboBoxCell)row.Cells[7];
                 if (Template.RequirementDocumentationLib != null)
                 {
-                    foreach (UilSelectedRequirementDocumentation doc in Template.RequirementDocumentationLib.SelectedRequirementDocumentation)
+                    foreach (BllSelectedRequirementDocumentation doc in Template.RequirementDocumentationLib.SelectedRequirementDocumentation)
                     {
                         comboBoxCell.Items.Add(doc.RequirementDocumentation.Name);
                     }
@@ -87,24 +96,24 @@ namespace QualityControl_Client.Forms.TemplateDirectory
 
         override protected void button1_Click(object sender, EventArgs e)
         {
-            AddTemplateForm AddTemplateForm = new AddTemplateForm(this);
+            AddTemplateForm AddTemplateForm = new AddTemplateForm(this, uow);
             AddTemplateForm.ShowDialog(this);
         }
 
         protected override void button2_Click(object sender, EventArgs e)
         {
-            ITemplateRepository repository = ServiceChannelManager.Instance.TemplateRepository;
+            ITemplateService Service = new TemplateService(uow);
             var rows = dataGridView1.SelectedRows;
             foreach (DataGridViewRow row in rows)
             {
-                repository.Delete(Templates[row.Index]);
+                Service.Delete(Templates[row.Index]);
             }
             RefreshData();
         }
 
         protected override void button3_Click(object sender, EventArgs e)
         {
-            ITemplateRepository repository = ServiceChannelManager.Instance.TemplateRepository;
+            ITemplateService Service = new TemplateService(uow);
             var rows = dataGridView1.SelectedRows;
             List<DataGridViewRow> rowsList = new List<DataGridViewRow>();
             foreach (DataGridViewRow row in rows)
@@ -113,7 +122,7 @@ namespace QualityControl_Client.Forms.TemplateDirectory
             }
             for (int i = rowsList.Count - 1; i >= 0; i--)
             {
-                ChangeTemplateForm changeTemplateForm = new ChangeTemplateForm(this, Templates[rowsList[i].Index]);
+                ChangeTemplateForm changeTemplateForm = new ChangeTemplateForm(this, Templates[rowsList[i].Index], uow);
                 changeTemplateForm.ShowDialog(this);
             }
             RefreshData();
@@ -141,7 +150,7 @@ namespace QualityControl_Client.Forms.TemplateDirectory
             }
         }
 
-        public UilTemplate GetChosenTemplate()
+        public BllTemplate GetChosenTemplate()
         {
             return template;
         }

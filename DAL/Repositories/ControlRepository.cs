@@ -23,7 +23,7 @@ namespace DAL.Repositories
             Mapper.CreateMap<DalControl, Control>();
             var ormEntity = Mapper.Map<Control>(entity);
             //ormEntity.ControlMethodsLib = context.ControlMethodsLibs.FirstOrDefault(e => e.id == ormEntity.controlMethodsLib_id);
-            ormEntity.protocolNumber = GetControlCountWithCurrentType(entity.Control_name_id.Value) + 1;
+            ormEntity.protocolNumber = GetControlCountWithCurrentType(entity.ControlName_id.Value) + 1;
             return context.Set<Control>().Add(ormEntity);
         }
 
@@ -32,7 +32,7 @@ namespace DAL.Repositories
         public IEnumerable<DalControl> GetAllControlled()
         {
             Mapper.CreateMap<Control, DalControl>();
-            var elements = context.Controls.Select(entity => entity.is_controlled == true);
+            var elements = context.Controls.Select(entity => entity.isControlled == true);
             var retElemets = new List<DalControl>();
             foreach (var element in elements)
             {
@@ -44,7 +44,7 @@ namespace DAL.Repositories
         public IEnumerable<DalControl> GetAllUncontrolled()
         {
             Mapper.CreateMap<Control, DalControl>();
-            var elements = context.Controls.Select(entity => entity.is_controlled == false);
+            var elements = context.Controls.Select(entity => entity.isControlled == false);
             var retElemets = new List<DalControl>();
             foreach (var element in elements)
             {
@@ -62,7 +62,7 @@ namespace DAL.Repositories
 
         public int GetControlCountWithCurrentType(int controlNameId)
         {
-            var controls = context.Set<Control>().Where(entity => entity.control_name_id == controlNameId);
+            var controls = context.Set<Control>().Where(entity => entity.controlName_id == controlNameId);
             return controls.Count();
         }
 

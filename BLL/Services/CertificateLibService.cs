@@ -37,7 +37,7 @@ namespace BLL.Services
             {
                 Mapper.CreateMap<BllSelectedCertificate, DalSelectedCertificate>();
                 var dalCertificate = Mapper.Map<DalSelectedCertificate>(Certificate);
-                dalCertificate.Certificate_lib_id = dalEntity.Id;
+                dalCertificate.CertificateLib_id = dalEntity.Id;
                 uow.SelectedCertificates.Create(dalCertificate);
             }
             uow.Commit();
@@ -71,7 +71,7 @@ namespace BLL.Services
                         cfg.CreateMap<BllCertificate, DalCertificate>();
                     });
                     var dalCertificate = Mapper.Map<DalSelectedCertificate>(Certificate);
-                    dalCertificate.Certificate_lib_id = entity.Id;
+                    dalCertificate.CertificateLib_id = entity.Id;
                     uow.SelectedCertificates.Create(dalCertificate);
                 }
             }

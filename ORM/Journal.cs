@@ -1,6 +1,5 @@
 namespace ORM
 {
-    using Interface;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -12,13 +11,15 @@ namespace ORM
     {
         public int id { get; set; }
 
-        public DateTime? request_date { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime? requestDate { get; set; }
 
-        public DateTime? control_date { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime? controlDate { get; set; }
 
-        public int? request_number { get; set; }
+        public int? requestNumber { get; set; }
 
-        public int? industrial_object_id { get; set; }
+        public int? industrialObject_id { get; set; }
 
         public int? amount { get; set; }
 
@@ -27,10 +28,10 @@ namespace ORM
 
         public int? material_id { get; set; }
 
-        public int? weld_joint_id { get; set; }
+        public int? weldJoint_id { get; set; }
 
         [StringLength(50)]
-        public string welding_type { get; set; }
+        public string weldingType { get; set; }
 
         public int? component_id { get; set; }
 
@@ -44,11 +45,13 @@ namespace ORM
 
         public int? controlMethodsLib_id { get; set; }
 
-        public int? user_owner_id { get; set; }
+        public int? userOwner_id { get; set; }
 
-        public string user_modifier_login{ get; set; }
+        [StringLength(50)]
+        public string userModifierLogin { get; set; }
 
-        public DateTime? modified_date { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime? modifiedDate { get; set; }
 
         public virtual Component Component { get; set; }
 
@@ -58,10 +61,10 @@ namespace ORM
 
         public virtual IndustrialObject IndustrialObject { get; set; }
 
+        public virtual Material Material { get; set; }
+
+        public virtual User User { get; set; }
+
         public virtual WeldJoint WeldJoint { get; set; }
-
-        public virtual User UserOwner { get; set; }
-
-
     }
 }

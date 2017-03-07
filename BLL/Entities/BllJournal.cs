@@ -11,11 +11,11 @@ namespace BLL.Entities
     {
         public int Id { get; set; }
 
-        public DateTime? Request_date { get; set; }
+        public DateTime? RequestDate { get; set; }
 
-        public DateTime? Control_date { get; set; }
+        public DateTime? ControlDate { get; set; }
 
-        public int? Request_number { get; set; }
+        public int? RequestNumber { get; set; }
 
         public BllIndustrialObject IndustrialObject { get; set; }
 
@@ -27,7 +27,7 @@ namespace BLL.Entities
 
         public BllWeldJoint WeldJoint { get; set; }
 
-        public string Welding_type { get; set; }
+        public string WeldingType { get; set; }
 
         public BllControlMethodsLib ControlMethodsLib { get; set; }
 
@@ -41,8 +41,8 @@ namespace BLL.Entities
 
         public BllUser UserOwner { get; set; }
 
-        public string User_Modifier_Login { get; set; }
+        public string UserModifierLogin { get; set; }
 
-        public DateTime? Modified_date { get; set; }
+        public DateTime? ModifiedDate { get; set; }
     }
 }

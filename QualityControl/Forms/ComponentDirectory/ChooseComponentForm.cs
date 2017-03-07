@@ -1,4 +1,4 @@
-﻿using ServerWcfService.Services.Interface;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+using BLL.Entities;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+using BLL.Services;
 
 namespace QualityControl_Client.Forms.ComponentDirectory
 {
@@ -29,19 +32,21 @@ namespace QualityControl_Client.Forms.ComponentDirectory
 
         }
 
-        List<UilComponent> Components;
-        UilComponent Component;
-        public ChooseComponentForm() : base()
+        List<BllComponent> Components;
+        BllComponent Component;
+        IUnitOfWork uow;
+        public ChooseComponentForm(IUnitOfWork uow) : base()
         {
             InitializeComponent();
+            this.uow = uow;
             RefreshData();
         }
 
         public override void RefreshData()
         {
             dataGridView1.Rows.Clear();
-            IComponentRepository repository = ServiceChannelManager.Instance.ComponentRepository;
-            Components = repository.GetAll().ToList();
+            IComponentService Service = new ComponentService(uow);
+            Components = Service.GetAll().ToList();
             foreach (var Component in Components)
             {
                 DataGridViewRow row = new DataGridViewRow();
@@ -55,24 +60,24 @@ namespace QualityControl_Client.Forms.ComponentDirectory
 
         override protected void button1_Click(object sender, EventArgs e)
         {
-            AddComponentForm AddComponentForm = new AddComponentForm(this);
+            AddComponentForm AddComponentForm = new AddComponentForm(this, uow);
             AddComponentForm.ShowDialog(this);
         }
 
         protected override void button2_Click(object sender, EventArgs e)
         {
-            IComponentRepository repository = ServiceChannelManager.Instance.ComponentRepository;
+            IComponentService Service = new ComponentService(uow);
             var rows = dataGridView1.SelectedRows;
             foreach (DataGridViewRow row in rows)
             {
-                repository.Delete(Components[row.Index]);
+                Service.Delete(Components[row.Index]);
             }
             RefreshData();
         }
 
         protected override void button3_Click(object sender, EventArgs e)
         {
-            IComponentRepository repository = ServiceChannelManager.Instance.ComponentRepository;
+            IComponentService Service = new ComponentService(uow);
             var rows = dataGridView1.SelectedRows;
             List<DataGridViewRow> rowsList = new List<DataGridViewRow>();
             foreach (DataGridViewRow row in rows)
@@ -81,13 +86,13 @@ namespace QualityControl_Client.Forms.ComponentDirectory
             }
             for (int i = rowsList.Count - 1; i >= 0; i--)
             {
-                ChangeComponentForm changeComponentForm = new ChangeComponentForm(this, Components[rowsList[i].Index], rowsList[i]);
+                ChangeComponentForm changeComponentForm = new ChangeComponentForm(this, Components[rowsList[i].Index], uow);
                 changeComponentForm.ShowDialog(this);
             }
             RefreshData();
         }
 
-        public UilComponent GetChosenComponent()
+        public BllComponent GetChosenComponent()
         {
             return Component;
         }

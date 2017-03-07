@@ -1,5 +1,5 @@
 ﻿using QualityControl_Client.Forms.EmployeeDirectory;
-using ServerWcfService.Services.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,40 +9,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
 
 namespace QualityControl_Client
 {
     public partial class RegistrationForm : Form
     {
-        public RegistrationForm()
+        public RegistrationForm(IUnitOfWork uow)
         {
             InitializeComponent();
+            this.uow = uow;
             CenterToScreen();
         }
 
-        UilEmployee employee = null;
-
+        BllEmployee employee = null;
+        IUnitOfWork uow;
         private void button3_Click(object sender, EventArgs e)
         {
-            UilUser user = null;
+            BllUser user = null;
             if (textBox1.Text == "" || textBox2.Text == "")
             {
                 MessageBox.Show("Введите данные учетной записи", "Оповещение");
             }
             else
             {
-                IRoleRepository roleRepository = ServiceChannelManager.Instance.RoleRepository;
-                var role = roleRepository.GetRoleByName("Работник");
-                UilUser User = new UilUser
+                IRoleService roleService = new RoleService(uow);
+                var role = roleService.GetRoleByName("Работник");
+                BllUser User = new BllUser
                 {
                     Login = textBox1.Text,
                     Password = textBox2.Text,
                     Role = role,
                     Employee = employee
                 };
-                IUserRepository repository = ServiceChannelManager.Instance.UserRepository;
-                user = repository.CreateWithFeedBack(User);
+                IUserService Service = new UserService(uow);
+                user = Service.Create(User);
 
                 if (user == null)
                 {
@@ -64,7 +68,7 @@ namespace QualityControl_Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ChooseEmployeeForm EmployeeForm = new ChooseEmployeeForm();
+            ChooseEmployeeForm EmployeeForm = new ChooseEmployeeForm(uow);
             EmployeeForm.ShowDialog(this);
             employee = EmployeeForm.GetChosenEmployee();
             if (employee != null)

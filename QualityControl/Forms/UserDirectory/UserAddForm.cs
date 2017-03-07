@@ -1,5 +1,8 @@
-﻿using QualityControl_Client.Forms.EmployeeDirectory;
-using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+using QualityControl_Client.Forms.EmployeeDirectory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +12,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
 
 namespace QualityControl_Client.Forms.UserDirectory
 {
@@ -20,32 +22,34 @@ namespace QualityControl_Client.Forms.UserDirectory
             InitializeComponent();
         }
 
-        IEnumerable<UilControlName> controlNames;
-        public UserAddForm(DirectoryForm parent) : base(parent)
+        IUnitOfWork uow;
+        IEnumerable<BllControlName> controlNames;
+        public UserAddForm(DirectoryForm parent, IUnitOfWork uow) : base(parent)
         {
             InitializeComponent();
+            this.uow = uow;
         }
 
         protected override void button2_Click(object sender, EventArgs e)
         {
-            UilUser user = null;
+            BllUser user = null;
             if (textBox1.Text == "" || textBox2.Text == "")
             {
                 MessageBox.Show("Введите данные учетной записи", "Оповещение");
             }
             else
             {
-                IRoleRepository roleRepository = ServiceChannelManager.Instance.RoleRepository;
-                var role = roleRepository.GetRoleByName("Работник");
-                UilUser User = new UilUser
+                IRoleService roleService = new RoleService(uow);
+                var role = roleService.GetRoleByName("Работник");
+                BllUser User = new BllUser
                 {
                     Login = textBox1.Text,
                     Password = textBox2.Text,
                     Role = role,
                     Employee = employee
                 };
-                IUserRepository repository = ServiceChannelManager.Instance.UserRepository;
-                user = repository.CreateWithFeedBack(User);
+                IUserService service = new UserService(uow);
+                user = service.Create(User);
 
                 if (user == null)
                 {
@@ -61,10 +65,10 @@ namespace QualityControl_Client.Forms.UserDirectory
             
         }
 
-        UilEmployee employee;
+        BllEmployee employee;
         private void button3_Click(object sender, EventArgs e)
         {
-            ChooseEmployeeForm EmployeeForm = new ChooseEmployeeForm();
+            ChooseEmployeeForm EmployeeForm = new ChooseEmployeeForm(uow);
             EmployeeForm.ShowDialog(this);
             employee = EmployeeForm.GetChosenEmployee();
             if (employee != null)

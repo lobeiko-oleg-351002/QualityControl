@@ -1,4 +1,4 @@
-﻿using ServerWcfService.Services.Interface;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,21 +8,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
+using BLL.Entities;
+using DAL.Repositories.Interface;
+using BLL.Services.Interface;
+using BLL.Services;
 
 namespace QualityControl_Client.Forms.CustomerDirectory
 {
     public partial class ChangeCustomerForm : ChangeForm
     {
-        UilCustomer oldCustomer;
+        BllCustomer oldCustomer;
         public ChangeCustomerForm() : base()
         {
             InitializeComponent();
         }
-
-        public ChangeCustomerForm(DirectoryForm parent, UilCustomer oldCustomer, DataGridViewRow currentRow) : base(parent)
+        IUnitOfWork uow;
+        public ChangeCustomerForm(DirectoryForm parent, BllCustomer oldCustomer, IUnitOfWork uow) : base(parent)
         {
             InitializeComponent();
+            this.uow = uow;
             this.oldCustomer = oldCustomer;
             textBox1.Text = oldCustomer.Organization;
             textBox2.Text = oldCustomer.Address;
@@ -48,8 +52,8 @@ namespace QualityControl_Client.Forms.CustomerDirectory
                 oldCustomer.ContractBeginDate = dateTimePicker1.Value;
                 oldCustomer.ContractEndDate = dateTimePicker2.Value;
 
-                ICustomerRepository repository = ServiceChannelManager.Instance.CustomerRepository;
-                repository.Update(oldCustomer);
+                ICustomerService Service = new CustomerService(uow);
+                Service.Update(oldCustomer);
                 base.button2_Click(sender, e);
             }
         }

@@ -1,6 +1,5 @@
 namespace ORM
 {
-    using Interface;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -14,7 +13,7 @@ namespace ORM
 
         public int? certificate_id { get; set; }
 
-        public int? certificate_lib_id { get; set; }
+        public int? certificateLib_id { get; set; }
 
         public virtual Certificate Certificate { get; set; }
 

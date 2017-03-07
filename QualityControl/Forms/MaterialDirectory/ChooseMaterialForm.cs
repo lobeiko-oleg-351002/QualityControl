@@ -1,4 +1,8 @@
-﻿using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +12,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
 
 namespace QualityControl_Client.Forms.MaterialDirectory
 {
@@ -28,20 +31,25 @@ namespace QualityControl_Client.Forms.MaterialDirectory
             }
 
         }
-
-        List<UilMaterial> Materials;
-        UilMaterial material;
+        IUnitOfWork uow;
+        List<BllMaterial> Materials;
+        BllMaterial material;
         public ChooseMaterialForm() : base()
         {
+
+        }
+        public ChooseMaterialForm(IUnitOfWork uow) : base()
+        {
             InitializeComponent();
+            this.uow = uow;
             RefreshData();
         }
 
         public override void RefreshData()
         {
             dataGridView1.Rows.Clear();
-            IMaterialRepository repository = ServiceChannelManager.Instance.MaterialRepository;
-            Materials = repository.GetAll().ToList();
+            IMaterialService Service = new MaterialService(uow);
+            Materials = Service.GetAll().ToList();
             foreach (var Material in Materials)
             {
                 DataGridViewRow row = new DataGridViewRow();
@@ -54,24 +62,24 @@ namespace QualityControl_Client.Forms.MaterialDirectory
 
         override protected void button1_Click(object sender, EventArgs e)
         {
-            AddMaterialForm AddMaterialForm = new AddMaterialForm(this);
+            AddMaterialForm AddMaterialForm = new AddMaterialForm(this, uow);
             AddMaterialForm.ShowDialog(this);
         }
 
         protected override void button2_Click(object sender, EventArgs e)
         {
-            IMaterialRepository repository = ServiceChannelManager.Instance.MaterialRepository;
+            IMaterialService Service = new MaterialService(uow);
             var rows = dataGridView1.SelectedRows;
             foreach (DataGridViewRow row in rows)
             {
-                repository.Delete(Materials[row.Index]);
+                Service.Delete(Materials[row.Index]);
             }
             RefreshData();
         }
 
         protected override void button3_Click(object sender, EventArgs e)
         {
-            IMaterialRepository repository = ServiceChannelManager.Instance.MaterialRepository;
+            IMaterialService Service = new MaterialService(uow);
             var rows = dataGridView1.SelectedRows;
             List<DataGridViewRow> rowsList = new List<DataGridViewRow>();
             foreach (DataGridViewRow row in rows)
@@ -80,13 +88,13 @@ namespace QualityControl_Client.Forms.MaterialDirectory
             }
             for (int i = rowsList.Count - 1; i >= 0; i--)
             {
-                ChangeMaterialForm changeMaterialForm = new ChangeMaterialForm(this, Materials[rowsList[i].Index], rowsList[i]);
+                ChangeMaterialForm changeMaterialForm = new ChangeMaterialForm(this, Materials[rowsList[i].Index], uow);
                 changeMaterialForm.ShowDialog(this);
             }
             RefreshData();
         }
 
-        public UilMaterial GetChosenMaterial()
+        public BllMaterial GetChosenMaterial()
         {
             return material;
         }

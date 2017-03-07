@@ -168,7 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ORM\ORM.csproj">
-      <Project>{a2f70513-65fe-4c6d-9628-dae4dcefe49c}</Project>
+      <Project>{2ba74840-30d2-4fa4-8eb0-4a4d8178be98}</Project>
       <Name>ORM</Name>
     </ProjectReference>
   </ItemGroup>

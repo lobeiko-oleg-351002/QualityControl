@@ -13,6 +13,6 @@ namespace DAL.Entities
 
         public byte[] Image { get; set; }
 
-        public int? Image_lib_id { get; set; }
+        public int? ImageLib_id { get; set; }
     }
 }

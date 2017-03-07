@@ -19,7 +19,7 @@ namespace BLL.Entities
 
         public DateTime? CheckDate { get; set; }
 
-        public Byte[] IsChecked { get; set; }
+        public bool? IsChecked { get; set; }
 
         public DateTime? TechnicalCheckDate { get; set; }
 

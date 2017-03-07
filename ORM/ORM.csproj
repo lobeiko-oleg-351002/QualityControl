@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A2F70513-65FE-4C6D-9628-DAE4DCEFE49C}</ProjectGuid>
+    <ProjectGuid>{2BA74840-30D2-4FA4-8EB0-4A4D8178BE98}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ORM</RootNamespace>
@@ -69,22 +69,22 @@
     <Compile Include="Image.cs" />
     <Compile Include="ImageLib.cs" />
     <Compile Include="IndustrialObject.cs" />
-    <Compile Include="Interface\IOrmEntity.cs" />
+    <Compile Include="IOrmEntity.cs" />
     <Compile Include="Journal.cs" />
     <Compile Include="Material.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequirementDocumentation.cs" />
     <Compile Include="RequirementDocumentationLib.cs" />
+    <Compile Include="Result.cs" />
     <Compile Include="ResultLib.cs" />
-    <Compile Include="Results.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="SelectedCertificate.cs" />
     <Compile Include="SelectedComponent.cs" />
     <Compile Include="SelectedControlMethodDocumentation.cs" />
     <Compile Include="SelectedControlName.cs" />
-    <Compile Include="SelectedEmployee.cs" />
     <Compile Include="SelectedEquipment.cs" />
     <Compile Include="SelectedRequirementDocumentation.cs" />
+    <Compile Include="SelectedEmployee.cs" />
     <Compile Include="ServiceDB.cs" />
     <Compile Include="Template.cs" />
     <Compile Include="User.cs" />

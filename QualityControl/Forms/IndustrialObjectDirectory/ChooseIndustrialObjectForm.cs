@@ -1,4 +1,8 @@
-﻿using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,25 +12,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UIL.Entities;
 
 namespace QualityControl_Client.Forms.IndustrialObjectDirectory
 {
     public partial class ChooseIndustrialObjectForm : DirectoryForm
     {
-        List<UilIndustrialObject> IndustrialObjects;
-        UilIndustrialObject industrialObject;
+        List<BllIndustrialObject> IndustrialObjects;
+        BllIndustrialObject industrialObject;
+        IUnitOfWork uow;
+
         public ChooseIndustrialObjectForm() : base()
         {
+
+        }
+        public ChooseIndustrialObjectForm(IUnitOfWork uow) : base()
+        {
             InitializeComponent();
+            this.uow = uow;
             RefreshData();
         }
 
         public override void RefreshData()
         {
             dataGridView1.Rows.Clear();
-            IIndustrialObjectRepository repository = ServiceChannelManager.Instance.IndustrialObjectRepository;
-            IndustrialObjects = repository.GetAll().ToList();
+            IIndustrialObjectService Service = new IndustrialObjectService(uow);
+            IndustrialObjects = Service.GetAll().ToList();
             foreach (var IndustrialObject in IndustrialObjects)
             {
                 DataGridViewRow row = new DataGridViewRow();
@@ -51,24 +61,24 @@ namespace QualityControl_Client.Forms.IndustrialObjectDirectory
 
         override protected void button1_Click(object sender, EventArgs e)
         {
-            AddIndustrialObjectForm AddIndustrialObjectForm = new AddIndustrialObjectForm(this);
+            AddIndustrialObjectForm AddIndustrialObjectForm = new AddIndustrialObjectForm(this, uow);
             AddIndustrialObjectForm.ShowDialog(this);
         }
 
         protected override void button2_Click(object sender, EventArgs e)
         {
-            IIndustrialObjectRepository repository = ServiceChannelManager.Instance.IndustrialObjectRepository;
+            IIndustrialObjectService Service = new IndustrialObjectService(uow);
             var rows = dataGridView1.SelectedRows;
             foreach (DataGridViewRow row in rows)
             {
-                repository.Delete(IndustrialObjects[row.Index]);
+                Service.Delete(IndustrialObjects[row.Index]);
             }
             RefreshData();
         }
 
         protected override void button3_Click(object sender, EventArgs e)
         {
-            IIndustrialObjectRepository repository = ServiceChannelManager.Instance.IndustrialObjectRepository;
+            IIndustrialObjectService Service = new IndustrialObjectService(uow);
             var rows = dataGridView1.SelectedRows;
             List<DataGridViewRow> rowsList = new List<DataGridViewRow>();
             foreach (DataGridViewRow row in rows)
@@ -77,7 +87,7 @@ namespace QualityControl_Client.Forms.IndustrialObjectDirectory
             }
             for (int i = rowsList.Count - 1; i >= 0; i--)
             {
-                ChangeIndustrialObjectForm changeIndustrialObjectForm = new ChangeIndustrialObjectForm(this, IndustrialObjects[rowsList[i].Index], rowsList[i]);
+                ChangeIndustrialObjectForm changeIndustrialObjectForm = new ChangeIndustrialObjectForm(this, IndustrialObjects[rowsList[i].Index], uow);
                 changeIndustrialObjectForm.ShowDialog(this);
             }
             RefreshData();
@@ -97,7 +107,7 @@ namespace QualityControl_Client.Forms.IndustrialObjectDirectory
             }
         }
 
-        public UilIndustrialObject GetChosenIndustrialObject()
+        public BllIndustrialObject GetChosenIndustrialObject()
         {
             return industrialObject;
         }

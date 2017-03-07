@@ -1,11 +1,13 @@
-﻿using QualityControl_Client.Forms.EmployeeDirectory;
-using ServerWcfService.Services.Interface;
+﻿using BLL.Entities;
+using BLL.Services;
+using BLL.Services.Interface;
+using DAL.Repositories.Interface;
+using QualityControl_Client.Forms.EmployeeDirectory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using UIL.Entities;
-using UIL.Entities.Interface;
+
 
 namespace QualityControl_Client.Forms.SertificateDirectory
 {
@@ -15,13 +17,15 @@ namespace QualityControl_Client.Forms.SertificateDirectory
         {
             InitializeComponent();
         }
+        IUnitOfWork uow;
 
-        IEnumerable<UilControlName> controlNames;
-        public CertificateAddForm(DirectoryForm parent) : base(parent)
+        IEnumerable<BllControlName> controlNames;
+        public CertificateAddForm(DirectoryForm parent, IUnitOfWork uow) : base(parent)
         {
             InitializeComponent();
-            IControlNameRepository controlNameRepository = ServiceChannelManager.Instance.ControlNameRepository;
-            controlNames = controlNameRepository.GetAll();
+            this.uow = uow;
+            IControlNameService controlNameService = new ControlNameService(uow);
+            controlNames = controlNameService.GetAll();
             foreach (var name in controlNames)
             {
                 comboBox1.Items.Add(name.Name);
@@ -36,7 +40,7 @@ namespace QualityControl_Client.Forms.SertificateDirectory
             }
             else
             {
-                UilCertificate certificate = new UilCertificate
+                BllCertificate certificate = new BllCertificate
                 {
                     Title = textBox1.Text,
                     CheckDate = dateTimePicker1.Value,
@@ -44,16 +48,16 @@ namespace QualityControl_Client.Forms.SertificateDirectory
                     Duration = (int)numericUpDown1.Value,
                     Employee = employee
                 };
-                ICertificateRepository repository = ServiceChannelManager.Instance.CertificateRepository;
-                repository.Create(certificate);
+                ICertificateService Service = new CertificateService(uow);
+                Service.Create(certificate);
                 base.button2_Click(sender, e);
             }
         }
 
-        UilEmployee employee;
+        BllEmployee employee;
         private void button3_Click(object sender, EventArgs e)
         {
-            ChooseEmployeeForm employeeForm = new ChooseEmployeeForm();
+            ChooseEmployeeForm employeeForm = new ChooseEmployeeForm(uow);
             employeeForm.ShowDialog(this);
             employee = employeeForm.GetChosenEmployee();
             if (employee != null)
