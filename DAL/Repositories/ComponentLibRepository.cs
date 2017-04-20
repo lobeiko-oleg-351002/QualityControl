@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DAL.Entities;
+using DAL.Mapping;
 using DAL.Repositories.Interface;
 using ORM;
 using System;
@@ -18,14 +19,48 @@ namespace DAL.Repositories
             this.context = context;
         }
 
+
+        ComponentLibMapper mapper = new ComponentLibMapper();
+
+        public new void Delete(DalComponentLib entity)
+        {
+            var ormEntity = context.Set<ComponentLib>().Single(ComponentLib => ComponentLib.id == entity.Id);
+            context.Set<ComponentLib>().Remove(ormEntity);
+        }
+
+        public new DalComponentLib Get(int id)
+        {
+            var ormEntity = context.Set<ComponentLib>().FirstOrDefault(ComponentLib => ComponentLib.id == id);
+            return ormEntity != null ? (mapper.MapToDal(ormEntity)) : null;
+        }
+
+        public new IEnumerable<DalComponentLib> GetAll()
+        {
+            var elements = context.Set<ComponentLib>().Select(ComponentLib => ComponentLib);
+            var retElemets = new List<DalComponentLib>();
+            if (elements.Any())
+            {
+                foreach (var element in elements)
+                {
+                    retElemets.Add(mapper.MapToDal(element));
+                }
+            }
+
+            return retElemets;
+        }
+
+        public new void Update(DalComponentLib entity)
+        {
+            var ormEntity = context.Set<ComponentLib>().Find(entity.Id);
+            if (ormEntity != null)
+            {
+                context.Entry(ormEntity).CurrentValues.SetValues(mapper.MapToOrm(entity));
+            }
+        }
+
         public new ComponentLib Create(DalComponentLib entity)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<DalComponentLib, ComponentLib>();
-                cfg.CreateMap<ComponentLib, DalComponentLib>();
-            });
-            var res = context.Set<ComponentLib>().Add(Mapper.Map<ComponentLib>(entity));
+            var res = context.Set<ComponentLib>().Add(mapper.MapToOrm(entity));
             return res;
         }
     }

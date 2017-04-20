@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DAL.Entities;
+using DAL.Mapping;
 using DAL.Repositories.Interface;
 using ORM;
 using System;
@@ -20,15 +21,57 @@ namespace DAL.Repositories
 
         public IEnumerable<DalSelectedComponent> GetComponentsByLibId(int id)
         {
-            Mapper.CreateMap<SelectedComponent, DalSelectedComponent>();
             var elements = context.Set<SelectedComponent>().Where(entity => entity.componentLib_id == id);
             var retElemets = new List<DalSelectedComponent>();
             foreach (var element in elements)
             {
-                Mapper.CreateMap<SelectedComponent, DalSelectedComponent>();
-                retElemets.Add(Mapper.Map<DalSelectedComponent>(element));
+                retElemets.Add(mapper.MapToDal(element));
             }
             return retElemets;
+        }
+
+        SelectedComponentMapper mapper = new SelectedComponentMapper();
+
+        public new void Delete(DalSelectedComponent entity)
+        {
+            var ormEntity = context.Set<SelectedComponent>().Single(SelectedComponent => SelectedComponent.id == entity.Id);
+            context.Set<SelectedComponent>().Remove(ormEntity);
+        }
+
+        public new DalSelectedComponent Get(int id)
+        {
+            var ormEntity = context.Set<SelectedComponent>().FirstOrDefault(SelectedComponent => SelectedComponent.id == id);
+            return ormEntity != null ? (mapper.MapToDal(ormEntity)) : null;
+        }
+
+        public new IEnumerable<DalSelectedComponent> GetAll()
+        {
+            var elements = context.Set<SelectedComponent>().Select(SelectedComponent => SelectedComponent);
+            var retElemets = new List<DalSelectedComponent>();
+            if (elements.Any())
+            {
+                foreach (var element in elements)
+                {
+                    retElemets.Add(mapper.MapToDal(element));
+                }
+            }
+
+            return retElemets;
+        }
+
+        public new void Update(DalSelectedComponent entity)
+        {
+            var ormEntity = context.Set<SelectedComponent>().Find(entity.Id);
+            if (ormEntity != null)
+            {
+                context.Entry(ormEntity).CurrentValues.SetValues(mapper.MapToOrm(entity));
+            }
+        }
+
+        public new SelectedComponent Create(DalSelectedComponent entity)
+        {
+            var res = context.Set<SelectedComponent>().Add(mapper.MapToOrm(entity));
+            return res;
         }
     }
 }

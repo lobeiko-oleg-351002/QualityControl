@@ -12,5 +12,9 @@ namespace DAL.Repositories.Interface
     {
         IEnumerable<DalSelectedControlMethodDocumentation> GetControlMethodDocumentationsByLibId(int id);
         new SelectedControlMethodDocumentation Create(DalSelectedControlMethodDocumentation entity);
+        new void Delete(DalSelectedControlMethodDocumentation entity);
+        new DalSelectedControlMethodDocumentation Get(int id);
+        new IEnumerable<DalSelectedControlMethodDocumentation> GetAll();
+        new void Update(DalSelectedControlMethodDocumentation entity);
     }
 }

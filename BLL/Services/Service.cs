@@ -25,42 +25,27 @@ namespace BLL.Services
 
         public virtual void Create(T entity)
         {
-            Mapper.CreateMap<T, U>();
-            repository.Create(Mapper.Map<U>(entity));
-            uow.Commit();
+            throw new NotImplementedException();
         }
 
         public virtual void Delete(T entity)
         {
-            Mapper.CreateMap<T, U>();
-            repository.Delete(Mapper.Map<U>(entity));
-            uow.Commit();
+            throw new NotImplementedException();
         }
 
         public virtual IEnumerable<T> GetAll()
         {
-            Mapper.CreateMap<U, T>();
-            var elements = repository.GetAll();
-            var retElemets = new List<T>();
-            foreach (var element in elements)
-            {
-                retElemets.Add(Mapper.Map<T>(element));
-            }
-            return retElemets;
+            throw new NotImplementedException();
         }
 
         public virtual T Get(int id)
         {
-            Mapper.CreateMap<U, T>();
-            var retElement = repository.Get(id);
-            return Mapper.Map<T>(retElement);
+            throw new NotImplementedException();
         }
 
         public virtual void Update(T entity)
         {
-            Mapper.CreateMap<T, U>();
-            repository.Update(Mapper.Map<U>(entity));
-            uow.Commit();
+            throw new NotImplementedException();
         }
     }
 }

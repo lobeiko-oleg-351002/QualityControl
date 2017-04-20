@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ORM;
 using AutoMapper;
+using DAL.Mapping;
 
 namespace DAL.Repositories
 {
@@ -20,9 +21,53 @@ namespace DAL.Repositories
 
         public DalRole GetRoleByName(string name)
         {
-            Mapper.CreateMap<Role, DalRole>();
+           
             var ormEntity = context.Roles.FirstOrDefault(entity => entity.name == name);
-            return Mapper.Map<DalRole>(ormEntity);
+            return mapper.MapToDal(ormEntity);
+        }
+
+        RoleMapper mapper = new RoleMapper();
+
+        public new void Delete(DalRole entity)
+        {
+            var ormEntity = context.Set<Role>().Single(Role => Role.id == entity.Id);
+            context.Set<Role>().Remove(ormEntity);
+        }
+
+        public new DalRole Get(int id)
+        {
+            var ormEntity = context.Set<Role>().FirstOrDefault(Role => Role.id == id);
+            return ormEntity != null ? (mapper.MapToDal(ormEntity)) : null;
+        }
+
+        public new IEnumerable<DalRole> GetAll()
+        {
+            var elements = context.Set<Role>().Select(Role => Role);
+            var retElemets = new List<DalRole>();
+            if (elements.Any())
+            {
+                foreach (var element in elements)
+                {
+                    retElemets.Add(mapper.MapToDal(element));
+                }
+            }
+
+            return retElemets;
+        }
+
+        public new void Update(DalRole entity)
+        {
+            var ormEntity = context.Set<Role>().Find(entity.Id);
+            if (ormEntity != null)
+            {
+                context.Entry(ormEntity).CurrentValues.SetValues(mapper.MapToOrm(entity));
+            }
+        }
+
+        public new Role Create(DalRole entity)
+        {
+            var res = context.Set<Role>().Add(mapper.MapToOrm(entity));
+            return res;
         }
     }
 }

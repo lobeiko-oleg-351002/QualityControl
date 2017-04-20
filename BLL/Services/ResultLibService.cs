@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Entities;
+using BLL.Mapping;
+using BLL.Mapping.Interfaces;
 using BLL.Services.Interface;
 using DAL.Entities;
 using DAL.Repositories.Interface;
@@ -15,28 +17,22 @@ namespace BLL.Services
     public class ResultLibService : Service<BllResultLib, DalResultLib>, IResultLibService
     {
         private readonly IUnitOfWork uow;
-
+        IResultLibMapper bllMapper;
         public ResultLibService(IUnitOfWork uow) : base(uow, uow.ResultLibs)
         {
             this.uow = uow;
+            bllMapper = new ResultLibMapper(uow);
         }
 
         public new BllResultLib Create(BllResultLib entity)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<BllResult, DalResult>();
-                cfg.CreateMap<ResultLib, DalResultLib>();
-                cfg.CreateMap<BllResultLib, DalResultLib>();
-                cfg.CreateMap<DalResultLib, BllResultLib>();
-            });
-            var ormEntity = uow.ResultLibs.Create(Mapper.Map<DalResultLib>(entity));
+            var ormEntity = uow.ResultLibs.Create(bllMapper.MapToDal(entity));
             uow.Commit();
             entity.Id = ormEntity.id;
+            IResultMapper resultMapper = new ResultMapper();
             foreach (var Result in entity.Result)
             {
-                Mapper.CreateMap<BllResult, DalResult>();
-                var dalResult = Mapper.Map<DalResult>(Result);
+                var dalResult = resultMapper.MapToDal(Result);
                 dalResult.ResultLib_id = entity.Id;
                 var ormResult = uow.Results.Create(dalResult);
                 uow.Commit();
@@ -48,13 +44,12 @@ namespace BLL.Services
 
         public override BllResultLib Get(int id)
         {
-            Mapper.CreateMap<DalResultLib, BllResultLib>();
-            var retElement = Mapper.Map<BllResultLib>(uow.ResultLibs.Get(id));
+            var retElement = bllMapper.MapToBll(uow.ResultLibs.Get(id));
             var Results = uow.Results.GetResultsByLibId(retElement.Id);
+            IResultMapper resultMapper = new ResultMapper();
             foreach (var Result in Results)
             {
-                Mapper.CreateMap<DalResult, BllResult>();
-                retElement.Result.Add(Mapper.Map<BllResult>(Result));
+                retElement.Result.Add(resultMapper.MapToBll(Result));
             }
 
             return retElement;
@@ -62,17 +57,10 @@ namespace BLL.Services
 
         public new BllResultLib Update(BllResultLib entity)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<BllResult, DalResult>();
-                cfg.CreateMap<ResultLib, DalResultLib>();
-                cfg.CreateMap<BllResultLib, DalResultLib>();
-                cfg.CreateMap<DalResultLib, BllResultLib>();
-            });
+            IResultMapper resultMapper = new ResultMapper();
             foreach (var Result in entity.Result)
             {
-                Mapper.CreateMap<BllResult, DalResult>();
-                var dalResult = Mapper.Map<DalResult>(Result);
+                var dalResult = resultMapper.MapToDal(Result);
                 dalResult.ResultLib_id = entity.Id;
                 if (Result.Id == 0)
                 {                                        

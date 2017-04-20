@@ -17,5 +17,9 @@ namespace DAL.Repositories.Interface
         int GetControlCountWithCurrentType(int controlNameId);
 
         new Control Create(DalControl entity);
+        new void Delete(DalControl entity);
+        new DalControl Get(int id);
+        new IEnumerable<DalControl> GetAll();
+        new void Update(DalControl entity);
     }
 }

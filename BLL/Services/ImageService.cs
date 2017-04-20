@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Entities;
+using BLL.Mapping;
+using BLL.Mapping.Interfaces;
 using BLL.Services.Interface;
 using DAL.Entities;
 using DAL.Repositories.Interface;
@@ -18,58 +20,41 @@ namespace BLL.Services
         public ImageService(IUnitOfWork uow) : base(uow, uow.Images)
         {
             this.uow = uow;
+            bllMapper = new ImageMapper();
+        }
+        IImageMapper bllMapper;
+        public override void Create(BllImage entity)
+        {
+            uow.Images.Create(bllMapper.MapToDal(entity));
+            uow.Commit();
         }
 
-        //public override void Create(BllImage entity)
-        //{
-        //    Mapper.CreateMap<BllImage, DalImage>();
-        //    DalImage dalEntity = Mapper.Map<DalImage>(entity);
-        //    dalEntity.ImageLib_id = entity.ImageLib.Id;
-        //    uow.Images.Create(dalEntity);
-        //    uow.Commit();
-        //}
+        public override void Update(BllImage entity)
+        {
+            uow.Images.Update(bllMapper.MapToDal(entity));
+            uow.Commit();
+        }
 
-        //public override void Delete(BllImage entity)
-        //{
-        //    Mapper.CreateMap<BllImage, DalImage>();
-        //    DalImage dalEntity = Mapper.Map<DalImage>(entity);
-        //    dalEntity.ImageLib_id = entity.ImageLib.Id;
-        //    uow.Images.Delete(dalEntity);
-        //    uow.Commit();
-        //}
+        public override void Delete(BllImage entity)
+        {
+            uow.Images.Delete(bllMapper.MapToDal(entity));
+            uow.Commit();
+        }
 
-        //public override void Update(BllImage entity)
-        //{
-        //    Mapper.CreateMap<BllImage, DalImage>();
-        //    DalImage dalEntity = Mapper.Map<DalImage>(entity);
-        //    dalEntity.ImageLib_id = entity.ImageLib.Id;
-        //    uow.Images.Create(dalEntity);
-        //    uow.Commit();
-        //}
+        public override IEnumerable<BllImage> GetAll()
+        {
+            var elements = uow.Images.GetAll();
+            var retElemets = new List<BllImage>();
+            foreach (var element in elements)
+            {
+                retElemets.Add(bllMapper.MapToBll(element));
+            }
+            return retElemets;
+        }
 
-        //public override BllImage Get(int id)
-        //{
-        //    Mapper.CreateMap<DalImage, BllImage>();
-        //    DalImage dalEntity = uow.Images.Get(id);
-        //    BllImage bllEntity = Mapper.Map<BllImage>(dalEntity);
-        //    ImageLibService imageLibService = new ImageLibService(uow);
-        //    bllEntity.ImageLib = dalEntity.ImageLib_id != null ? imageLibService.Get((int)dalEntity.ImageLib_id) : null;
-        //    return bllEntity;
-        //}
-
-        //public override IEnumerable<BllImage> GetAll()
-        //{
-        //    Mapper.CreateMap<DalImage, BllImage>();
-        //    var elements = uow.Images.GetAll();
-        //    var retElemets = new List<BllImage>();
-        //    ImageLibService imageLibService = new ImageLibService(uow);
-        //    foreach (var element in elements)
-        //    {
-        //        BllImage bllEntity = Mapper.Map<BllImage>(element);
-        //        bllEntity.ImageLib = element.ImageLib_id != null ? imageLibService.Get((int)element.ImageLib_id) : null;
-        //        retElemets.Add(bllEntity);
-        //    }
-        //    return retElemets;
-        //}
+        public override BllImage Get(int id)
+        {
+            return bllMapper.MapToBll(uow.Images.Get(id));
+        }
     }
 }

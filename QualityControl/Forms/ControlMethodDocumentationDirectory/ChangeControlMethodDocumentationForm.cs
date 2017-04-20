@@ -27,6 +27,7 @@ namespace QualityControl_Client.Forms.ControlMethodDocumentationDirectory
         public ChangeControlMethodDocumentationForm(DirectoryForm parent, BllControlMethodDocumentation oldControlMethodDocumentation, IUnitOfWork uow) : base(parent)
         {
             InitializeComponent();
+            this.uow = uow;
             IControlNameService controlNameService = new ControlNameService(uow);
             controlNames = controlNameService.GetAll();
             foreach (var name in controlNames)

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DAL.Entities;
+using DAL.Mapping;
 using DAL.Repositories.Interface;
 using ORM;
 using System;
@@ -20,9 +21,52 @@ namespace DAL.Repositories
 
         public DalTemplate GetTemplateByName(string name)
         {
-            Mapper.CreateMap<Template, DalTemplate>();
             var ormEntity = context.Templates.FirstOrDefault(entity => entity.name == name);
-            return Mapper.Map<DalTemplate>(ormEntity);
+            return mapper.MapToDal(ormEntity);
+        }
+
+        TemplateMapper mapper = new TemplateMapper();
+
+        public new void Delete(DalTemplate entity)
+        {
+            var ormEntity = context.Set<Template>().Single(Template => Template.id == entity.Id);
+            context.Set<Template>().Remove(ormEntity);
+        }
+
+        public new DalTemplate Get(int id)
+        {
+            var ormEntity = context.Set<Template>().FirstOrDefault(Template => Template.id == id);
+            return ormEntity != null ? (mapper.MapToDal(ormEntity)) : null;
+        }
+
+        public new IEnumerable<DalTemplate> GetAll()
+        {
+            var elements = context.Set<Template>().Select(Template => Template);
+            var retElemets = new List<DalTemplate>();
+            if (elements.Any())
+            {
+                foreach (var element in elements)
+                {
+                    retElemets.Add(mapper.MapToDal(element));
+                }
+            }
+
+            return retElemets;
+        }
+
+        public new void Update(DalTemplate entity)
+        {
+            var ormEntity = context.Set<Template>().Find(entity.Id);
+            if (ormEntity != null)
+            {
+                context.Entry(ormEntity).CurrentValues.SetValues(mapper.MapToOrm(entity));
+            }
+        }
+
+        public new Template Create(DalTemplate entity)
+        {
+            var res = context.Set<Template>().Add(mapper.MapToOrm(entity));
+            return res;
         }
     }
 }

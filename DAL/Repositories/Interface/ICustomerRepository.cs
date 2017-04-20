@@ -1,4 +1,5 @@
 ﻿using DAL.Entities;
+using ORM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,11 @@ namespace DAL.Repositories.Interface
         DalCustomer GetCustomerByAddress(string address);
         DalCustomer GetCustomerByPhone(string phone);
         DalCustomer GetCustomerByContract(string contract);
+
+        new Customer Create(DalCustomer entity);
+        new void Delete(DalCustomer entity);
+        new DalCustomer Get(int id);
+        new IEnumerable<DalCustomer> GetAll();
+        new void Update(DalCustomer entity);
     }
 }

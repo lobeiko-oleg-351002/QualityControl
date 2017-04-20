@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DAL.Entities;
+using DAL.Mapping;
 using DAL.Repositories.Interface;
 using ORM;
 using System;
@@ -20,9 +21,53 @@ namespace DAL.Repositories
 
         public DalControlName GetControlNameByName(string name)
         {
-            Mapper.CreateMap<ControlName, DalControlName>();
+            
             var ormEntity = context.ControlNames.FirstOrDefault(entity => entity.name == name);
-            return Mapper.Map<DalControlName>(ormEntity);
+            return mapper.MapToDal(ormEntity);
+        }
+
+        ControlNameMapper mapper = new ControlNameMapper();
+
+        public new void Delete(DalControlName entity)
+        {
+            var ormEntity = context.Set<ControlName>().Single(ControlName => ControlName.id == entity.Id);
+            context.Set<ControlName>().Remove(ormEntity);
+        }
+
+        public new DalControlName Get(int id)
+        {
+            var ormEntity = context.Set<ControlName>().FirstOrDefault(ControlName => ControlName.id == id);
+            return ormEntity != null ? (mapper.MapToDal(ormEntity)) : null;
+        }
+
+        public new IEnumerable<DalControlName> GetAll()
+        {
+            var elements = context.Set<ControlName>().Select(ControlName => ControlName);
+            var retElemets = new List<DalControlName>();
+            if (elements.Any())
+            {
+                foreach (var element in elements)
+                {
+                    retElemets.Add(mapper.MapToDal(element));
+                }
+            }
+
+            return retElemets;
+        }
+
+        public new void Update(DalControlName entity)
+        {
+            var ormEntity = context.Set<ControlName>().Find(entity.Id);
+            if (ormEntity != null)
+            {
+                context.Entry(ormEntity).CurrentValues.SetValues(mapper.MapToOrm(entity));
+            }
+        }
+
+        public new ControlName Create(DalControlName entity)
+        {
+            var res = context.Set<ControlName>().Add(mapper.MapToOrm(entity));
+            return res;
         }
     }
 }

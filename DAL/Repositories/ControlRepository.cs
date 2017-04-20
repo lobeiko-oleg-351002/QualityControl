@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DAL.Entities;
+using DAL.Mapping;
 using DAL.Repositories.Interface;
 using ORM;
 using System;
@@ -20,9 +21,7 @@ namespace DAL.Repositories
 
         public new Control Create(DalControl entity)
         {
-            Mapper.CreateMap<DalControl, Control>();
-            var ormEntity = Mapper.Map<Control>(entity);
-            //ormEntity.ControlMethodsLib = context.ControlMethodsLibs.FirstOrDefault(e => e.id == ormEntity.controlMethodsLib_id);
+            var ormEntity = mapper.MapToOrm(entity);            
             ormEntity.protocolNumber = GetControlCountWithCurrentType(entity.ControlName_id.Value) + 1;
             return context.Set<Control>().Add(ormEntity);
         }
@@ -31,33 +30,30 @@ namespace DAL.Repositories
 
         public IEnumerable<DalControl> GetAllControlled()
         {
-            Mapper.CreateMap<Control, DalControl>();
             var elements = context.Controls.Select(entity => entity.isControlled == true);
             var retElemets = new List<DalControl>();
-            foreach (var element in elements)
-            {
-                retElemets.Add(Mapper.Map<DalControl>(element));
-            }
+            //foreach (var element in elements)
+            //{
+            //    retElemets.Add(mapper.MapToDal(element));
+            //}
             return retElemets;
         }
 
         public IEnumerable<DalControl> GetAllUncontrolled()
         {
-            Mapper.CreateMap<Control, DalControl>();
             var elements = context.Controls.Select(entity => entity.isControlled == false);
             var retElemets = new List<DalControl>();
             foreach (var element in elements)
             {
-                retElemets.Add(Mapper.Map<DalControl>(element));
+                //retElemets.Add(Mapper.Map<DalControl>(element));
             }
             return retElemets;
         }
 
         public DalControl GetControlByNumber(int number)
         {
-            Mapper.CreateMap<Control, DalControl>();
             var ormEntity = context.Controls.FirstOrDefault(entity => entity.number == number);
-            return Mapper.Map<DalControl>(ormEntity);
+            return mapper.MapToDal(ormEntity);
         }
 
         public int GetControlCountWithCurrentType(int controlNameId)
@@ -72,10 +68,47 @@ namespace DAL.Repositories
             var retElemets = new List<DalControl>();
             foreach (var element in elements)
             {
-                Mapper.CreateMap<Control, DalControl>();
-                retElemets.Add(Mapper.Map<DalControl>(element));
+                retElemets.Add(mapper.MapToDal(element));
             }
             return retElemets;
+        }
+
+        ControlMapper mapper = new ControlMapper();
+
+        public new void Delete(DalControl entity)
+        {
+            var ormEntity = context.Set<Control>().Single(Control => Control.id == entity.Id);
+            context.Set<Control>().Remove(ormEntity);
+        }
+
+        public new DalControl Get(int id)
+        {
+            var ormEntity = context.Set<Control>().FirstOrDefault(Control => Control.id == id);
+            return ormEntity != null ? (mapper.MapToDal(ormEntity)) : null;
+        }
+
+        public new IEnumerable<DalControl> GetAll()
+        {
+            var elements = context.Set<Control>().Select(Control => Control);
+            var retElemets = new List<DalControl>();
+            if (elements.Any())
+            {
+                foreach (var element in elements)
+                {
+                    retElemets.Add(mapper.MapToDal(element));
+                }
+            }
+
+            return retElemets;
+        }
+
+        public new void Update(DalControl entity)
+        {
+            var ormEntity = context.Set<Control>().Find(entity.Id);
+            if (ormEntity != null)
+            {
+                context.Entry(ormEntity).CurrentValues.SetValues(mapper.MapToOrm(entity));
+            }
         }
 
     }

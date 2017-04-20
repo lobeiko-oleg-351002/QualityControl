@@ -12,5 +12,9 @@ namespace DAL.Repositories.Interface
     {
         IEnumerable<DalSelectedEmployee> GetEmployeesByLibId(int id);
         new SelectedEmployee Create(DalSelectedEmployee entity);
+        new void Delete(DalSelectedEmployee entity);
+        new DalSelectedEmployee Get(int id);
+        new IEnumerable<DalSelectedEmployee> GetAll();
+        new void Update(DalSelectedEmployee entity);
     }
 }

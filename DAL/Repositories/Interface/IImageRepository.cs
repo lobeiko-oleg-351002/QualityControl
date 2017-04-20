@@ -12,5 +12,9 @@ namespace DAL.Repositories.Interface
     {
         IEnumerable<DalImage> GetImagesByLibId(int id);
         new Image Create(DalImage entity);
+        new void Delete(DalImage entity);
+        new DalImage Get(int id);
+        new IEnumerable<DalImage> GetAll();
+        new void Update(DalImage entity);
     }
 }

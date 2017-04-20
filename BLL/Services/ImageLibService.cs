@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Entities;
+using BLL.Mapping;
+using BLL.Mapping.Interfaces;
 using BLL.Services.Interface;
 using DAL.Entities;
 using DAL.Repositories.Interface;
@@ -15,28 +17,22 @@ namespace BLL.Services
     public class ImageLibService : Service<BllImageLib, DalImageLib>, IImageLibService
     {
         private readonly IUnitOfWork uow;
-
+        IImageLibMapper bllMapper;
         public ImageLibService(IUnitOfWork uow) : base(uow, uow.ImageLibs)
         {
             this.uow = uow;
+            bllMapper = new ImageLibMapper(uow);
         }
 
         public new BllImageLib Create(BllImageLib entity)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<BllImage, DalImage>();
-                cfg.CreateMap<ImageLib, DalImageLib>();
-                cfg.CreateMap<BllImageLib, DalImageLib>();
-                cfg.CreateMap<DalImageLib, BllImageLib>();
-            });
-            var ormEntity = uow.ImageLibs.Create(Mapper.Map<DalImageLib>(entity));
+            var ormEntity = uow.ImageLibs.Create(bllMapper.MapToDal(entity));
             uow.Commit();
             entity.Id = ormEntity.id;
+            ImageMapper imageMapper = new ImageMapper();
             foreach (var image in entity.Image)
             {
-                Mapper.CreateMap<BllImage, DalImage>();   
-                var dalImage = Mapper.Map<DalImage>(image);
+                var dalImage = imageMapper.MapToDal(image);
                 dalImage.ImageLib_id = entity.Id;
                 var ormImage =  uow.Images.Create(dalImage);
                 uow.Commit();
@@ -47,13 +43,12 @@ namespace BLL.Services
 
         public override BllImageLib Get(int id)
         {
-            Mapper.CreateMap<DalImageLib, BllImageLib>();
-            var retElement = Mapper.Map<BllImageLib>(uow.ImageLibs.Get(id));
+            var retElement = bllMapper.MapToBll(uow.ImageLibs.Get(id));
             var images = uow.Images.GetImagesByLibId(retElement.Id);
+            ImageMapper imageMapper = new ImageMapper();
             foreach (var image in images)
             {
-                Mapper.CreateMap<DalImage, BllImage>();
-                retElement.Image.Add(Mapper.Map <BllImage>(image));
+                retElement.Image.Add(imageMapper.MapToBll(image));
             }
             
             return retElement;
@@ -61,19 +56,12 @@ namespace BLL.Services
 
         public new BllImageLib Update(BllImageLib entity)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<BllImage, DalImage>();
-                cfg.CreateMap<ImageLib, DalImageLib>();
-                cfg.CreateMap<BllImageLib, DalImageLib>();
-                cfg.CreateMap<DalImageLib, BllImageLib>();
-            });
+            ImageMapper imageMapper = new ImageMapper();
             foreach (var image in entity.Image)
             {
-                Mapper.CreateMap<BllImage, DalImage>();
                 if (image.Id == 0)
                 {
-                    var dalImage = Mapper.Map<DalImage>(image);
+                    var dalImage = imageMapper.MapToDal(image);
                     dalImage.ImageLib_id = entity.Id;
                     var ormImage = uow.Images.Create(dalImage);
                     uow.Commit();

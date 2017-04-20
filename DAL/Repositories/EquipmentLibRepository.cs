@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DAL.Entities;
+using DAL.Mapping;
 using DAL.Repositories.Interface;
 using ORM;
 using System;
@@ -18,14 +19,47 @@ namespace DAL.Repositories
             this.context = context;
         }
 
+        EquipmentLibMapper mapper = new EquipmentLibMapper();
+
+        public new void Delete(DalEquipmentLib entity)
+        {
+            var ormEntity = context.Set<EquipmentLib>().Single(EquipmentLib => EquipmentLib.id == entity.Id);
+            context.Set<EquipmentLib>().Remove(ormEntity);
+        }
+
+        public new DalEquipmentLib Get(int id)
+        {
+            var ormEntity = context.Set<EquipmentLib>().FirstOrDefault(EquipmentLib => EquipmentLib.id == id);
+            return ormEntity != null ? (mapper.MapToDal(ormEntity)) : null;
+        }
+
+        public new IEnumerable<DalEquipmentLib> GetAll()
+        {
+            var elements = context.Set<EquipmentLib>().Select(EquipmentLib => EquipmentLib);
+            var retElemets = new List<DalEquipmentLib>();
+            if (elements.Any())
+            {
+                foreach (var element in elements)
+                {
+                    retElemets.Add(mapper.MapToDal(element));
+                }
+            }
+
+            return retElemets;
+        }
+
+        public new void Update(DalEquipmentLib entity)
+        {
+            var ormEntity = context.Set<EquipmentLib>().Find(entity.Id);
+            if (ormEntity != null)
+            {
+                context.Entry(ormEntity).CurrentValues.SetValues(mapper.MapToOrm(entity));
+            }
+        }
+
         public new EquipmentLib Create(DalEquipmentLib entity)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<DalEquipmentLib, EquipmentLib>();
-                cfg.CreateMap<EquipmentLib, DalEquipmentLib>();
-            });
-            var res = context.Set<EquipmentLib>().Add(Mapper.Map<EquipmentLib>(entity));
+            var res = context.Set<EquipmentLib>().Add(mapper.MapToOrm(entity));
             return res;
         }
     }

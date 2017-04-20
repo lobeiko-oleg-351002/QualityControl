@@ -10,6 +10,9 @@ namespace DAL.Repositories.Interface
     public interface IJournalRepository : IRepository<DalJournal>
     {
         new Journal Create(DalJournal entity);
-        new Journal Update(DalJournal entity);
+        new void Delete(DalJournal entity);
+        new DalJournal Get(int id);
+        new IEnumerable<DalJournal> GetAll();
+        new void Update(DalJournal entity);
     }
 }

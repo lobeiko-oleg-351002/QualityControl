@@ -12,6 +12,10 @@ namespace DAL.Repositories.Interface
     {
         DalResult GetResultByNumber(int number);
         IEnumerable<DalResult> GetResultsByLibId(int id);
-        new Result Create(DalResult entity); 
+        new Result Create(DalResult entity);
+        new void Delete(DalResult entity);
+        new DalResult Get(int id);
+        new IEnumerable<DalResult> GetAll();
+        new void Update(DalResult entity);
     }
 }

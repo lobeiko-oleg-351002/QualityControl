@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DAL.Entities;
+using DAL.Mapping;
 using DAL.Repositories.Interface;
 using ORM;
 using System;
@@ -18,17 +19,6 @@ namespace DAL.Repositories
             this.context = context;
         }
 
-        public new ImageLib Create(DalImageLib entity)
-        {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<DalImageLib, ImageLib>();
-                cfg.CreateMap<ImageLib, DalImageLib>();
-            });
-            var res = context.Set<ImageLib>().Add(Mapper.Map<ImageLib>(entity));
-            return res;
-        }
-
         //public List<DalImage> GetImagesFromLib(DalImageLib lib)
         //{
         //    Mapper.CreateMap<Image, DalImage>();
@@ -40,5 +30,49 @@ namespace DAL.Repositories
         //    }
         //    return result;
         //}
+
+        ImageLibMapper mapper = new ImageLibMapper();
+
+        public new void Delete(DalImageLib entity)
+        {
+            var ormEntity = context.Set<ImageLib>().Single(ImageLib => ImageLib.id == entity.Id);
+            context.Set<ImageLib>().Remove(ormEntity);
+        }
+
+        public new DalImageLib Get(int id)
+        {
+            var ormEntity = context.Set<ImageLib>().FirstOrDefault(ImageLib => ImageLib.id == id);
+            return ormEntity != null ? (mapper.MapToDal(ormEntity)) : null;
+        }
+
+        public new IEnumerable<DalImageLib> GetAll()
+        {
+            var elements = context.Set<ImageLib>().Select(ImageLib => ImageLib);
+            var retElemets = new List<DalImageLib>();
+            if (elements.Any())
+            {
+                foreach (var element in elements)
+                {
+                    retElemets.Add(mapper.MapToDal(element));
+                }
+            }
+
+            return retElemets;
+        }
+
+        public new void Update(DalImageLib entity)
+        {
+            var ormEntity = context.Set<ImageLib>().Find(entity.Id);
+            if (ormEntity != null)
+            {
+                context.Entry(ormEntity).CurrentValues.SetValues(mapper.MapToOrm(entity));
+            }
+        }
+
+        public new ImageLib Create(DalImageLib entity)
+        {
+            var res = context.Set<ImageLib>().Add(mapper.MapToOrm(entity));
+            return res;
+        }
     }
 }

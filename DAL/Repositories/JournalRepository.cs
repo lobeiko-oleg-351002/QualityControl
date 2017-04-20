@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DAL.Mapping;
 using DAL.Repositories.Interface;
 using ORM;
 using System;
@@ -17,27 +18,47 @@ namespace DAL.Repositories
             this.context = context;
         }
 
-        public new Journal Create(DalJournal entity)
+        JournalMapper mapper = new JournalMapper();
+
+        public new void Delete(DalJournal entity)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<DalJournal, Journal>();
-            });
-            var res = context.Set<Journal>().Add(Mapper.Map<Journal>(entity));
-            return res;
+            var ormEntity = context.Set<Journal>().Single(Journal => Journal.id == entity.Id);
+            context.Set<Journal>().Remove(ormEntity);
         }
 
-        public new Journal Update(DalJournal entity)
+        public new DalJournal Get(int id)
         {
-            Mapper.Initialize(cfg =>
+            var ormEntity = context.Set<Journal>().FirstOrDefault(Journal => Journal.id == id);
+            return ormEntity != null ? (mapper.MapToDal(ormEntity)) : null;
+        }
+
+        public new IEnumerable<DalJournal> GetAll()
+        {
+            var elements = context.Set<Journal>().Select(Journal => Journal);
+            var retElemets = new List<DalJournal>();
+            if (elements.Any())
             {
-                cfg.CreateMap<DalJournal, Journal>();
-            });
-            var res = context.Set<Journal>().Find(entity.Id);
-            if (res != null)
-            {
-                context.Entry(res).CurrentValues.SetValues(Mapper.Map<Journal>(entity));
+                foreach (var element in elements)
+                {
+                    retElemets.Add(mapper.MapToDal(element));
+                }
             }
+
+            return retElemets;
+        }
+
+        public new void Update(DalJournal entity)
+        {
+            var ormEntity = context.Set<Journal>().Find(entity.Id);
+            if (ormEntity != null)
+            {
+                context.Entry(ormEntity).CurrentValues.SetValues(mapper.MapToOrm(entity));
+            }
+        }
+
+        public new Journal Create(DalJournal entity)
+        {
+            var res = context.Set<Journal>().Add(mapper.MapToOrm(entity));
             return res;
         }
     }

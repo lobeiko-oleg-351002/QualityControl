@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Entities;
+using BLL.Mapping;
+using BLL.Mapping.Interfaces;
 using BLL.Services.Interface;
 using DAL.Entities;
 using DAL.Repositories.Interface;
@@ -15,28 +17,22 @@ namespace BLL.Services
     public class EmployeeLibService : Service<BllEmployeeLib, DalEmployeeLib>, IEmployeeLibService
     {
         private readonly IUnitOfWork uow;
-
+        EmployeeLibMapper bllMapper;
         public EmployeeLibService(IUnitOfWork uow) : base(uow, uow.EmployeeLibs)
         {
             this.uow = uow;
+            bllMapper = new EmployeeLibMapper(uow);
         }
 
         public new BllEmployeeLib Create(BllEmployeeLib entity)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<BllSelectedEmployee, DalSelectedEmployee>();
-                cfg.CreateMap<EmployeeLib, DalEmployeeLib>();
-                cfg.CreateMap<BllEmployeeLib, DalEmployeeLib>();
-                cfg.CreateMap<DalEmployeeLib, BllEmployeeLib>();
-            });
-            var ormEntity = uow.EmployeeLibs.Create(Mapper.Map<DalEmployeeLib>(entity));
+            var ormEntity = uow.EmployeeLibs.Create(bllMapper.MapToDal(entity));
             uow.Commit();
             entity.Id = ormEntity.id;
+            ISelectedEmployeeMapper selectedEmployeeMapper = new SelectedEmployeeMapper(uow);
             foreach (var Employee in entity.SelectedEmployee)
             {
-                Mapper.CreateMap<BllSelectedEmployee, DalSelectedEmployee>();
-                var dalEmployee = Mapper.Map<DalSelectedEmployee>(Employee);
+                var dalEmployee = selectedEmployeeMapper.MapToDal(Employee);
                 dalEmployee.EmployeeLib_id = entity.Id;
                 var ormEmployee = uow.SelectedEmployees.Create(dalEmployee);
                 uow.Commit();
@@ -48,24 +44,17 @@ namespace BLL.Services
 
         public override BllEmployeeLib Get(int id)
         {
-            Mapper.CreateMap<DalEmployeeLib, BllEmployeeLib>();
-            return MapDalToBll(uow.EmployeeLibs.Get(id));
+            return bllMapper.MapToBll(uow.EmployeeLibs.Get(id));
         }
 
         public new BllEmployeeLib Update(BllEmployeeLib entity)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<BllSelectedEmployee, DalSelectedEmployee>();
-                cfg.CreateMap<EmployeeLib, DalEmployeeLib>();
-                cfg.CreateMap<BllEmployeeLib, DalEmployeeLib>();
-                cfg.CreateMap<DalEmployeeLib, BllEmployeeLib>();
-            });
+            ISelectedEmployeeMapper selectedEmployeeMapper = new SelectedEmployeeMapper(uow);
             foreach (var Employee in entity.SelectedEmployee)
             {
                 if (Employee.Id == 0)
                 {
-                    var dalEmployee = Mapper.Map<DalSelectedEmployee>(Employee);
+                    var dalEmployee = selectedEmployeeMapper.MapToDal(Employee);
                     dalEmployee.EmployeeLib_id = entity.Id;
                     var ormEmployee = uow.SelectedEmployees.Create(dalEmployee);
                     uow.Commit();
@@ -94,32 +83,32 @@ namespace BLL.Services
             return entity;
         }
 
-        private BllEmployeeLib MapDalToBll(DalEmployeeLib dalEntity)
-        {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<DalEmployeeLib, BllEmployeeLib>();
-                cfg.CreateMap<DalEmployee, BllEmployee>();
-                cfg.CreateMap<DalSelectedEmployee, BllSelectedEmployee>();
-            });
-            BllEmployeeLib bllEntity = Mapper.Map<BllEmployeeLib>(dalEntity);
+        //private BllEmployeeLib MapDalToBll(DalEmployeeLib dalEntity)
+        //{
+        //    Mapper.Initialize(cfg =>
+        //    {
+        //        cfg.CreateMap<DalEmployeeLib, BllEmployeeLib>();
+        //        cfg.CreateMap<DalEmployee, BllEmployee>();
+        //        cfg.CreateMap<DalSelectedEmployee, BllSelectedEmployee>();
+        //    });
+        //    BllEmployeeLib bllEntity = Mapper.Map<BllEmployeeLib>(dalEntity);
 
-            SelectedEmployeeService selectedEmployeeService = new SelectedEmployeeService(uow);
-            EmployeeService EmployeeService = new EmployeeService(uow);
-            foreach (var Employee in uow.SelectedEmployees.GetEmployeesByLibId(dalEntity.Id))
-            {
-                var bllEmployee = Employee.Employee_id != null ? EmployeeService.Get((int)Employee.Employee_id) : null;
-                Mapper.Initialize(cfg =>
-                {
-                    cfg.CreateMap<DalEmployee, BllEmployee>();
-                    cfg.CreateMap<DalSelectedEmployee, BllSelectedEmployee>();
-                });
-                var bllSelectedEmployee = Mapper.Map<BllSelectedEmployee>(Employee);
-                bllSelectedEmployee.Employee = bllEmployee;
-                bllEntity.SelectedEmployee.Add(bllSelectedEmployee);
+        //    SelectedEmployeeService selectedEmployeeService = new SelectedEmployeeService(uow);
+        //    EmployeeService EmployeeService = new EmployeeService(uow);
+        //    foreach (var Employee in uow.SelectedEmployees.GetEmployeesByLibId(dalEntity.Id))
+        //    {
+        //        var bllEmployee = Employee.Employee_id != null ? EmployeeService.Get((int)Employee.Employee_id) : null;
+        //        Mapper.Initialize(cfg =>
+        //        {
+        //            cfg.CreateMap<DalEmployee, BllEmployee>();
+        //            cfg.CreateMap<DalSelectedEmployee, BllSelectedEmployee>();
+        //        });
+        //        var bllSelectedEmployee = Mapper.Map<BllSelectedEmployee>(Employee);
+        //        bllSelectedEmployee.Employee = bllEmployee;
+        //        bllEntity.SelectedEmployee.Add(bllSelectedEmployee);
 
-            }
-            return bllEntity;
-        }
+        //    }
+        //    return bllEntity;
+        //}
     }
 }

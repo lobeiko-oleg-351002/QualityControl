@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DAL.Entities;
+using DAL.Mapping;
 using DAL.Repositories.Interface;
 using ORM;
 using System;
@@ -20,23 +21,59 @@ namespace DAL.Repositories
 
         public IEnumerable<DalSelectedRequirementDocumentation> GetRequirementDocumentationsByLibId(int id)
         {
-            Mapper.CreateMap<SelectedRequirementDocumentation, DalSelectedRequirementDocumentation>();
             var elements = context.Set<SelectedRequirementDocumentation>().Where(entity => entity.requirementDocumentationLib_id == id);
             var retElemets = new List<DalSelectedRequirementDocumentation>();
             foreach (var element in elements)
             {
-                Mapper.CreateMap<SelectedRequirementDocumentation, DalSelectedRequirementDocumentation>();
-                retElemets.Add(Mapper.Map<DalSelectedRequirementDocumentation>(element));
+                retElemets.Add(mapper.MapToDal(element));
             }
             return retElemets;
         }
 
         public new SelectedRequirementDocumentation Create(DalSelectedRequirementDocumentation entity)
         {
-            Mapper.CreateMap<DalSelectedRequirementDocumentation, SelectedRequirementDocumentation>();
-            var ormEntity = Mapper.Map<SelectedRequirementDocumentation>(entity);
+            var ormEntity = mapper.MapToOrm(entity);
             ormEntity.RequirementDocumentationLib = context.RequirementDocumentationLibs.FirstOrDefault(e => e.id == ormEntity.requirementDocumentationLib_id);
-            return context.Set<SelectedRequirementDocumentation>().Add(Mapper.Map<SelectedRequirementDocumentation>(entity));
+            return context.Set<SelectedRequirementDocumentation>().Add(ormEntity);
         }
+
+        SelectedRequirementDocumentationMapper mapper = new SelectedRequirementDocumentationMapper();
+
+        public new void Delete(DalSelectedRequirementDocumentation entity)
+        {
+            var ormEntity = context.Set<SelectedRequirementDocumentation>().Single(SelectedRequirementDocumentation => SelectedRequirementDocumentation.id == entity.Id);
+            context.Set<SelectedRequirementDocumentation>().Remove(ormEntity);
+        }
+
+        public new DalSelectedRequirementDocumentation Get(int id)
+        {
+            var ormEntity = context.Set<SelectedRequirementDocumentation>().FirstOrDefault(SelectedRequirementDocumentation => SelectedRequirementDocumentation.id == id);
+            return ormEntity != null ? (mapper.MapToDal(ormEntity)) : null;
+        }
+
+        public new IEnumerable<DalSelectedRequirementDocumentation> GetAll()
+        {
+            var elements = context.Set<SelectedRequirementDocumentation>().Select(SelectedRequirementDocumentation => SelectedRequirementDocumentation);
+            var retElemets = new List<DalSelectedRequirementDocumentation>();
+            if (elements.Any())
+            {
+                foreach (var element in elements)
+                {
+                    retElemets.Add(mapper.MapToDal(element));
+                }
+            }
+
+            return retElemets;
+        }
+
+        public new void Update(DalSelectedRequirementDocumentation entity)
+        {
+            var ormEntity = context.Set<SelectedRequirementDocumentation>().Find(entity.Id);
+            if (ormEntity != null)
+            {
+                context.Entry(ormEntity).CurrentValues.SetValues(mapper.MapToOrm(entity));
+            }
+        }
+
     }
 }

@@ -11,5 +11,9 @@ namespace DAL.Repositories.Interface
     public interface IResultLibRepository : IRepository<DalResultLib>
     {
         new ResultLib Create(DalResultLib entity);
+        new void Delete(DalResultLib entity);
+        new DalResultLib Get(int id);
+        new IEnumerable<DalResultLib> GetAll();
+        new void Update(DalResultLib entity);
     }
 }

@@ -817,7 +817,7 @@ namespace QualityControl
         {
             if (filtrationForm == null)
             {
-                filtrationForm = new Filtration(RefreshDataGrid);
+                filtrationForm = new Filtration(RefreshDataGrid, uow);
                 filtration = filtrationForm.JournalFiltration;
             }
             filtrationForm.Show();

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Entities;
+using BLL.Mapping;
+using BLL.Mapping.Interfaces;
 using BLL.Services.Interface;
 using DAL.Entities;
 using DAL.Repositories.Interface;
@@ -14,20 +16,21 @@ namespace BLL.Services
     public class UserService : Service<BllUser, DalUser>, IUserService
     {
         private readonly IUnitOfWork uow;
-
+        IUserMapper bllMapper;
         public UserService(IUnitOfWork uow) : base(uow, uow.Users)
         {
             this.uow = uow;
+            bllMapper = new UserMapper(uow);
         }
 
         public BllUser Authorize(string login, string password)
         {
-            return MapDalToBll(uow.Users.Authorize(login, password));
+            return bllMapper.MapToBll(uow.Users.Authorize(login, password));
         }
 
         public BllUser GetUserByLogin(string login)
         {
-            return MapDalToBll(uow.Users.GetUserByLogin(login));
+            return bllMapper.MapToBll(uow.Users.GetUserByLogin(login));
         }
 
         public new BllUser Create(BllUser entity)
@@ -35,7 +38,7 @@ namespace BLL.Services
             var testEntity = uow.Users.GetUserByLogin(entity.Login);
             if (testEntity == null)
             {
-                uow.Users.Create(MapBllToDal(entity));
+                uow.Users.Create(bllMapper.MapToDal(entity));
                 uow.Commit();
                 return entity;
             }
@@ -48,41 +51,59 @@ namespace BLL.Services
             var retElemets = new List<BllUser>();
             foreach (var element in elements)
             {
-                retElemets.Add(MapDalToBll(element));
+                retElemets.Add(bllMapper.MapToBll(element));
             }
             return retElemets;
         }
 
-        private BllUser MapDalToBll(DalUser dalEntity)
+        public override void Delete(BllUser entity)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<DalUser, BllUser>();
-                cfg.CreateMap<DalEmployee, BllEmployee>();
-                cfg.CreateMap<DalRole, BllRole>();
-            });
-            
-            BllUser bllEntity = Mapper.Map<BllUser>(dalEntity);
-            if (bllEntity != null)
-            {
-                EmployeeService employeeService = new EmployeeService(uow);
-                RoleService roleService = new RoleService(uow);
-                bllEntity.Employee = dalEntity.Employee_id != null ? employeeService.Get((int)dalEntity.Employee_id) : null;
-                bllEntity.Role = dalEntity.Role_id != null ? roleService.Get((int)dalEntity.Role_id) : null;
-            }
-            return bllEntity;
+            uow.Users.Delete(bllMapper.MapToDal(entity));
+            uow.Commit();
         }
 
-        private DalUser MapBllToDal(BllUser entity)
+        public override void Update(BllUser entity)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<BllUser, DalUser>();
-            });
-            DalUser dalEntity = Mapper.Map<DalUser>(entity);
-            dalEntity.Employee_id = entity.Employee != null ? entity.Employee.Id : (int?)null;
-            dalEntity.Role_id = entity.Role != null ? entity.Role.Id : 0;
-            return dalEntity;
+            uow.Users.Update(bllMapper.MapToDal(entity));
+            uow.Commit();
         }
+
+        public override BllUser Get(int id)
+        {
+            DalUser dalEntity = uow.Users.Get(id);
+            return bllMapper.MapToBll(dalEntity);
+        }
+
+        //private BllUser MapDalToBll(DalUser dalEntity)
+        //{
+        //    Mapper.Initialize(cfg =>
+        //    {
+        //        cfg.CreateMap<DalUser, BllUser>();
+        //        cfg.CreateMap<DalEmployee, BllEmployee>();
+        //        cfg.CreateMap<DalRole, BllRole>();
+        //    });
+
+        //    BllUser bllEntity = Mapper.Map<BllUser>(dalEntity);
+        //    if (bllEntity != null)
+        //    {
+        //        EmployeeService employeeService = new EmployeeService(uow);
+        //        RoleService roleService = new RoleService(uow);
+        //        bllEntity.Employee = dalEntity.Employee_id != null ? employeeService.Get((int)dalEntity.Employee_id) : null;
+        //        bllEntity.Role = dalEntity.Role_id != null ? roleService.Get((int)dalEntity.Role_id) : null;
+        //    }
+        //    return bllEntity;
+        //}
+
+        //private DalUser MapBllToDal(BllUser entity)
+        //{
+        //    Mapper.Initialize(cfg =>
+        //    {
+        //        cfg.CreateMap<BllUser, DalUser>();
+        //    });
+        //    DalUser dalEntity = Mapper.Map<DalUser>(entity);
+        //    dalEntity.Employee_id = entity.Employee != null ? entity.Employee.Id : (int?)null;
+        //    dalEntity.Role_id = entity.Role != null ? entity.Role.Id : 0;
+        //    return dalEntity;
+        //}
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DAL.Entities;
+using DAL.Mapping;
 using DAL.Repositories.Interface;
 using ORM;
 using System;
@@ -20,23 +21,59 @@ namespace DAL.Repositories
 
         public new Image Create(DalImage entity)
         {
-            Mapper.CreateMap<DalImage, Image>();
-            var ormEntity = Mapper.Map<Image>(entity);
+            var ormEntity = mapper.MapToOrm(entity);
             ormEntity.ImageLib = context.ImageLibs.FirstOrDefault(e => e.id == ormEntity.imageLib_id);
-            //ormEntity.ImageLib.Image.Add(ormEntity);
-            return context.Set<Image>().Add(Mapper.Map<Image>(entity));
+            return context.Set<Image>().Add(ormEntity);
         }
         public IEnumerable<DalImage> GetImagesByLibId(int id)
         {
-            Mapper.CreateMap<Image, DalImage>();
+            ImageMapper mapper = new ImageMapper();
             var elements = context.Set<Image>().Where(entity => entity.imageLib_id == id);
             var retElemets = new List<DalImage>(); 
             foreach (var element in elements)
             {
-                Mapper.CreateMap<Image, DalImage>();
-                retElemets.Add(Mapper.Map<DalImage>(element));
+                retElemets.Add(mapper.MapToDal(element));
             }
             return retElemets;
         }
+
+        ImageMapper mapper = new ImageMapper();
+
+        public new void Delete(DalImage entity)
+        {
+            var ormEntity = context.Set<Image>().Single(Image => Image.id == entity.Id);
+            context.Set<Image>().Remove(ormEntity);
+        }
+
+        public new DalImage Get(int id)
+        {
+            var ormEntity = context.Set<Image>().FirstOrDefault(Image => Image.id == id);
+            return ormEntity != null ? (mapper.MapToDal(ormEntity)) : null;
+        }
+
+        public new IEnumerable<DalImage> GetAll()
+        {
+            var elements = context.Set<Image>().Select(Image => Image);
+            var retElemets = new List<DalImage>();
+            if (elements.Any())
+            {
+                foreach (var element in elements)
+                {
+                    retElemets.Add(mapper.MapToDal(element));
+                }
+            }
+
+            return retElemets;
+        }
+
+        public new void Update(DalImage entity)
+        {
+            var ormEntity = context.Set<Image>().Find(entity.Id);
+            if (ormEntity != null)
+            {
+                context.Entry(ormEntity).CurrentValues.SetValues(mapper.MapToOrm(entity));
+            }
+        }
+
     }
 }

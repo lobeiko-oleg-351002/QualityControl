@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BLL.Entities;
+using BLL.Mapping;
 using BLL.Services.Interface;
 using DAL.Entities;
 using DAL.Repositories.Interface;
@@ -14,33 +15,63 @@ namespace BLL.Services
     public class CustomerService : Service<BllCustomer, DalCustomer>, ICustomerService
     {
         private readonly IUnitOfWork uow;
-
+        CustomerMapper bllMapper = new CustomerMapper();
         public CustomerService(IUnitOfWork uow) : base(uow, uow.Customers)
         {
             this.uow = uow;
         }
 
+        public override void Create(BllCustomer entity)
+        {
+            uow.Customers.Create(bllMapper.MapToDal(entity));
+            uow.Commit();
+        }
+
+        public override void Update(BllCustomer entity)
+        {
+            uow.Customers.Update(bllMapper.MapToDal(entity));
+            uow.Commit();
+        }
+
+        public override void Delete(BllCustomer entity)
+        {
+            uow.Customers.Delete(bllMapper.MapToDal(entity));
+            uow.Commit();
+        }
+
+        public override IEnumerable<BllCustomer> GetAll()
+        {
+            var elements = uow.Customers.GetAll();
+            var retElemets = new List<BllCustomer>();
+            foreach (var element in elements)
+            {
+                retElemets.Add(bllMapper.MapToBll(element));
+            }
+            return retElemets;
+        }
+
+        public override BllCustomer Get(int id)
+        {
+            return bllMapper.MapToBll(uow.Customers.Get(id));
+        }
+
         public BllCustomer GetCustomerByAddress(string address)
         {
-            Mapper.CreateMap<DalCustomer, BllCustomer>();
-            return Mapper.Map<BllCustomer>(uow.Customers.GetCustomerByAddress(address));
+            return bllMapper.MapToBll(uow.Customers.GetCustomerByAddress(address));
         }
         public BllCustomer GetCustomerByContract(string contract)
         {
-            Mapper.CreateMap<DalCustomer, BllCustomer>();
-            return Mapper.Map<BllCustomer>(uow.Customers.GetCustomerByContract(contract));
+            return bllMapper.MapToBll(uow.Customers.GetCustomerByContract(contract));
         }
 
         public BllCustomer GetCustomerByOrganization(string organization)
         {
-            Mapper.CreateMap<DalCustomer, BllCustomer>();
-            return Mapper.Map<BllCustomer>(uow.Customers.GetCustomerByOrganization(organization));
+            return bllMapper.MapToBll(uow.Customers.GetCustomerByOrganization(organization));
         }
 
         public BllCustomer GetCustomerByPhone(string phone)
         {
-            Mapper.CreateMap<DalCustomer, BllCustomer>();
-            return Mapper.Map<BllCustomer>(uow.Customers.GetCustomerByPhone(phone));
+            return bllMapper.MapToBll(uow.Customers.GetCustomerByPhone(phone));
         }
     }
 }

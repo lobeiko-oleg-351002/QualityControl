@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DAL.Entities;
+using DAL.Mapping;
 using DAL.Repositories.Interface;
 using ORM;
 using System;
@@ -18,14 +19,47 @@ namespace DAL.Repositories
             this.context = context;
         }
 
+        RequirementDocumentationLibMapper mapper = new RequirementDocumentationLibMapper();
+
+        public new void Delete(DalRequirementDocumentationLib entity)
+        {
+            var ormEntity = context.Set<RequirementDocumentationLib>().Single(RequirementDocumentationLib => RequirementDocumentationLib.id == entity.Id);
+            context.Set<RequirementDocumentationLib>().Remove(ormEntity);
+        }
+
+        public new DalRequirementDocumentationLib Get(int id)
+        {
+            var ormEntity = context.Set<RequirementDocumentationLib>().FirstOrDefault(RequirementDocumentationLib => RequirementDocumentationLib.id == id);
+            return ormEntity != null ? (mapper.MapToDal(ormEntity)) : null;
+        }
+
+        public new IEnumerable<DalRequirementDocumentationLib> GetAll()
+        {
+            var elements = context.Set<RequirementDocumentationLib>().Select(RequirementDocumentationLib => RequirementDocumentationLib);
+            var retElemets = new List<DalRequirementDocumentationLib>();
+            if (elements.Any())
+            {
+                foreach (var element in elements)
+                {
+                    retElemets.Add(mapper.MapToDal(element));
+                }
+            }
+
+            return retElemets;
+        }
+
+        public new void Update(DalRequirementDocumentationLib entity)
+        {
+            var ormEntity = context.Set<RequirementDocumentationLib>().Find(entity.Id);
+            if (ormEntity != null)
+            {
+                context.Entry(ormEntity).CurrentValues.SetValues(mapper.MapToOrm(entity));
+            }
+        }
+
         public new RequirementDocumentationLib Create(DalRequirementDocumentationLib entity)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<DalRequirementDocumentationLib, RequirementDocumentationLib>();
-                cfg.CreateMap<RequirementDocumentationLib, DalRequirementDocumentationLib>();
-            });
-            var res = context.Set<RequirementDocumentationLib>().Add(Mapper.Map<RequirementDocumentationLib>(entity));
+            var res = context.Set<RequirementDocumentationLib>().Add(mapper.MapToOrm(entity));
             return res;
         }
     }

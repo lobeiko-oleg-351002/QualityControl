@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Entities;
+using BLL.Mapping;
+using BLL.Mapping.Interfaces;
 using BLL.Services.Interface;
 using DAL.Entities;
 using DAL.Repositories.Interface;
@@ -15,28 +17,22 @@ namespace BLL.Services
     public class RequirementDocumentationLibService : Service<BllRequirementDocumentationLib, DalRequirementDocumentationLib>, IRequirementDocumentationLibService
     {
         private readonly IUnitOfWork uow;
-
+        IRequirementDocumentationLibMapper bllMapper;
         public RequirementDocumentationLibService(IUnitOfWork uow) : base(uow, uow.RequirementDocumentationLibs)
         {
             this.uow = uow;
+            bllMapper = new RequirementDocumentationLibMapper(uow);
         }
 
         public new BllRequirementDocumentationLib Create(BllRequirementDocumentationLib entity)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<BllSelectedRequirementDocumentation, DalSelectedRequirementDocumentation>();
-                cfg.CreateMap<RequirementDocumentationLib, DalRequirementDocumentationLib>();
-                cfg.CreateMap<BllRequirementDocumentationLib, DalRequirementDocumentationLib>();
-                cfg.CreateMap<DalRequirementDocumentationLib, BllRequirementDocumentationLib>();
-            });
-            var ormEntity = uow.RequirementDocumentationLibs.Create(Mapper.Map<DalRequirementDocumentationLib>(entity));
+            var ormEntity = uow.RequirementDocumentationLibs.Create(bllMapper.MapToDal(entity));
             uow.Commit();
             entity.Id = ormEntity.id;
+            ISelectedRequirementDocumentationMapper selectedRequirementDocumentationMapper = new SelectedRequirementDocumentationMapper(uow);
             foreach (var RequirementDocumentation in entity.SelectedRequirementDocumentation)
             {
-                Mapper.CreateMap<BllSelectedRequirementDocumentation, DalSelectedRequirementDocumentation>();
-                var dalRequirementDocumentation = Mapper.Map<DalSelectedRequirementDocumentation>(RequirementDocumentation);
+                var dalRequirementDocumentation = selectedRequirementDocumentationMapper.MapToDal(RequirementDocumentation);
                 dalRequirementDocumentation.RequirementDocumentationLib_id = entity.Id;
                 var ormDoc = uow.SelectedRequirementDocumentations.Create(dalRequirementDocumentation);
                 uow.Commit();
@@ -47,24 +43,17 @@ namespace BLL.Services
 
         public override BllRequirementDocumentationLib Get(int id)
         {
-            Mapper.CreateMap<DalRequirementDocumentationLib, BllRequirementDocumentationLib>();
-            return MapDalToBll(uow.RequirementDocumentationLibs.Get(id));
+            return bllMapper.MapToBll(uow.RequirementDocumentationLibs.Get(id));
         }
 
         public new BllRequirementDocumentationLib Update(BllRequirementDocumentationLib entity)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<BllSelectedRequirementDocumentation, DalSelectedRequirementDocumentation>();
-                cfg.CreateMap<RequirementDocumentationLib, DalRequirementDocumentationLib>();
-                cfg.CreateMap<BllRequirementDocumentationLib, DalRequirementDocumentationLib>();
-                cfg.CreateMap<DalRequirementDocumentationLib, BllRequirementDocumentationLib>();
-            });
+            ISelectedRequirementDocumentationMapper selectedRequirementDocumentationMapper = new SelectedRequirementDocumentationMapper(uow);
             foreach (var RequirementDocumentation in entity.SelectedRequirementDocumentation)
             {
                 if (RequirementDocumentation.Id == 0)
                 {
-                    var dalRequirementDocumentation = Mapper.Map<DalSelectedRequirementDocumentation>(RequirementDocumentation);
+                    var dalRequirementDocumentation = selectedRequirementDocumentationMapper.MapToDal(RequirementDocumentation);
                     dalRequirementDocumentation.RequirementDocumentationLib_id = entity.Id;
                     var ormDoc =  uow.SelectedRequirementDocumentations.Create(dalRequirementDocumentation);
                     uow.Commit();
@@ -93,27 +82,27 @@ namespace BLL.Services
             return entity;
         }
 
-        private BllRequirementDocumentationLib MapDalToBll(DalRequirementDocumentationLib dalEntity)
-        {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<DalRequirementDocumentationLib, BllRequirementDocumentationLib>();
-                cfg.CreateMap<DalRequirementDocumentation, BllRequirementDocumentation>();
-                cfg.CreateMap<DalSelectedRequirementDocumentation, BllSelectedRequirementDocumentation>();
-            });
-            BllRequirementDocumentationLib bllEntity = Mapper.Map<BllRequirementDocumentationLib>(dalEntity);
+        //private BllRequirementDocumentationLib MapDalToBll(DalRequirementDocumentationLib dalEntity)
+        //{
+        //    Mapper.Initialize(cfg =>
+        //    {
+        //        cfg.CreateMap<DalRequirementDocumentationLib, BllRequirementDocumentationLib>();
+        //        cfg.CreateMap<DalRequirementDocumentation, BllRequirementDocumentation>();
+        //        cfg.CreateMap<DalSelectedRequirementDocumentation, BllSelectedRequirementDocumentation>();
+        //    });
+        //    BllRequirementDocumentationLib bllEntity = Mapper.Map<BllRequirementDocumentationLib>(dalEntity);
 
-            SelectedRequirementDocumentationService selectedRequirementDocumentationService = new SelectedRequirementDocumentationService(uow);
-            RequirementDocumentationService RequirementDocumentationService = new RequirementDocumentationService(uow);
-            foreach (var RequirementDocumentation in uow.SelectedRequirementDocumentations.GetRequirementDocumentationsByLibId(dalEntity.Id))
-            {
-                var bllRequirementDocumentation = RequirementDocumentation.RequirementDocumentation_id != null ? RequirementDocumentationService.Get((int)RequirementDocumentation.RequirementDocumentation_id) : null;
-                var bllSelectedRequirementDocumentation = Mapper.Map<BllSelectedRequirementDocumentation>(RequirementDocumentation);
-                bllSelectedRequirementDocumentation.RequirementDocumentation = bllRequirementDocumentation;
-                bllEntity.SelectedRequirementDocumentation.Add(bllSelectedRequirementDocumentation);
+        //    SelectedRequirementDocumentationService selectedRequirementDocumentationService = new SelectedRequirementDocumentationService(uow);
+        //    RequirementDocumentationService RequirementDocumentationService = new RequirementDocumentationService(uow);
+        //    foreach (var RequirementDocumentation in uow.SelectedRequirementDocumentations.GetRequirementDocumentationsByLibId(dalEntity.Id))
+        //    {
+        //        var bllRequirementDocumentation = RequirementDocumentation.RequirementDocumentation_id != null ? RequirementDocumentationService.Get((int)RequirementDocumentation.RequirementDocumentation_id) : null;
+        //        var bllSelectedRequirementDocumentation = Mapper.Map<BllSelectedRequirementDocumentation>(RequirementDocumentation);
+        //        bllSelectedRequirementDocumentation.RequirementDocumentation = bllRequirementDocumentation;
+        //        bllEntity.SelectedRequirementDocumentation.Add(bllSelectedRequirementDocumentation);
 
-            }
-            return bllEntity;
-        }
+        //    }
+        //    return bllEntity;
+        //}
     }
 }

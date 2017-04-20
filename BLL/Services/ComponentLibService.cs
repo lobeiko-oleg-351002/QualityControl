@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Entities;
+using BLL.Mapping;
+using BLL.Mapping.Interfaces;
 using BLL.Services.Interface;
 using DAL.Entities;
 using DAL.Repositories.Interface;
@@ -16,55 +18,48 @@ namespace BLL.Services
     {
         private readonly IUnitOfWork uow;
 
+
+        ComponentLibMapper bllMapper;
+        DAL.Mapping.ComponentLibMapper dalMapper;
+
         public ComponentLibService(IUnitOfWork uow) : base(uow, uow.ComponentLibs)
         {
             this.uow = uow;
+            bllMapper = new ComponentLibMapper(uow);
+            dalMapper = new DAL.Mapping.ComponentLibMapper();
         }
 
         public new BllComponentLib Create(BllComponentLib entity)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<BllSelectedComponent, DalSelectedComponent>();
-                cfg.CreateMap<ComponentLib, DalComponentLib>();
-                cfg.CreateMap<BllComponentLib, DalComponentLib>();
-                cfg.CreateMap<DalComponentLib, BllComponentLib>();
-            });
-            var ormEntity = uow.ComponentLibs.Create(Mapper.Map<DalComponentLib>(entity));
+            var ormEntity = uow.ComponentLibs.Create(bllMapper.MapToDal(entity));
             uow.Commit();
-            var dalEntity = Mapper.Map<DalComponentLib>(ormEntity);
+            entity.Id = ormEntity.id;
+            ISelectedComponentMapper selectedComponentMapper = new SelectedComponentMapper(uow);
             foreach (var Component in entity.SelectedComponent)
             {
-                Mapper.CreateMap<BllSelectedComponent, DalSelectedComponent>();
-                var dalComponent = Mapper.Map<DalSelectedComponent>(Component);
-                dalComponent.ComponentLib_id = dalEntity.Id;
-                uow.SelectedComponents.Create(dalComponent);
+                var dalComponent = selectedComponentMapper.MapToDal(Component);
+                dalComponent.ComponentLib_id = entity.Id;
+                var ormComponent = uow.SelectedComponents.Create(dalComponent);
+                uow.Commit();
+                Component.Id = ormComponent.id;
             }
-            uow.Commit();
-            Mapper.CreateMap<DalComponentLib, BllComponentLib>();
-            return Mapper.Map<BllComponentLib>(dalEntity);
+
+            return entity;
         }
 
         public override BllComponentLib Get(int id)
         {
-            Mapper.CreateMap<DalComponentLib, BllComponentLib>();
-            return MapDalToBll(uow.ComponentLibs.Get(id));
+            return bllMapper.MapToBll(uow.ComponentLibs.Get(id));
         }
 
         public override void Update(BllComponentLib entity)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<BllSelectedComponent, DalSelectedComponent>();
-                cfg.CreateMap<ComponentLib, DalComponentLib>();
-                cfg.CreateMap<BllComponentLib, DalComponentLib>();
-                cfg.CreateMap<DalComponentLib, BllComponentLib>();
-            });
+            ISelectedComponentMapper selectedComponentMapper = new SelectedComponentMapper(uow);
             foreach (var Component in entity.SelectedComponent)
             {
                 if (Component.Id == 0)
                 {
-                    var dalComponent = Mapper.Map<DalSelectedComponent>(Component);
+                    var dalComponent = selectedComponentMapper.MapToDal(Component);
                     dalComponent.ComponentLib_id = entity.Id;
                     uow.SelectedComponents.Create(dalComponent);
                 }
@@ -89,28 +84,5 @@ namespace BLL.Services
             uow.Commit();
         }
 
-        private BllComponentLib MapDalToBll(DalComponentLib dalEntity)
-        {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<DalComponentLib, BllComponentLib>();
-                cfg.CreateMap<DalComponent, BllComponent>();
-                cfg.CreateMap<DalSelectedComponent, BllSelectedComponent>();
-            });
-            BllComponentLib bllEntity = Mapper.Map<BllComponentLib>(dalEntity);
-
-            SelectedComponentService selectedComponentService = new SelectedComponentService(uow);
-            ComponentService ComponentService = new ComponentService(uow);
-            foreach (var Component in uow.SelectedComponents.GetComponentsByLibId(dalEntity.Id))
-            {
-                var bllComponent = Component.Component_id != null ? ComponentService.Get((int)Component.Component_id) : null;
-                Mapper.CreateMap<DalSelectedComponent, BllSelectedComponent>();
-                var bllSelectedComponent = Mapper.Map<BllSelectedComponent>(Component);
-                bllSelectedComponent.Component = bllComponent;
-                bllEntity.SelectedComponent.Add(bllSelectedComponent);
-
-            }
-            return bllEntity;
-        }
     }
 }

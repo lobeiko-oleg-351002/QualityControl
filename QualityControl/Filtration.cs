@@ -34,16 +34,6 @@ namespace QualityControl_Client
 
         bool fit_vik, fit_uzk, fit_pvk, fit_rgk, unfit_vik, unfit_uzk, unfit_pvk, unfit_rgk;
 
-        public Filtration(IUnitOfWork uow)
-        {
-            InitializeComponent();
-            dateTimePicker1.Value = DateTime.Now;
-            dateTimePicker2.Value = DateTime.Now;
-            dateTimePicker3.Value = DateTime.Now;
-            dateTimePicker4.Value = DateTime.Now;
-            this.uow = uow;
-        }
-
         public Filtration()
         {
             InitializeComponent();
@@ -51,10 +41,15 @@ namespace QualityControl_Client
 
         Action RefreshDataGrid;
 
-        public Filtration(Action RefreshDataGrid)
+        public Filtration(Action RefreshDataGrid, IUnitOfWork uow)
         {
             InitializeComponent();
             this.RefreshDataGrid = RefreshDataGrid;
+            dateTimePicker1.Value = DateTime.Now;
+            dateTimePicker2.Value = DateTime.Now;
+            dateTimePicker3.Value = DateTime.Now;
+            dateTimePicker4.Value = DateTime.Now;
+            this.uow = uow;
         }
 
         private void checkBox9_CheckedChanged(object sender, EventArgs e)

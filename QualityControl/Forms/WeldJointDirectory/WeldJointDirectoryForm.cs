@@ -43,7 +43,7 @@ namespace QualityControl_Client.Forms.WeldJointDirectory
                 row.CreateCells(dataGridView1);
                 row.Cells[0].Value = WeldJoint.Name;
                 row.Cells[1].Value = WeldJoint.Description;
-                row.Cells[2].Value = WeldJoint.Image.Count() != 0 ? byteArrayToImage(WeldJoint.Image) : null;
+                row.Cells[2].Value = WeldJoint.Image != null ? byteArrayToImage(WeldJoint.Image) : null;
                 row.MinimumHeight = 100;
                 dataGridView1.Rows.Add(row);
             }

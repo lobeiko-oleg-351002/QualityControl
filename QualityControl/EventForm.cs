@@ -206,7 +206,7 @@ namespace QualityControl_Client
                     form = new EquipmentDirectoryForm(uow);
                     break;
                 case "CustomerDirectoryForm":
-                    form = new SertificateDirectoryForm(uow);
+                    form = new CustomerDirectoryForm(uow);
                     break;
 
             }

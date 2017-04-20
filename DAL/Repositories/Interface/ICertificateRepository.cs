@@ -1,4 +1,5 @@
 ﻿using DAL.Entities;
+using ORM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,10 @@ namespace DAL.Repositories.Interface
     {
         DalCertificate GetCertificateByTitle(string title);
         DalCertificate GetCertificateByEmployeeIdAndControlId(int e_id, int c_id);
+        new Certificate Create(DalCertificate entity);
+        new void Delete(DalCertificate entity);
+        new DalCertificate Get(int id);
+        new IEnumerable<DalCertificate> GetAll();
+        new void Update(DalCertificate entity);
     }
 }

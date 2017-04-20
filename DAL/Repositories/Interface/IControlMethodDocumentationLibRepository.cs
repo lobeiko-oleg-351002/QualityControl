@@ -11,5 +11,9 @@ namespace DAL.Repositories.Interface
     public interface IControlMethodDocumentationLibRepository :IRepository<DalControlMethodDocumentationLib>
     {
         new ControlMethodDocumentationLib Create(DalControlMethodDocumentationLib entity);
+        new void Delete(DalControlMethodDocumentationLib entity);
+        new DalControlMethodDocumentationLib Get(int id);
+        new IEnumerable<DalControlMethodDocumentationLib> GetAll();
+        new void Update(DalControlMethodDocumentationLib entity);
     }
 }

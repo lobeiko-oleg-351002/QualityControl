@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Entities;
+using BLL.Mapping;
+using BLL.Mapping.Interfaces;
 using BLL.Services.Interface;
 using DAL.Entities;
 using DAL.Repositories.Interface;
@@ -19,53 +21,42 @@ namespace BLL.Services
         public ControlNameLibService(IUnitOfWork uow) : base(uow, uow.ControlNameLibs)
         {
             this.uow = uow;
+            bllMapper = new ControlNameLibMapper(uow);
         }
+
+        ControlNameLibMapper bllMapper;
 
         public new BllControlNameLib Create(BllControlNameLib entity)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<BllSelectedControlName, DalSelectedControlName>();
-                cfg.CreateMap<ControlNameLib, DalControlNameLib>();
-                cfg.CreateMap<BllControlNameLib, DalControlNameLib>();
-                cfg.CreateMap<DalControlNameLib, BllControlNameLib>();
-            });
-            var ormEntity = uow.ControlNameLibs.Create(Mapper.Map<DalControlNameLib>(entity));
+            var ormEntity = uow.ControlNameLibs.Create(bllMapper.MapToDal(entity));
             uow.Commit();
-            var dalEntity = Mapper.Map<DalControlNameLib>(ormEntity);
+            entity.Id = ormEntity.id;
+            ISelectedControlNameMapper selectedControlNameMapper = new SelectedControlNameMapper(uow);
             foreach (var ControlName in entity.SelectedControlName)
             {
-                Mapper.CreateMap<BllSelectedControlName, DalSelectedControlName>();
-                var dalControlName = Mapper.Map<DalSelectedControlName>(ControlName);
-                dalControlName.ControlNameLib_id = dalEntity.Id;
-                uow.SelectedControlNames.Create(dalControlName);
+                var dalControlName = selectedControlNameMapper.MapToDal(ControlName);
+                dalControlName.ControlNameLib_id = entity.Id;
+                var ormControlName = uow.SelectedControlNames.Create(dalControlName);
+                uow.Commit();
+                ControlName.Id = ormControlName.id;
             }
-            uow.Commit();
-            Mapper.CreateMap<DalControlNameLib, BllControlNameLib>();
-            return Mapper.Map<BllControlNameLib>(dalEntity);
+
+            return entity;
         }
 
         public override BllControlNameLib Get(int id)
         {
-            Mapper.CreateMap<DalControlNameLib, BllControlNameLib>();
-            return MapDalToBll(uow.ControlNameLibs.Get(id));
+            return bllMapper.MapToBll(uow.ControlNameLibs.Get(id));
         }
 
         public override void Update(BllControlNameLib entity)
         {
-            
+            ISelectedControlNameMapper selectedControlNameMapper = new SelectedControlNameMapper(uow);
             foreach (var ControlName in entity.SelectedControlName)
             {
                 if (ControlName.Id == 0)
                 {
-                    Mapper.Initialize(cfg =>
-                    {
-                        cfg.CreateMap<BllSelectedControlName, DalSelectedControlName>();
-                        cfg.CreateMap<ControlNameLib, DalControlNameLib>();
-                        cfg.CreateMap<BllControlNameLib, DalControlNameLib>();
-                        cfg.CreateMap<DalControlNameLib, BllControlNameLib>();
-                    });
-                    var dalControlName = Mapper.Map<DalSelectedControlName>(ControlName);
+                    var dalControlName = selectedControlNameMapper.MapToDal(ControlName);
                     dalControlName.ControlNameLib_id = entity.Id;
                     uow.SelectedControlNames.Create(dalControlName);
                 }
@@ -90,28 +81,28 @@ namespace BLL.Services
             uow.Commit();
         }
 
-        private BllControlNameLib MapDalToBll(DalControlNameLib dalEntity)
-        {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<DalControlNameLib, BllControlNameLib>();
-                cfg.CreateMap<DalControlName, BllControlName>();
-                cfg.CreateMap<DalSelectedControlName, BllSelectedControlName>();
-            });
-            BllControlNameLib bllEntity = Mapper.Map<BllControlNameLib>(dalEntity);
+        //private BllControlNameLib MapDalToBll(DalControlNameLib dalEntity)
+        //{
+        //    Mapper.Initialize(cfg =>
+        //    {
+        //        cfg.CreateMap<DalControlNameLib, BllControlNameLib>();
+        //        cfg.CreateMap<DalControlName, BllControlName>();
+        //        cfg.CreateMap<DalSelectedControlName, BllSelectedControlName>();
+        //    });
+        //    BllControlNameLib bllEntity = Mapper.Map<BllControlNameLib>(dalEntity);
 
-            SelectedControlNameService selectedControlNameService = new SelectedControlNameService(uow);
-            ControlNameService ControlNameService = new ControlNameService(uow);
-            foreach (var ControlName in uow.SelectedControlNames.GetControlNamesByLibId(dalEntity.Id))
-            {
-                var bllControlName = ControlName.ControlName_id != null ? ControlNameService.Get((int)ControlName.ControlName_id) : null;
-                var bllSelectedControlName = Mapper.Map<BllSelectedControlName>(ControlName);
-                bllSelectedControlName.ControlName = bllControlName;
-                bllEntity.SelectedControlName.Add(bllSelectedControlName);
+        //    SelectedControlNameService selectedControlNameService = new SelectedControlNameService(uow);
+        //    ControlNameService ControlNameService = new ControlNameService(uow);
+        //    foreach (var ControlName in uow.SelectedControlNames.GetControlNamesByLibId(dalEntity.Id))
+        //    {
+        //        var bllControlName = ControlName.ControlName_id != null ? ControlNameService.Get((int)ControlName.ControlName_id) : null;
+        //        var bllSelectedControlName = Mapper.Map<BllSelectedControlName>(ControlName);
+        //        bllSelectedControlName.ControlName = bllControlName;
+        //        bllEntity.SelectedControlName.Add(bllSelectedControlName);
 
-            }
-            return bllEntity;
-        }
+        //    }
+        //    return bllEntity;
+        //}
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DAL.Entities;
+using DAL.Mapping;
 using DAL.Repositories.Interface;
 using ORM;
 using System;
@@ -20,30 +21,64 @@ namespace DAL.Repositories
 
         public DalResult GetResultByNumber(int number)
         {
-            Mapper.CreateMap<Result, DalResult>();
             var ormEntity = context.Results.FirstOrDefault(entity => entity.number == number);
-            return Mapper.Map<DalResult>(ormEntity);
+            return mapper.MapToDal(ormEntity);
         }
 
         public new Result Create(DalResult entity)
         {
-            Mapper.CreateMap<DalResult, Result>();
-            var ormEntity = Mapper.Map<Result>(entity);
+            var ormEntity = mapper.MapToOrm(entity);
             ormEntity.ResultLib = context.ResultLibs.FirstOrDefault(e => e.id == ormEntity.resultLib_id);
-            //ormEntity.ResultLib.Result.Add(ormEntity);
-            return context.Set<Result>().Add(Mapper.Map<Result>(entity));
+            return context.Set<Result>().Add(ormEntity);
         }
         public IEnumerable<DalResult> GetResultsByLibId(int id)
         {
-            Mapper.CreateMap<Result, DalResult>();
             var elements = context.Set<Result>().Where(entity => entity.resultLib_id == id);
             var retElemets = new List<DalResult>();
             foreach (var element in elements)
             {
-                Mapper.CreateMap<Result, DalResult>();
-                retElemets.Add(Mapper.Map<DalResult>(element));
+                retElemets.Add(mapper.MapToDal(element));
             }
             return retElemets;
         }
+
+        ResultMapper mapper = new ResultMapper();
+
+        public new void Delete(DalResult entity)
+        {
+            var ormEntity = context.Set<Result>().Single(Result => Result.id == entity.Id);
+            context.Set<Result>().Remove(ormEntity);
+        }
+
+        public new DalResult Get(int id)
+        {
+            var ormEntity = context.Set<Result>().FirstOrDefault(Result => Result.id == id);
+            return ormEntity != null ? (mapper.MapToDal(ormEntity)) : null;
+        }
+
+        public new IEnumerable<DalResult> GetAll()
+        {
+            var elements = context.Set<Result>().Select(Result => Result);
+            var retElemets = new List<DalResult>();
+            if (elements.Any())
+            {
+                foreach (var element in elements)
+                {
+                    retElemets.Add(mapper.MapToDal(element));
+                }
+            }
+
+            return retElemets;
+        }
+
+        public new void Update(DalResult entity)
+        {
+            var ormEntity = context.Set<Result>().Find(entity.Id);
+            if (ormEntity != null)
+            {
+                context.Entry(ormEntity).CurrentValues.SetValues(mapper.MapToOrm(entity));
+            }
+        }
+
     }
 }
