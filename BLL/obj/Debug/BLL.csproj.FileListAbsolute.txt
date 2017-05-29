@@ -195,3 +195,5 @@ E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Debug\EntityFra
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\obj\Debug\BLL.dll
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\obj\Debug\BLL.pdb
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Debug\DAL.dll.config
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\BLL\bin\Debug\ORM.dll.config

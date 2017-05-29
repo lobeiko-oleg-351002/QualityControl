@@ -82,33 +82,5 @@ namespace BLL.Services
 
             return entity;
         }
-
-        //private BllEmployeeLib MapDalToBll(DalEmployeeLib dalEntity)
-        //{
-        //    Mapper.Initialize(cfg =>
-        //    {
-        //        cfg.CreateMap<DalEmployeeLib, BllEmployeeLib>();
-        //        cfg.CreateMap<DalEmployee, BllEmployee>();
-        //        cfg.CreateMap<DalSelectedEmployee, BllSelectedEmployee>();
-        //    });
-        //    BllEmployeeLib bllEntity = Mapper.Map<BllEmployeeLib>(dalEntity);
-
-        //    SelectedEmployeeService selectedEmployeeService = new SelectedEmployeeService(uow);
-        //    EmployeeService EmployeeService = new EmployeeService(uow);
-        //    foreach (var Employee in uow.SelectedEmployees.GetEmployeesByLibId(dalEntity.Id))
-        //    {
-        //        var bllEmployee = Employee.Employee_id != null ? EmployeeService.Get((int)Employee.Employee_id) : null;
-        //        Mapper.Initialize(cfg =>
-        //        {
-        //            cfg.CreateMap<DalEmployee, BllEmployee>();
-        //            cfg.CreateMap<DalSelectedEmployee, BllSelectedEmployee>();
-        //        });
-        //        var bllSelectedEmployee = Mapper.Map<BllSelectedEmployee>(Employee);
-        //        bllSelectedEmployee.Employee = bllEmployee;
-        //        bllEntity.SelectedEmployee.Add(bllSelectedEmployee);
-
-        //    }
-        //    return bllEntity;
-        //}
     }
 }

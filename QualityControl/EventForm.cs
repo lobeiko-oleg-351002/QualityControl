@@ -17,6 +17,7 @@ using BLL.Services.Interface;
 using BLL.Services;
 using DAL.Repositories.Interface;
 using BLL.Entities.Interface;
+using QualityControl_Server;
 
 namespace QualityControl_Client
 {
@@ -27,10 +28,13 @@ namespace QualityControl_Client
             InitializeComponent();
             this.uow = uow;
             dataGridView1.Columns[4].DefaultCellStyle.Format = "dd.MM.yyyy";
+            AppConfigManager configManager = new AppConfigManager();
+            preventDaysCount = int.Parse(configManager.GetTagValue(configManager.daysBeforeDeadline));
             RefreshDataGrid();
         }
 
         IUnitOfWork uow;
+        int preventDaysCount;
         public void RefreshDataGrid()
         {
             dataGridView1.Rows.Clear();
@@ -53,7 +57,6 @@ namespace QualityControl_Client
             const string obj = "Сертификат";
             const string messageFinal = "Истёк срок действия сертификата";
             const string messagePrevent = "Срок действия сертификата истекает";
-            const int preventDaysCount = 31;
             string formClassName = "SertificateDirectoryForm";
             ICertificateService certificateService = new CertificateService(uow);
             var certificates = certificateService.GetAll();
@@ -81,7 +84,6 @@ namespace QualityControl_Client
             const string obj = "Заказчик";
             const string messageFinal = "Истёк срок действия договора";
             const string messagePrevent = "Срок действия договора истекает";
-            const int preventDaysCount = 31;
             const string formClassName = "CustomerDirectoryForm";
             ICustomerService CustomerService = new CustomerService(uow);
             var Customers = CustomerService.GetAll();
@@ -110,7 +112,6 @@ namespace QualityControl_Client
             const string messagePrevent = "Срок действия технической поверки истекает";
             const string formClassName = "EquipmentDirectoryForm";
             IEquipmentService EquipmentService = new EquipmentService(uow);
-            const int preventDaysCount = 31;
             var Equipments = EquipmentService.GetAll();
             foreach (var item in Equipments)
             {
@@ -139,7 +140,6 @@ namespace QualityControl_Client
             //const string messagePreventMed = "Срок действия результатов мед. обследования сотрудника истекает";
             string formClassName = "EmployeeDirectoryForm";
             IEmployeeService EmployeeService = new EmployeeService(uow);
-            const int preventDaysCount = 31;
             var Employees = EmployeeService.GetAll();
             foreach (var item in Employees)
             {
@@ -222,6 +222,8 @@ namespace QualityControl_Client
 
         private void button2_Click(object sender, EventArgs e)
         {
+            AppConfigManager configManager = new AppConfigManager();
+            preventDaysCount = int.Parse(configManager.GetTagValue(configManager.daysBeforeDeadline));
             RefreshDataGrid();
         }
     }

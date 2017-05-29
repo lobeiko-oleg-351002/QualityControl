@@ -35,9 +35,10 @@ namespace QualityControl_Client
 
         }
 
-        public ControlMethodTabForm(string controlName, IUnitOfWork uow)
+        public ControlMethodTabForm(string controlName, IUnitOfWork uow, AddJournalForm parent)
         {
             InitializeComponent();
+            addJournalForm = parent;
             this.uow = uow;
             panel = panel1;
             label1.Text = controlName;
@@ -46,10 +47,11 @@ namespace QualityControl_Client
         }
 
         IUnitOfWork uow;
-
-        public ControlMethodTabForm(BllControl control, BllJournal journal, IUnitOfWork uow)
+        AddJournalForm addJournalForm;
+        public ControlMethodTabForm(BllControl control, BllJournal journal, IUnitOfWork uow, AddJournalForm parent)
         {
             InitializeComponent();
+            addJournalForm = parent;
             this.uow = uow;
             panel = panel1;
             SetCurrentControl(control, journal);
@@ -75,7 +77,7 @@ namespace QualityControl_Client
             SetEquipment(control.EquipmentLib);
             SetImages(control.ImageLib);
             SetRequirementDocumentation(control.RequirementDocumentationLib);
-
+            SetEmployee(control.EmployeeLib);
         }
 
         public void EnableValidateCheckBox()
@@ -313,6 +315,7 @@ namespace QualityControl_Client
                 currentControl.EmployeeLib.SelectedEmployee.Add(new BllSelectedEmployee { Employee = employee });
                 listBox4.Items.Add(employee.Sirname + " " + employee.Name + " " + employee.Fathername);
             }
+            addJournalForm.AddCurrentEmployeeLibToAllMethods();
         }
 
         List<Image> imagesForPicturebox = new List<Image>();

@@ -51,6 +51,7 @@
             this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.администрированиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.поискToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -101,6 +102,7 @@
             this.настройкиToolStripMenuItem,
             this.администрированиеToolStripMenuItem,
             this.поискToolStripMenuItem,
+            this.toolStripMenuItem1,
             this.toolStripTextBox1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -294,12 +296,21 @@
             this.поискToolStripMenuItem.ToolTipText = "Фильтрация";
             this.поискToolStripMenuItem.Click += new System.EventHandler(this.поискToolStripMenuItem_Click);
             // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.AutoToolTip = true;
+            this.toolStripMenuItem1.Image = global::QualityControl_Server.Properties.Resources.настройки;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(62, 46);
+            this.toolStripMenuItem1.ToolTipText = "Настройки";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click_1);
+            // 
             // toolStripTextBox1
             // 
             this.toolStripTextBox1.Enabled = false;
             this.toolStripTextBox1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.toolStripTextBox1.Name = "toolStripTextBox1";
-            this.toolStripTextBox1.Size = new System.Drawing.Size(400, 46);
+            this.toolStripTextBox1.Size = new System.Drawing.Size(380, 46);
             // 
             // dataGridView1
             // 
@@ -440,10 +451,10 @@
             // 
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Right;
             this.tabControl1.Enabled = false;
-            this.tabControl1.Location = new System.Drawing.Point(606, 50);
+            this.tabControl1.Location = new System.Drawing.Point(607, 50);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(344, 663);
+            this.tabControl1.Size = new System.Drawing.Size(343, 663);
             this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.tabControl1.TabIndex = 7;
             this.tabControl1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabControl1_DrawItem);
@@ -517,6 +528,8 @@
             // 
             // textBox2
             // 
+            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBox2.Location = new System.Drawing.Point(195, 49);
             this.textBox2.Name = "textBox2";
@@ -526,6 +539,8 @@
             // 
             // textBox1
             // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBox1.Location = new System.Drawing.Point(194, 19);
             this.textBox1.Name = "textBox1";
@@ -535,6 +550,8 @@
             // 
             // richTextBox2
             // 
+            this.richTextBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.richTextBox2.Location = new System.Drawing.Point(194, 112);
             this.richTextBox2.Name = "richTextBox2";
@@ -556,6 +573,8 @@
             // 
             // textBox9
             // 
+            this.textBox9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBox9.Location = new System.Drawing.Point(195, 79);
             this.textBox9.Name = "textBox9";
@@ -593,6 +612,10 @@
             this.label11.Size = new System.Drawing.Size(145, 15);
             this.label11.TabIndex = 19;
             this.label11.Text = "Промышленный объект";
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.RestoreDirectory = true;
             // 
             // MainForm
             // 
@@ -675,6 +698,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column13;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column14;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
 

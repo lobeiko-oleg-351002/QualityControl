@@ -81,28 +81,6 @@ namespace BLL.Services
             uow.Commit();
         }
 
-        //private BllControlNameLib MapDalToBll(DalControlNameLib dalEntity)
-        //{
-        //    Mapper.Initialize(cfg =>
-        //    {
-        //        cfg.CreateMap<DalControlNameLib, BllControlNameLib>();
-        //        cfg.CreateMap<DalControlName, BllControlName>();
-        //        cfg.CreateMap<DalSelectedControlName, BllSelectedControlName>();
-        //    });
-        //    BllControlNameLib bllEntity = Mapper.Map<BllControlNameLib>(dalEntity);
-
-        //    SelectedControlNameService selectedControlNameService = new SelectedControlNameService(uow);
-        //    ControlNameService ControlNameService = new ControlNameService(uow);
-        //    foreach (var ControlName in uow.SelectedControlNames.GetControlNamesByLibId(dalEntity.Id))
-        //    {
-        //        var bllControlName = ControlName.ControlName_id != null ? ControlNameService.Get((int)ControlName.ControlName_id) : null;
-        //        var bllSelectedControlName = Mapper.Map<BllSelectedControlName>(ControlName);
-        //        bllSelectedControlName.ControlName = bllControlName;
-        //        bllEntity.SelectedControlName.Add(bllSelectedControlName);
-
-        //    }
-        //    return bllEntity;
-        //}
 
     }
 }

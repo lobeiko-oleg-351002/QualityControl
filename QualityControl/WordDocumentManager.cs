@@ -23,7 +23,7 @@ namespace QualityControl_Server
             this.uow = uow;
         }
 
-        private void FillVIKReport(Application wordApp, List<BllJournal> journals)
+        private void FillVIKReport(Application wordApp, List<BllJournal> journals, BllUser user)
         {
             //Find and replace:
             this.FindAndReplace(wordApp, "ProtocolNumber", journals[0].ControlMethodsLib.Control[0].ProtocolNumber.ToString());
@@ -92,10 +92,21 @@ namespace QualityControl_Server
             }
             this.FindAndReplace(wordApp, "ControlMethodDocCode", code);
 
-            this.FindAndReplace(wordApp, "Employee", journals[0].ControlMethodsLib.Control[0].EmployeeLib.SelectedEmployee.Count != 0 ? 
-                journals[0].ControlMethodsLib.Control[0].EmployeeLib.SelectedEmployee[0].Employee.Sirname + " " +
-                journals[0].ControlMethodsLib.Control[0].EmployeeLib.SelectedEmployee[0].Employee.Name[0] + ". " +
-                journals[0].ControlMethodsLib.Control[0].EmployeeLib.SelectedEmployee[0].Employee.Fathername[0] + "." : "<не указано>");
+            AppConfigManager configManager = new AppConfigManager();
+            if (bool.Parse(configManager.GetTagValue(configManager.userIsReviewer)))
+            {
+                this.FindAndReplace(wordApp, "Employee", user.Employee != null ?
+                    user.Employee.Sirname + " " +
+                    user.Employee.Name[0] + ". " +
+                    user.Employee.Fathername[0] + "." : "<не указано>");
+            }
+            else
+            {
+                this.FindAndReplace(wordApp, "Employee", journals[0].ControlMethodsLib.Control[0].EmployeeLib.SelectedEmployee.Count != 0 ?
+                    journals[0].ControlMethodsLib.Control[0].EmployeeLib.SelectedEmployee[0].Employee.Sirname + " " +
+                    journals[0].ControlMethodsLib.Control[0].EmployeeLib.SelectedEmployee[0].Employee.Name[0] + ". " +
+                    journals[0].ControlMethodsLib.Control[0].EmployeeLib.SelectedEmployee[0].Employee.Fathername[0] + "." : "<не указано>");
+            }
 
             this.FindAndReplace(wordApp, "Light", journals[0].ControlMethodsLib.Control[0].Light.Value.ToString());
 
@@ -142,13 +153,11 @@ namespace QualityControl_Server
 
 
 
-        string pathImage = null;
 
-        public void CreateWordDocument(object savaAs, List<BllJournal> journals)
+        public void CreateWordDocument(object savaAs, List<BllJournal> journals, BllUser user)
         {
             List<int> processesbeforegen = getRunningProcesses();
             object missing = Missing.Value;
-            string tempPath = null;
 
             string vikPath = "\\Template\\vik.docx";
             string executableLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -181,7 +190,7 @@ namespace QualityControl_Server
                 }
                 aDoc.Activate();
 
-                FillVIKReport(wordApp, journals);
+                FillVIKReport(wordApp, journals, user);
 
                 //insert the picture:
                 //Image img = resizeImage(pathImage, new Size(200, 90));

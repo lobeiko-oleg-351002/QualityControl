@@ -63,6 +63,16 @@ namespace QualityControl_Server.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap настройки {
+            get {
+                object obj = ResourceManager.GetObject("настройки", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap оформить_заключение {
             get {
                 object obj = ResourceManager.GetObject("оформить_заключение", resourceCulture);

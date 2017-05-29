@@ -20,8 +20,7 @@ namespace DAL.Repositories
         }
 
         public DalControlName GetControlNameByName(string name)
-        {
-            
+        {          
             var ormEntity = context.ControlNames.FirstOrDefault(entity => entity.name == name);
             return mapper.MapToDal(ormEntity);
         }

@@ -210,3 +210,4 @@ E:\Projects\VisualStudioProjects\17.01.17\QualityControl\DAL\bin\Debug\EntityFra
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\DAL\obj\Debug\DAL.dll
 E:\Projects\VisualStudioProjects\17.01.17\QualityControl\DAL\obj\Debug\DAL.pdb
+E:\Projects\VisualStudioProjects\17.01.17\QualityControl\DAL\bin\Debug\ORM.dll.config

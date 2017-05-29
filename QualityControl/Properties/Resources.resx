@@ -130,6 +130,9 @@
   <data name="редактирование" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\редактирование.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="удаление1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\удаление1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="оформить_заключение" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\оформить заключение.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -139,7 +142,7 @@
   <data name="справочники" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\справочники.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="удаление1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\удаление1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="настройки" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\настройки.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

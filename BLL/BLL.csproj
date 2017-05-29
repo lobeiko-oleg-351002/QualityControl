@@ -224,6 +224,9 @@
     <Compile Include="Services\WeldJointService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj">
       <Project>{c76bbd2d-6c3e-4e00-94ef-aa4b8dd57f02}</Project>
       <Name>DAL</Name>
@@ -233,10 +236,6 @@
       <Name>ORM</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

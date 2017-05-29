@@ -27,6 +27,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -674,6 +675,18 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BLL\BLL.csproj">
+      <Project>{e12b9eed-3f55-4490-b1c9-3519b2412d4e}</Project>
+      <Name>BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DAL\DAL.csproj">
+      <Project>{c76bbd2d-6c3e-4e00-94ef-aa4b8dd57f02}</Project>
+      <Name>DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ORM\ORM.csproj">
+      <Project>{2ba74840-30d2-4fa4-8eb0-4a4d8178be98}</Project>
+      <Name>ORM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServerWcfService\ServerWcfService.csproj">
       <Project>{3232e89b-36f2-4036-8e81-936fe4f26e09}</Project>
       <Name>ServerWcfService</Name>

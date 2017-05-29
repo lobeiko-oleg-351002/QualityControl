@@ -32,6 +32,7 @@ using BLL.Services.Interface;
 using BLL.Services;
 using DAL.Repositories.Interface;
 using DAL.Repositories;
+using System.Configuration;
 
 namespace QualityControl
 {
@@ -56,52 +57,9 @@ namespace QualityControl
         {
             InitializeComponent();
 
-            //CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
-            AppDomain.CurrentDomain.SetData("DataDirectory", System.IO.Directory.GetCurrentDirectory());
-
-            serviceDB = new ServiceDB();
-            uow = new UnitOfWork(serviceDB);
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            CenterToScreen();
-            tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
-            dataGridView1.Columns[1].DefaultCellStyle.Format = "dd.MM.yyyy";
-            dataGridView1.Columns[2].DefaultCellStyle.Format = "dd.MM.yyyy";
-            ConnectToServer();
-            if (isConnectedToServer)
-            {
-                Authorization();
-                EventForm eventForm = new EventForm(uow);
-                eventForm.Show();
-            }
-            isFirstStart = false;
-            DataGridViewCellStyle style = new DataGridViewCellStyle();
-            style.Font = new System.Drawing.Font("Arial", 9F, GraphicsUnit.Pixel);
-            foreach (DataGridViewColumn c in dataGridView1.Columns)
-            {
-                c.HeaderCell.Style = style;
-            }
-            PutScrollBarDown();
-            if (User != null)
-            {
-                if (User.Employee != null)
-                {
-                    toolStripTextBox1.Text = "Исполнитель: " + User.Employee.Sirname + " " + User.Employee.Name[0] + "." + User.Employee.Fathername[0] + ".";
-                }
-                else
-                {
-                    if (User.Role.Name == "Гость")
-                    {
-                        toolStripTextBox1.Text = "Гостевой допуск";
-                    }
-                    else
-                    {
-                        toolStripTextBox1.Text = "Исполнитель: <не указан>";
-                    }
-                }
-            }
-            //debugForm = new DebugForm();
-            //debugForm.Show();
         }
+
+        
 
         private void PutScrollBarDown()
         {
@@ -191,8 +149,20 @@ namespace QualityControl
                     Role = role,
                 };
                 Service.Create(admin);
+
+                AppConfigManager configManager = new AppConfigManager();
+                configManager.CreateTag(configManager.outputLocationTag, "C:\\");
+                configManager.CreateTag(configManager.clearEquipmentAfterAdding, "false");
+                configManager.CreateTag(configManager.clearDefectsAfterAdding, "false");
+                configManager.CreateTag(configManager.clearEmployeesAfterAdding, "false");
+                configManager.CreateTag(configManager.copyEmployeesToAllTypesOfMethods, "false");
+                configManager.CreateTag(configManager.userIsReviewer, "false");
+                configManager.CreateTag(configManager.hideControlMethods, "false");
+                configManager.CreateTag(configManager.daysBeforeDeadline, "365");
             }
         }
+
+
 
         private void ConnectToServer()
         {
@@ -229,7 +199,7 @@ namespace QualityControl
                     ControlMethodTabForms = new List<ControlMethodTabForm>();
                     foreach (var controlName in controlNames)
                     {
-                        var tabForm = new ControlMethodTabForm(controlName.Name, uow);
+                        var tabForm = new ControlMethodTabForm(controlName.Name, uow, null);
                         tabForm.DisableFormControls();
                         ControlMethodTabForms.Add(tabForm);
                         tabControl1.TabPages.Add(new ControlMethodTab(tabForm, controlName));
@@ -840,7 +810,6 @@ namespace QualityControl
                         SelectedJournals.Add(Journals[row.Index]);
                     }
                 }
-                ExportMethod exportMethod;
                
                 
                 saveFileDialog1.Filter = "Word files (*.docx)|*.docx";
@@ -876,7 +845,7 @@ namespace QualityControl
                     WordDocumentManager wdm = new WordDocumentManager(uow);
                     try
                     {
-                        wdm.CreateWordDocument(saveFileDialog1.FileName, SelectedJournals);
+                        wdm.CreateWordDocument(saveFileDialog1.FileName, SelectedJournals, User);
                     }
                     catch(Exception ex)
                     {
@@ -891,6 +860,87 @@ namespace QualityControl
         private void MainForm_Load(object sender, EventArgs e)
         {
 
+            //CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
+            AppDomain.CurrentDomain.SetData("DataDirectory", System.IO.Directory.GetCurrentDirectory());
+            serviceDB = new ServiceDB();
+            uow = new UnitOfWork(serviceDB);
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            CenterToScreen();
+            tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
+            dataGridView1.Columns[1].DefaultCellStyle.Format = "dd.MM.yyyy";
+            dataGridView1.Columns[2].DefaultCellStyle.Format = "dd.MM.yyyy";
+            ConnectToServer();
+            if (isConnectedToServer)
+            {
+                Authorization();
+                EventForm eventForm = new EventForm(uow);
+                eventForm.Show();
+            }
+            isFirstStart = false;
+            DataGridViewCellStyle style = new DataGridViewCellStyle();
+            style.Font = new System.Drawing.Font("Arial", 9F, GraphicsUnit.Pixel);
+            foreach (DataGridViewColumn c in dataGridView1.Columns)
+            {
+                c.HeaderCell.Style = style;
+            }
+            PutScrollBarDown();
+            if (User != null)
+            {
+                if (User.Employee != null)
+                {
+                    toolStripTextBox1.Text = "Исполнитель: " + User.Employee.Sirname + " " + User.Employee.Name[0] + "." + User.Employee.Fathername[0] + ".";
+                }
+                else
+                {
+                    if (User.Role.Name == "Гость")
+                    {
+                        toolStripTextBox1.Text = "Гостевой допуск";
+                    }
+                    else
+                    {
+                        toolStripTextBox1.Text = "Исполнитель: <не указан>";
+                    }
+                }
+            }
+
+            SetOutputLocation();
+            AppConfigManager configManager = new AppConfigManager();
+            if (bool.Parse(configManager.GetTagValue(configManager.hideControlMethods)))
+            {
+                HideControlMethodTab();
+            }
+            //debugForm = new DebugForm();
+            //debugForm.Show();
+        }
+
+        public void SetOutputLocation()
+        {
+            AppConfigManager appConfigManager = new AppConfigManager();
+            saveFileDialog1.InitialDirectory = appConfigManager.GetOutputLocation();
+        }
+
+        const int dataGridWidth = 605;
+        const int tabWidth = 343;
+
+        public void HideControlMethodTab()
+        {
+            if (dataGridView1.Width == dataGridWidth)
+            {
+                dataGridView1.Width += tabWidth;
+                groupBox4.Width += tabWidth;
+                tabControl1.Width = 0;
+            }
+
+        }
+
+        public void ShowControlMethodTab()
+        {
+            if (dataGridView1.Width != dataGridWidth)
+            {
+                dataGridView1.Width = dataGridWidth;
+                tabControl1.Width = tabWidth;
+                groupBox4.Width -= tabWidth;
+            }
         }
 
         private void журналОбъектовPDFToolStripMenuItem_Click(object sender, EventArgs e)
@@ -916,6 +966,12 @@ namespace QualityControl
                     ConvertManager.WriteJournalToExcel(selectedJournal, saveFileDialog1.FileName);
                 }
             }
+        }
+
+        private void toolStripMenuItem1_Click_1(object sender, EventArgs e)
+        {
+            Settings form = new Settings(this);
+            form.ShowDialog();
         }
     }
 }

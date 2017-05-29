@@ -84,7 +84,7 @@ namespace QualityControl_Client
                 
                 Journal.ControlMethodsLib.Control.Add(control);
 
-                var tabForm = new ControlMethodTabForm(controlName.Name, uow);
+                var tabForm = new ControlMethodTabForm(controlName.Name, uow, this);
                 tabForm.EnableValidateCheckBox();
                 ControlMethodTabForms.Add(tabForm);
 
@@ -336,12 +336,51 @@ namespace QualityControl_Client
                 Journal = CloneJournal(Journal);
                 Journal.ControlMethodsLib.Control = temp;
 
+                AppConfigManager configManager = new AppConfigManager();
+                if (bool.Parse(configManager.GetTagValue(configManager.clearEquipmentAfterAdding)))
+                {
+                    ClearEquipment();
+                }
+                if (bool.Parse(configManager.GetTagValue(configManager.clearDefectsAfterAdding)))
+                {
+                    ClearControlMethodResult();
+                }
+                if (bool.Parse(configManager.GetTagValue(configManager.clearEmployeesAfterAdding)))
+                {
+                    ClearEmployees();
+                }
+
+
                 for (int i = 0; i < ControlNames.Count; i++)
                 {
                     var control = Journal.ControlMethodsLib.Control[i];
                     ControlMethodTabForms[i].SetCurrentControl(control, Journal);
                 }
                 isClosed = false;
+            }
+        }
+
+        private void ClearEquipment()
+        {
+            foreach(var control in Journal.ControlMethodsLib.Control)
+            {
+                control.EquipmentLib = new BllEquipmentLib();
+            }
+        }
+
+        private void ClearControlMethodResult()
+        {
+            foreach (var control in Journal.ControlMethodsLib.Control)
+            {
+                control.ResultLib = new BllResultLib();
+            }
+        }
+
+        private void ClearEmployees()
+        {
+            foreach (var control in Journal.ControlMethodsLib.Control)
+            {
+                control.EmployeeLib = new BllEmployeeLib();
             }
         }
 
@@ -433,7 +472,23 @@ namespace QualityControl_Client
                 }
                 
             }               
-         }
+        }
+
+        public void AddCurrentEmployeeLibToAllMethods()
+        {
+            AppConfigManager configManager = new AppConfigManager();
+            if (bool.Parse(configManager.GetTagValue(configManager.copyEmployeesToAllTypesOfMethods)))
+            {
+                var currentControl = ControlMethodTabForms[tabControl1.SelectedIndex].currentControl;
+                for (int i = 0; i < Journal.ControlMethodsLib.Control.Count; i++)
+                {
+                    if (!currentControl.Equals(Journal.ControlMethodsLib.Control[i]))
+                    {
+                        ControlMethodTabForms[i].CopyNewEmployeeFromLib(currentControl.EmployeeLib);
+                    }
+                }
+            }
+        }
 
         private void textBox6_TextChanged(object sender, EventArgs e)
         {

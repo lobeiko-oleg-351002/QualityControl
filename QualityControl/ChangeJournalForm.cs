@@ -74,7 +74,7 @@ namespace QualityControl_Client
                 }
 
 
-                var tabForm = new ControlMethodTabForm(control, oldJournal, uow);
+                var tabForm = new ControlMethodTabForm(control, oldJournal, uow, null);
                 if (control.IsControlled != null)
                 {
                     tabForm.EnableFormControls();

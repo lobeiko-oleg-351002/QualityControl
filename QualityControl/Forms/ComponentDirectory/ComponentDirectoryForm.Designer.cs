@@ -32,10 +32,10 @@
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button5 = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.button6 = new System.Windows.Forms.Button();
             this.saveFileDialog2 = new System.Windows.Forms.SaveFileDialog();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -77,16 +77,6 @@
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
             // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(12, 381);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 6;
-            this.button5.Text = "PDF";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
             // button6
             // 
             this.button6.Location = new System.Drawing.Point(94, 381);
@@ -96,6 +86,16 @@
             this.button6.Text = "Excel";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(12, 381);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 6;
+            this.button5.Text = "PDF";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // ComponentDirectoryForm
             // 
@@ -108,13 +108,13 @@
             this.Location = new System.Drawing.Point(0, 0);
             this.Name = "ComponentDirectoryForm";
             this.Text = "Справочник сборочных единиц";
+            this.Controls.SetChildIndex(this.dataGridView1, 0);
+            this.Controls.SetChildIndex(this.button5, 0);
+            this.Controls.SetChildIndex(this.button6, 0);
             this.Controls.SetChildIndex(this.button1, 0);
             this.Controls.SetChildIndex(this.button2, 0);
             this.Controls.SetChildIndex(this.button3, 0);
             this.Controls.SetChildIndex(this.button4, 0);
-            this.Controls.SetChildIndex(this.dataGridView1, 0);
-            this.Controls.SetChildIndex(this.button5, 0);
-            this.Controls.SetChildIndex(this.button6, 0);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
@@ -123,12 +123,12 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button button5;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.Button button6;
         private System.Windows.Forms.SaveFileDialog saveFileDialog2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button5;
     }
 }

@@ -19,8 +19,6 @@ namespace DAL.Entities
 
         public string Function { get; set; }
 
-        //public int? Certificate_lib_id { get; set; }
-
         public DateTime? MedicalCheckDate { get; set; }
 
         public DateTime? KnowledgeCheckDate { get; set; }
